@@ -1,51 +1,62 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import './App.css'
+import Accueil from "./Accueil";
+import Signup from "./SignUp";
+import Contact from "./Contact";
+import LegalDisclaimer from "./legalDisclaimer";
+import SiteMap from "./SiteMap";
+import Prestations from "./Prestations";
+import Planning from "./Planning";
+import AdminBoard from "./AdminBoard";
+import Error from "./Error";
+import Profil from "./Profil";
+import Commenter from "./Commenter";
 
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
 const monRouter = createBrowserRouter([
   {
     path: '/',
-    element: <div>Page d'Accueil</div>
+    element: < Accueil/>
   },
   {
     path: '/signup',
-    element: <div>Page Connexion</div>
+    element: < Signup/>
   },
   {
     path: '/contact',
-    element: <div>Page Contact</div>
+    element: < Contact/>
   },
   {
     path: '/legalDisclaimer',
-    element: <div>Page Mentions légales</div>
+    element: < LegalDisclaimer/>
   },
   {
     path: '/siteMap',
-    element: <div>Page Plan du site</div>
+    element: < SiteMap/>
   },
   {
     path: '/prestations',
-    element: <div>Page des Prestations</div>
+    element: < Prestations/>
   },
   {
     path: '/planning',
-    element: <div>Page Planning</div>
+    element: < Planning/>
   },
   {
     path: '/adminBoard',
-    element: <div>Page Tableau de bord</div>
+    element: < AdminBoard/>
   },
   {
     path: '/404',
-    element: <div>Page Error</div>
+    element: < Error/>
   },
   {
     path: '/profil',
-    element: <div>Page Profil</div>
+    element: < Profil/>
   },
   {
     path: '/commenter',
-    element: <div>Page des Commentaires</div>
+    element: < Commenter/>
   }
 ])
 
