@@ -11,6 +11,7 @@ import Error from "./pages/ErrorPage/Error";
 import Profile from "./pages/ProfilePage/Profile";
 import Comment from "./pages/CommentPage/Comment";
 
+
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
 const monRouter = createBrowserRouter([
   {
@@ -62,7 +63,9 @@ const monRouter = createBrowserRouter([
 
 function App() {
 
-  return <RouterProvider router={monRouter}/>
+  return (
+  <RouterProvider router={monRouter}/>
+  )
 }
 
 export default App;
