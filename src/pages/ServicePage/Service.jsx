@@ -1,6 +1,6 @@
 import React from "react";
 
-const Prestations = () => {
+const Services = () => {
 
     return (
 
@@ -8,4 +8,4 @@ const Prestations = () => {
     );
 };
 
-export default Prestations;
+export default Services;

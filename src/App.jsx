@@ -1,26 +1,25 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
-import './App.css'
-import Accueil from "./Accueil";
-import Signup from "./SignUp";
-import Contact from "./Contact";
-import LegalDisclaimer from "./legalDisclaimer";
-import SiteMap from "./SiteMap";
-import Prestations from "./Prestations";
-import Planning from "./Planning";
-import AdminBoard from "./AdminBoard";
-import Error from "./Error";
-import Profil from "./Profil";
-import Commenter from "./Commenter";
+import Home from "./pages/HomePage/Home";
+import SignUp from "./pages/SignUpPage/SignUp";
+import Contact from "./pages/ContactPage/Contact";
+import LegalDisclaimer from "./pages/LegalDisclaimerPage/LegalDisclaimer";
+import SiteMap from "./pages/SiteMapPage/SiteMap";
+import Services from "./pages/ServicePage/Service";
+import Planning from "./pages/PlanningPage/Planning";
+import AdminBoard from "./pages/AdminBoardPage/AdminBoard";
+import Error from "./pages/ErrorPage/Error";
+import Profile from "./pages/ProfilePage/Profile";
+import Comment from "./pages/CommentPage/Comment";
 
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
 const monRouter = createBrowserRouter([
   {
     path: '/',
-    element: < Accueil/>
+    element: < Home/>
   },
   {
     path: '/signup',
-    element: < Signup/>
+    element: < SignUp/>
   },
   {
     path: '/contact',
@@ -36,7 +35,7 @@ const monRouter = createBrowserRouter([
   },
   {
     path: '/prestations',
-    element: < Prestations/>
+    element: < Services/>
   },
   {
     path: '/planning',
@@ -52,11 +51,11 @@ const monRouter = createBrowserRouter([
   },
   {
     path: '/profil',
-    element: < Profil/>
+    element: < Profile/>
   },
   {
     path: '/commenter',
-    element: < Commenter/>
+    element: < Comment/>
   }
 ])
 
