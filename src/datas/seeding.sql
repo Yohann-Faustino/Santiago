@@ -8,6 +8,13 @@ TRUNCATE TABLE "Customers", "Appointments", "Comments" RESTART IDENTITY CASCADE;
 -- RESTART IDENTITY -> réinitialise les séquences pour les colonnes id dans les tables Utilisateurs et Ingredients à leur valeur initiale
 -- CASCADE -> Vide également toutes les tables qui ont des clés étrangères référencées dans chacune des tables
 
-INSERT INTO "Customers" ("firstname", "lastname", "addressCustomer", "phone", "email", "passwordHash" ) VALUES 
-INSERT INTO "Appointments" ("dateAppointment", "hourAppointment", "details", "customers_id" ) VALUES 
-INSERT INTO "Comments" ("title", "customers_id" ) VALUES 
+INSERT INTO "Customers" ("firstname", "lastname", "address", "phone", "email", "password" ) VALUES 
+('','','', NULL,'','');
+
+INSERT INTO "Appointments" ("date", "hour", "details" ) VALUES 
+('','','');
+
+INSERT INTO "Comments" ("title") VALUES 
+('');
+
+COMMIT;
