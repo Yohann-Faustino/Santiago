@@ -10,7 +10,7 @@ import AdminBoard from "./pages/AdminBoardPage/AdminBoard";
 import Error from "./pages/ErrorPage/Error";
 import Profile from "./pages/ProfilePage/Profile";
 import Comment from "./pages/CommentPage/Comment";
-
+import Appointments from "./pages/Appointments";
 
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
 const monRouter = createBrowserRouter([
@@ -55,8 +55,12 @@ const monRouter = createBrowserRouter([
     element: < Profile/>
   },
   {
-    path: '/commenter',
+    path: '/comments',
     element: < Comment/>
+  },
+  {
+    path: '/appointments',
+    element: < Appointments/>
   }
 ])
 

@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../datas/database";
 
-class comments extends Model {}
+class Comments extends Model {}
 
-comments.init({
+Comments.init({
 
     title: {
         type: DataTypes.STRING,
@@ -13,9 +13,9 @@ comments.init({
 },
     {
         sequelize,
-        modelName: 'comments',
+        modelName: 'Comments',
         tableName: 'Comments'
     }
 );
 
-export default comments;
+export default Comments;

@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../datas/database';
 
-class customers extends Model { }
+class Customers extends Model { }
 
-customers.init({
+Customers.init({
 
     firstname: {
         type: DataTypes.STRING,
@@ -49,9 +49,9 @@ customers.init({
 
     {
         sequelize,
-        modelName: 'customers',
+        modelName: 'Customers',
         tableName: 'Customers'
     }
 );
 
-export default customers;
+export default Customers;

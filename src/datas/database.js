@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize'; //  Importation du module Sequelize, qui est utilisé pour interagir avec une base de données SQL
-import * as dotenv from 'dotenv'; // Importation du module dotenv, qui est utilisé pour charger les variables d'environnement à partir d'un fichier .env.
+import dotenv from 'dotenv'; // Importation du module dotenv, qui est utilisé pour charger les variables d'environnement à partir d'un fichier .env.
 
 dotenv.config(); // Charge les variables d'environnement à partir d'un fichier .env et les ajoute au processus d'exécution de Node.js
 
@@ -12,6 +12,7 @@ const sequelize = new Sequelize(process.env.PG_URL, {
     }
 });
 
+
 // Le test suivant permet de savoir si on est co a la BDD ou pas
 sequelize.authenticate()
 .then(() => {
@@ -23,5 +24,6 @@ sequelize.authenticate()
 
     console.log('Connection -> failed', err);
 });
+
 
 export default sequelize;

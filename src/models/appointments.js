@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../datas/database";
 
-class appointments extends Model {}
+class Appointments extends Model {}
 
-appointments.init({
+Appointments.init({
 
     date: {
         type: DataTypes.STRING,
@@ -20,10 +20,10 @@ appointments.init({
 },
     {
         sequelize,
-        modelName: 'appointments',
+        modelName: 'Appointments',
         tableName: 'Appointments'
     }
 
 );
 
-export default appointments;
+export default Appointments;
