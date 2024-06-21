@@ -10,8 +10,7 @@ import router from './router.js';
 dotenv.config();
 
 const app = express(); // Crées une session Express qui définis les routes, applique les middlewares et configure les comportements du serveur back.
-const port = 3000; // On décide que le port du serveur soit le 3000
-// const port = process.env.PORT || 3000; probleme avec le process ???
+const port = process.env.PORT || 3000; // On décide que le port du serveur soit le 3000
 
 
 app.use(express.json()); // Dans le contexte d'Express.js, parser le JSON signifie lire les données JSON envoyées dans le corps des requêtes HTTP (par exemple, via un formulaire POST) et les convertir en objets JavaScript pour les traiter dans les routes du serveur back.

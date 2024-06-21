@@ -2,7 +2,7 @@ import express from 'express';
 const router =express.Router();
 import Customers from "../models/customers.js";
 
-router.get('/customers', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const customers = await Customers.findAll();
         res.json(customers);

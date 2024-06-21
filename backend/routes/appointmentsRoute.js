@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import Appointments from '../models/appointments.js';
 
-router.get('/appointments', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const appointments =await Appointments.findAll();
         res.json(appointments);
