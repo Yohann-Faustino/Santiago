@@ -1,6 +1,7 @@
 // On crée le server pour le backend
 
 import express from 'express';
+import sequelize from './datas/database.js';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
 import router from './router.js';

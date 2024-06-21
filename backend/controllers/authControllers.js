@@ -1,4 +1,4 @@
-import Customers from "../models/customers";
+import Customers from "../models/customers.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import crypto from "node:crypto";

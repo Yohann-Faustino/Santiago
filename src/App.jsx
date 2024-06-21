@@ -1,16 +1,16 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
-import Home from "./pages/HomePage/Home";
-import SignUp from "./pages/SignUpPage/SignUp";
-import Contact from "./pages/ContactPage/Contact";
-import LegalDisclaimer from "./pages/LegalDisclaimerPage/LegalDisclaimer";
-import SiteMap from "./pages/SiteMapPage/SiteMap";
-import Services from "./pages/ServicePage/Service";
-import Planning from "./pages/PlanningPage/Planning";
-import AdminBoard from "./pages/AdminBoardPage/AdminBoard";
-import Error from "./pages/ErrorPage/Error";
-import Profile from "./pages/ProfilePage/Profile";
-import Comment from "./pages/CommentPage/Comment";
-import Appointments from "./pages/Appointments/Appointments";
+import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import Contact from "./pages/Contact";
+import LegalDisclaimer from "./pages/LegalDisclaimer";
+import SiteMap from "./pages/SiteMap";
+import Services from "./pages/Service";
+import Planning from "./pages/Planning";
+import AdminBoard from "./pages/AdminBoard";
+import Error from "./pages/Error";
+import Profile from "./pages/Profile";
+import Comment from "./pages/Comment";
+import Appointments from "./pages/Appointments";
 import './styles.css';
 
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
