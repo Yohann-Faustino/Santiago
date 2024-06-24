@@ -26,6 +26,7 @@ const SignUp = () => {
           <p className="flex justify-center">Rejoignez-nous !</p>
           <button
             id="createAccount"
+            type="button" 
             onClick={toggleVisibility}
             className={`mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto`}
           >
@@ -59,7 +60,7 @@ const SignUp = () => {
               />
               <input
                 className="w-1/2 flex mx-auto justify-center"
-                type="text"
+                type="password"
                 name="passwordConnexion"
                 id="passwordConnexion"
                 placeholder="Votre Mot de passe"
@@ -69,7 +70,7 @@ const SignUp = () => {
             <a className="flex justify-center" href="">
               Mot de passe oublié?
             </a>
-            <button className="w-4/5 flex mx-auto justify-center">
+            <button type="submit" className="w-4/5 flex mx-auto justify-center">
               Se connecter
             </button>
           </section>
@@ -138,7 +139,7 @@ const SignUp = () => {
               />
               <input
                 className="w-1/2 flex mx-auto justify-center"
-                type="text"
+                type="password"
                 name="passwordInscription"
                 id="passwordInscription"
                 placeholder="Password"
@@ -146,14 +147,14 @@ const SignUp = () => {
               />
               <input
                 className="w-1/2 flex mx-auto justify-center"
-                type="text"
+                type="password"
                 name="passwordInscriptionConfirm"
                 id="passwordInscriptionConfirm"
                 placeholder="Confirmer Password"
                 required
               />
             </form>
-            <button className="w-4/5 flex mx-auto justify-center">
+            <button type="submit" className="w-4/5 flex mx-auto justify-center">
               Créer le compte
             </button>
           </section>
@@ -169,7 +170,7 @@ const SignUp = () => {
           </h2>
           <p className="flex justify-center">Heureux de vous revoir !</p>
           <p className="flex justify-center">connectez-vous ici:</p>
-          <button onClick={toggleVisibility} className="mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto">
+          <button onClick={toggleVisibility} type="button" className="mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto">
             Se connecter
           </button>
         </div>

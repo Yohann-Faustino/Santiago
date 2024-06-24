@@ -36,4 +36,33 @@ signup: async (req, res) => {
     }
 }};
 
+const validatePassword = (password) => {
+    const isPasswordValid = validator.isStrongPassword(password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1, // Nombre minimum de caractères spéciaux requis
+        returnScore: false, // Retourne un score de robustesse du mot de passe si true
+        pointsPerUnique: 1,
+        pointsPerRepeat: 0.5,
+        pointsForContainingLower: 10,
+        pointsForContainingUpper: 10,
+        pointsForContainingNumber: 10,
+        pointsForContainingSymbol: 10
+    });
+
+    return isPasswordValid;
+}
+
+const saltRounds = 10; // Définis le nombre de tours de cryptage du mot de passe pour créer un hash le plus optimal (10 tours est le chiffre idéale).
+const hashPassword = async (password) => {
+    try {
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        return hashedPassword;
+    } catch (error) {
+        throw new Error('Erreur lors du hashage du mot de passe', error)
+    }
+};
+
 export default authController;
