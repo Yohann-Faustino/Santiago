@@ -2,9 +2,37 @@ import React, { useState } from "react";
 
 const SignUp = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    lastName: "",
+    firstName: "",
+    address: "",
+    phone: "",
+    mailInscription: "",
+    passwordInscription: "",
+    passwordInscriptionConfirm: ""
+  });
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("/signup", formData);
+      console.log("Réponse du serveur :", response.data);
+      alert("Inscription réussie ! Redirection vers la page d'accueil.");
+      window.location.href = "/"; // Redirection vers la page d'accueil après inscription
+    } catch (error) {
+      console.error("Erreur lors de l'inscription :", error);
+      alert("Erreur lors de l'inscription. Veuillez réessayer.");
+    }
   };
 
   return (
@@ -15,9 +43,8 @@ const SignUp = () => {
       <div className="connexionBlock relative w-4/5 flex border border-black mx-auto h-2/2">
         {/* CONTAINER GAUCHE SE CONNECTER */}
         <div
-          className={`containerGaucheCo flex flex-col w-1/2 border border-red-700 h-96 justify-center ${
-            isVisible ? "" : "hidden"
-          }`}
+          className={`containerGaucheCo flex flex-col w-1/2 border border-red-700 h-96 justify-center ${isVisible ? "" : "hidden"
+            }`}
         >
           <h2 className="flex justify-center">Bienvenue !</h2>
           <p className="flex justify-center">
@@ -26,7 +53,7 @@ const SignUp = () => {
           <p className="flex justify-center">Rejoignez-nous !</p>
           <button
             id="createAccount"
-            type="button" 
+            type="button"
             onClick={toggleVisibility}
             className={`mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto`}
           >
@@ -36,9 +63,8 @@ const SignUp = () => {
 
         {/* CONTAINER DROIT MESSAGE CREER COMPTE */}
         <div
-          className={`containerDroitCo flex flex-col w-1/2 border border-blue-800 h-96 justify-center ${
-            isVisible ? "" : "hidden"
-          }`}
+          className={`containerDroitCo flex flex-col w-1/2 border border-blue-800 h-96 justify-center ${isVisible ? "" : "hidden"
+            }`}
         >
           <h2 className="flex justify-center">Se connecter</h2>
           <section className="flex justify-center">
@@ -49,13 +75,14 @@ const SignUp = () => {
           </section>
           <section className="flex flex-col">
             <h3 className="flex justify-center">Utiliser votre compte</h3>
-            <form action="" className="flex flex-col">
+            <form onSubmit={handleSubmit} id="formIscription" action="" method="post" className="flex flex-col">
               <input
                 className="w-1/2 flex mx-auto justify-center"
                 type="text"
                 name="mailConnexion"
                 id="mailConnexion"
                 placeholder="Votre Email"
+                onChange={handleChange}
                 required
               />
               <input
@@ -64,15 +91,16 @@ const SignUp = () => {
                 name="passwordConnexion"
                 id="passwordConnexion"
                 placeholder="Votre Mot de passe"
+                onChange={handleChange}
                 required
               />
+              <button type="submit" className="w-4/5 flex mx-auto justify-center">
+                Se connecter
+              </button>
             </form>
             <a className="flex justify-center" href="">
               Mot de passe oublié?
             </a>
-            <button type="submit" className="w-4/5 flex mx-auto justify-center">
-              Se connecter
-            </button>
           </section>
         </div>
       </div>
@@ -81,9 +109,8 @@ const SignUp = () => {
       <div className="inscriptionBlock absolute top-100 right-48 flex flex-row w-4/5 mx-auto">
         {/* CONTAINER GAUCHE S'INSCRIR */}
         <div
-          className={`containerGauchInsc flex flex-col border border-lime-600 w-1/2 h-96 justify-center ${
-            isVisible ? "hidden" : ""
-          }`}
+          className={`containerGauchInsc flex flex-col border border-lime-600 w-1/2 h-96 justify-center ${isVisible ? "hidden" : ""
+            }`}
         >
           <h2 className="flex justify-center">Créer un compte</h2>
           <section className="flex justify-center">
@@ -96,13 +123,14 @@ const SignUp = () => {
             <p className="flex justify-center">
               Veuillez remplir le formulaire d'inscription.
             </p>
-            <form action="">
+            <form onSubmit={handleSubmit} action="" method="post">
               <input
                 className="w-1/2 flex mx-auto justify-center"
                 type="text"
                 name="lastName"
                 id="lastName"
                 placeholder="Nom"
+                onChange={handleChange}
                 required
               />
               <input
@@ -111,6 +139,7 @@ const SignUp = () => {
                 name="firstName"
                 id="firstName"
                 placeholder="Prénom"
+                onChange={handleChange}
                 required
               />
               <input
@@ -119,6 +148,7 @@ const SignUp = () => {
                 name="address"
                 id="address"
                 placeholder="Adresse"
+                onChange={handleChange}
                 required
               />
               <input
@@ -127,6 +157,7 @@ const SignUp = () => {
                 name="phone"
                 id="phone"
                 placeholder="Téléphone"
+                onChange={handleChange}
                 required
               />
               <input
@@ -135,6 +166,7 @@ const SignUp = () => {
                 name="mailInscription"
                 id="mailInscription"
                 placeholder="Email"
+                onChange={handleChange}
                 required
               />
               <input
@@ -143,6 +175,7 @@ const SignUp = () => {
                 name="passwordInscription"
                 id="passwordInscription"
                 placeholder="Password"
+                onChange={handleChange}
                 required
               />
               <input
@@ -151,19 +184,19 @@ const SignUp = () => {
                 name="passwordInscriptionConfirm"
                 id="passwordInscriptionConfirm"
                 placeholder="Confirmer Password"
+                onChange={handleChange}
                 required
               />
+              <button type="submit" className="w-4/5 flex mx-auto justify-center">
+                Créer le compte
+              </button>
             </form>
-            <button type="submit" className="w-4/5 flex mx-auto justify-center">
-              Créer le compte
-            </button>
           </section>
         </div>
         {/* CONTAINER DROIT S'INSCRIR */}
         <div
-          className={`containerDroitInsc flex flex-col border border-orange-950 w-1/2 h-96 justify-center ${
-            isVisible ? "hidden" : ""
-          }`}
+          className={`containerDroitInsc flex flex-col border border-orange-950 w-1/2 h-96 justify-center ${isVisible ? "hidden" : ""
+            }`}
         >
           <h2 className="flex justify-center">
             Vous possédez déjà un compte chez nous?
