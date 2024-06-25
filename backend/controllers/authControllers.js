@@ -30,6 +30,8 @@ const authController = {
     signup: async (req, res) => {
         const { firstname, lastname, address, phone, email, password } = req.body;
 
+        console.log('données de l\'inscription reçues', req.body)
+        
         try {
             // Vérifier si l'utilisateur existe déjà
             const existingCustomer = await Customers.findOne({ where: { email } });

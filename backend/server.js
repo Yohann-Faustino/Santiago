@@ -5,16 +5,20 @@ import sequelize from './datas/database.js';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
 import router from './router.js';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 dotenv.config(); // Récupère les variables d'environnement depuis un fichier .env
 
 const app = express(); // Crées une session Express qui définis les routes, applique les middlewares et configure les comportements du serveur back.
 const port = process.env.PORT || 3000; // On décide que le port du serveur soit le 3000.
 
+// Activer CORS pour toutes les requêtes
+app.use(cors());
 
-app.use(express.json()); // Dans le contexte d'Express.js, parser le JSON signifie lire les données JSON envoyées dans le corps des requêtes HTTP (par exemple, via un formulaire POST) et les convertir en objets JavaScript pour les traiter dans les routes du serveur back.
+app.use(bodyParser.json()); // Dans le contexte d'Express.js, parser le JSON signifie lire les données JSON envoyées dans le corps des requêtes HTTP (par exemple, via un formulaire POST) et les convertir en objets JavaScript pour les traiter dans les routes du serveur back.
 
-app.use(express.urlencoded({extended:true})); // Cutter qui ouvre ce qu'on recois de l'user (req.body).
+app.use(bodyParser.urlencoded({extended:true})); // Cutter qui ouvre ce qu'on recois de l'user (req.body).
 
 app.use(session({ // Ces lignes de code permettent de gérer la session du customer.
     resave: false, // Option qui permet de déterminer si l'on sauvegarde a nouveau ou non une séssion quand le customer est inscrit même si elle n'a pas été modifiée.

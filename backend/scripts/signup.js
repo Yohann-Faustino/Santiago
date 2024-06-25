@@ -6,13 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
-        const formData = new FormData(form);
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
+        const formData = {
+            firstname: document.getElementById('firstName').value,
+            lastname: document.getElementById('lastName').value,
+            address: document.getElementById('address').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('mailInscription').value,
+            password: document.getElementById('passwordInscription').value,
+        };
 
-        console.log('Données du formulaire :', data);
+        console.log('Données du formulaire :', formData);
 
         // Envoie des données au serveur
         try {
@@ -21,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(formData)
             });
 
             if (response.ok) {

@@ -27,7 +27,7 @@ router.use('/comments', commentsRoute);
 router.use('/appointments', appointmentsRoute);
 
 // Route qui permet de récupérer les infos saisie par l'utilisateur
-// router.post('/signup', authController.signup);
+router.post('/signup', authController.signup);
 
 
 
