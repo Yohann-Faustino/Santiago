@@ -1,29 +1,23 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const SignUp = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [signupData, setSignupData] = useState({
-    lastName: "",
-    firstName: "",
-    address: "",
-    phone: "",
-    mailInscription: "",
-    passwordInscription: "",
-    passwordInscriptionConfirm: ""
+  const [signUpData, setSignUpData] = useState({
+    firstname: '',
+    lastname: '',
+    address: '',
+    phone: '',
+    email: '',
+    password: ''
   });
 
   const [loginData, setLoginData] = useState({
-    mailConnexion: "",
-    passwordConnexion: ""
+    email: '',
+    password: ''
   });
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
-
-  const handleSignupChange = (event) => {
+  const handleSignUpChange = (event) => {
     const { name, value } = event.target;
-    setSignupData({ ...signupData, [name]: value });
+    setSignUpData({ ...signUpData, [name]: value });
   };
 
   const handleLoginChange = (event) => {
@@ -31,220 +25,131 @@ const SignUp = () => {
     setLoginData({ ...loginData, [name]: value });
   };
 
-  const handleSignupSubmit = async (event) => {
+  const handleSignUpSubmit = async (event) => {
     event.preventDefault();
-    console.log(signupData);
-
+    console.log(signUpData);
+    // Logic for sign-up submission
     try {
-      const response = await fetch("http://localhost:3000/signup", {
-        method: "POST",
+      const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(signupData)
+        body: JSON.stringify(signUpData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const result = await response.json();
-        console.log('Réponse du serveur :', result);
-        alert("Inscription réussie ! Redirection vers la page d'accueil.");
-        window.location.href = "/";
+        console.log('Inscription réussie:', data);
       } else {
-        const error = await response.json();
-        console.error("Erreur lors de l'inscription :", error);
-        alert("Erreur lors de l'inscription. Veuillez réessayer.");
+        console.log('Erreur lors de l\'inscription:', data.message);
       }
     } catch (error) {
-      console.error("Erreur lors de l'inscription :", error);
-      alert("Erreur lors de l'inscription. Veuillez réessayer.");
+      console.error('Erreur lors de l\'inscription:', error);
     }
   };
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     console.log(loginData);
-
+    // Logic for login submission
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(loginData)
+        body: JSON.stringify(loginData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const result = await response.json();
-        console.log('Réponse du serveur :', result);
-        alert("Connexion réussie ! Redirection vers la page d'accueil.");
-        window.location.href = "/";
+        console.log('Connexion réussie:', data);
       } else {
-        const error = await response.json();
-        console.error("Erreur lors de la connexion :", error);
-        alert("Erreur lors de la connexion. Veuillez réessayer.");
+        console.log('Erreur lors de la connexion:', data.message);
       }
     } catch (error) {
-      console.error("Erreur lors de la connexion :", error);
-      alert("Erreur lors de la connexion. Veuillez réessayer.");
+      console.error('Erreur lors de la connexion:', error);
     }
   };
 
   return (
-    <>
-      <h1 className="text-center">Page Connexion/Inscriptions</h1>
+    <div>
+      <form onSubmit={handleSignUpSubmit}>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="Prénom"
+          value={signUpData.firstname}
+          onChange={handleSignUpChange}
+          required
+        />
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Nom"
+          value={signUpData.lastname}
+          onChange={handleSignUpChange}
+          required
+        />
+        <input
+          type="text"
+          name="address"
+          placeholder="Adresse"
+          value={signUpData.address}
+          onChange={handleSignUpChange}
+          required
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Téléphone"
+          value={signUpData.phone}
+          onChange={handleSignUpChange}
+          pattern="[0-9]{10}"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={signUpData.email}
+          onChange={handleSignUpChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Mot de passe"
+          value={signUpData.password}
+          onChange={handleSignUpChange}
+          required
+        />
+        <button type="submit">S'inscrire</button>
+      </form>
 
-      {/* CONTAINER CONNEXION */}
-      <div className="connexionBlock relative w-4/5 flex border border-black mx-auto h-2/2">
-        {/* CONTAINER GAUCHE SE CONNECTER */}
-        <div className={`containerGaucheCo flex flex-col w-1/2 border border-red-700 h-96 justify-center ${isVisible ? "" : "hidden"}`}>
-          <h2 className="flex justify-center">Bienvenue !</h2>
-          <p className="flex justify-center">Vous n'avez pas encore de compte ?</p>
-          <p className="flex justify-center">Rejoignez-nous !</p>
-          <button
-            id="createAccount"
-            type="button"
-            onClick={toggleVisibility}
-            className={`mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto`}
-          >
-            {isVisible ? "Créer un compte" : "Créer un compte"}
-          </button>
-        </div>
-
-        {/* CONTAINER DROIT MESSAGE CREER COMPTE */}
-        <div className={`containerDroitCo flex flex-col w-1/2 border border-blue-800 h-96 justify-center ${isVisible ? "" : "hidden"}`}>
-          <h2 className="flex justify-center">Se connecter</h2>
-          <section className="flex justify-center">
-            <i className="fa-brands fa-google-plus-g"></i>
-            <i className="fa-brands fa-facebook"></i>
-            <i className="fa-brands fa-instagram"></i>
-            <i className="fa-brands fa-linkedin"></i>
-          </section>
-          <section className="flex flex-col">
-            <h3 className="flex justify-center">Utiliser votre compte</h3>
-            <form onSubmit={handleLoginSubmit} id="formConnexion" action="" method="post" className="flex flex-col">
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="mailConnexion"
-                id="mailConnexion"
-                placeholder="Votre Email"
-                onChange={handleLoginChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="password"
-                name="passwordConnexion"
-                id="passwordConnexion"
-                placeholder="Votre Mot de passe"
-                onChange={handleLoginChange}
-                required
-              />
-              <button type="submit" className="w-4/5 flex mx-auto justify-center">
-                Se connecter
-              </button>
-            </form>
-            <a className="flex justify-center" href="">
-              Mot de passe oublié?
-            </a>
-          </section>
-        </div>
-      </div>
-
-      {/* CONTAINER INSCRIPTION */}
-      <div className="inscriptionBlock absolute top-100 right-48 flex flex-row w-4/5 mx-auto">
-        {/* CONTAINER GAUCHE S'INSCRIR */}
-        <div className={`containerGauchInsc flex flex-col border border-lime-600 w-1/2 h-96 justify-center ${isVisible ? "hidden" : ""}`}>
-          <h2 className="flex justify-center">Créer un compte</h2>
-          <section className="flex justify-center">
-            <i className="fa-brands fa-google-plus-g"></i>
-            <i className="fa-brands fa-facebook"></i>
-            <i className="fa-brands fa-instagram"></i>
-            <i className="fa-brands fa-linkedin"></i>
-          </section>
-          <section>
-            <p className="flex justify-center">Veuillez remplir le formulaire d'inscription.</p>
-            <form onSubmit={handleSignupSubmit} action="" method="post">
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="lastName"
-                id="lastName"
-                placeholder="Nom"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="firstName"
-                id="firstName"
-                placeholder="Prénom"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="address"
-                id="address"
-                placeholder="Adresse"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="phone"
-                id="phone"
-                placeholder="Téléphone"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="text"
-                name="mailInscription"
-                id="mailInscription"
-                placeholder="Email"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="password"
-                name="passwordInscription"
-                id="passwordInscription"
-                placeholder="Password"
-                onChange={handleSignupChange}
-                required
-              />
-              <input
-                className="w-1/2 flex mx-auto justify-center"
-                type="password"
-                name="passwordInscriptionConfirm"
-                id="passwordInscriptionConfirm"
-                placeholder="Confirmer Password"
-                onChange={handleSignupChange}
-                required
-              />
-              <button type="submit" className="w-4/5 flex mx-auto justify-center">
-                Créer le compte
-              </button>
-            </form>
-          </section>
-        </div>
-        {/* CONTAINER DROIT S'INSCRIR */}
-        <div className={`containerDroitInsc flex flex-col border border-orange-950 w-1/2 h-96 justify-center ${isVisible ? "hidden" : ""}`}>
-          <h2 className="flex justify-center">Vous possédez déjà un compte chez nous?</h2>
-          <p className="flex justify-center">Heureux de vous revoir !</p>
-          <p className="flex justify-center">connectez-vous ici:</p>
-          <button onClick={toggleVisibility} type="button" className="mt-4 bg-red-600 font-bold py-2 px-4 rounded w-1/3 mx-auto">
-            Se connecter
-          </button>
-        </div>
-      </div>
-    </>
+      <form onSubmit={handleLoginSubmit}>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={loginData.email}
+          onChange={handleLoginChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Mot de passe"
+          value={loginData.password}
+          onChange={handleLoginChange}
+          required
+        />
+        <button type="submit">Se connecter</button>
+      </form>
+    </div>
   );
 };
 

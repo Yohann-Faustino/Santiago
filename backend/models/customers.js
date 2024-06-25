@@ -18,11 +18,11 @@ Customers.init({
         allowNull: true,
     },
     phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             isValidPhoneNumber(value) {
-                if(!/^[0-9]{10}$/i.test(value)){
+                if(!/^[0-9]{10}$/.test(value)){
                     // ^ : Début de la chaîne
                     // [0-9] : Accepte les chiffres de 0 à 9
                     // {10} : Doit être exactement de 10 caractères

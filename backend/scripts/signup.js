@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
         const formData = {
-            firstname: document.getElementById('firstName').value,
-            lastname: document.getElementById('lastName').value,
+            firstname: document.getElementById('firstname').value,
+            lastname: document.getElementById('lastname').value,
             address: document.getElementById('address').value,
             phone: document.getElementById('phone').value,
             email: document.getElementById('mailInscription').value,
