@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     address: '',
     phone: '',
     email: '',
@@ -71,8 +71,8 @@ const SignUp = () => {
 
         // Réinitialisation les champs du formulaire d'inscription:
         setSignUpData({
-          firstName: '',
-          lastName: '',
+          firstname: '',
+          lastname: '',
           address: '',
           phone: '',
           email: '',
@@ -132,17 +132,17 @@ const SignUp = () => {
       <form onSubmit={handleSignUpSubmit}>
         <input
           type="text"
-          name="firstName"
+          name="firstname"
           placeholder="Prénom"
-          value={signUpData.firstName}
+          value={signUpData.firstname}
           onChange={handleSignUpChange}
           required
         />
         <input
           type="text"
-          name="lastName"
+          name="lastname"
           placeholder="Nom"
-          value={signUpData.lastName}
+          value={signUpData.lastname}
           onChange={handleSignUpChange}
           required
         />
