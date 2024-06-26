@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
+
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     address: '',
     phone: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
   const [loginData, setLoginData] = useState({
@@ -15,21 +17,44 @@ const SignUp = () => {
     password: ''
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
+// On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
   const handleSignUpChange = (event) => {
     const { name, value } = event.target;
     setSignUpData({ ...signUpData, [name]: value });
   };
 
+// On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
     setLoginData({ ...loginData, [name]: value });
   };
 
+// On utilise cette fonction en front pour faire une prévérification afin d'éviter de surcharger le serveur en demandes de connexions alors qu'il y a des erreurs.
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+// Fonction de soumission du formulaire d'inscription
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
-    console.log(signUpData);
-    // Logic for sign-up submission
+
+    // Vérification si les passwords correspondent:
+    if (signUpData.password !== signUpData.confirmPassword) {
+      alert("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    // Vérification que le mot de passe respecte nos conditions:
+    if (!validatePassword(signUpData.password)) {
+      alert("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+      return;
+    }
+
     try {
+      // Envoi de la requête POST au serveur pour l'inscription:
       const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: {
@@ -38,23 +63,43 @@ const SignUp = () => {
         body: JSON.stringify(signUpData),
       });
 
+      // Récupération de la réponse du serveur
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Inscription réussie:', data);
+        alert('Inscription réussie, félicitation !');
+
+        // Réinitialisation les champs du formulaire d'inscription:
+        setSignUpData({
+          firstName: '',
+          lastName: '',
+          address: '',
+          phone: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
+
+        // Réinitialise le message d'erreur:
+        setErrorMessage('');
+
+        // Redirige vers l'accueil après que l'inscription ait réussie.
+        window.location.href = '/';
       } else {
-        console.log('Erreur lors de l\'inscription:', data.message);
+        setErrorMessage(data.message || 'Erreur lors de l\'inscription');
       }
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
+      setErrorMessage('Erreur lors de l\'inscription. Veuillez réessayer plus tard.');
     }
   };
 
+// On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    console.log(loginData);
-    // Logic for login submission
+
     try {
+      // Envoi de la requête au serveur pour la connexion:
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
@@ -63,34 +108,41 @@ const SignUp = () => {
         body: JSON.stringify(loginData),
       });
 
+      // Récupération de la réponse du serveur
       const data = await response.json();
 
       if (response.ok) {
         console.log('Connexion réussie:', data);
+
+        // Réinitialise le message d'erreur:
+        setErrorMessage('');
       } else {
-        console.log('Erreur lors de la connexion:', data.message);
+        setErrorMessage(data.message || 'Erreur lors de la connexion');
       }
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
+      setErrorMessage('Erreur lors de la connexion. Veuillez réessayer plus tard.');
     }
   };
 
   return (
     <div>
+      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+
       <form onSubmit={handleSignUpSubmit}>
         <input
           type="text"
-          name="firstname"
+          name="firstName"
           placeholder="Prénom"
-          value={signUpData.firstname}
+          value={signUpData.firstName}
           onChange={handleSignUpChange}
           required
         />
         <input
           type="text"
-          name="lastname"
+          name="lastName"
           placeholder="Nom"
-          value={signUpData.lastname}
+          value={signUpData.lastName}
           onChange={handleSignUpChange}
           required
         />
@@ -127,6 +179,14 @@ const SignUp = () => {
           onChange={handleSignUpChange}
           required
         />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirmez le mot de passe"
+          value={signUpData.confirmPassword}
+          onChange={handleSignUpChange}
+          required
+        />
         <button type="submit">S'inscrire</button>
       </form>
 
@@ -154,4 +214,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
