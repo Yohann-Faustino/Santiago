@@ -99,9 +99,9 @@ const SignUp = () => {
   // On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
-      // Envoi de la requête au serveur pour la connexion:
+      // Envoi de la requête POST au serveur pour la connexion
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
@@ -109,28 +109,26 @@ const SignUp = () => {
         },
         body: JSON.stringify(loginData),
       });
-
-      // Récupération de la réponse du serveur
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        alert('Bravo, vous êtes connecté !');
         console.log('Connexion réussie:', data);
-
-        // Stocker le token JWT dans le localStorage
+  
+        // Stocker le token JWT dans le localStorage si nécessaire
         localStorage.setItem('token', data.token);
-
-        // Réinitialisation les champs du formulaire de connexion:
-        setSignUpData({
+  
+        // Réinitialisation des champs du formulaire de connexion
+        setLoginData({
           email: '',
           password: ''
         });
-
-      // Rediriger vers la page d'accueil après connexion réussie
-      window.location.href = '/';
-
-        // Réinitialise le message d'erreur:
-        setErrorMessage('');
+  
+        // Afficher un message d'alerte
+        alert('Bravo, vous êtes connecté !');
+  
+        // Rediriger vers la page d'accueil après connexion réussie
+        window.location.href = '/'; // ou toute autre URL souhaitée
       } else {
         setErrorMessage(data.message || 'Erreur lors de la connexion');
       }
@@ -139,6 +137,7 @@ const SignUp = () => {
       setErrorMessage('Erreur lors de la connexion. Veuillez réessayer plus tard.');
     }
   };
+  
 
   return (
     <div>

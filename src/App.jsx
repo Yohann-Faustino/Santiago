@@ -11,7 +11,10 @@ import Error from "./pages/Error";
 import Profile from "./pages/Profile";
 import Comment from "./pages/Comment";
 import Appointments from "./pages/Appointments";
+import Customers from "./pages/Customers";
 import './styles.css';
+import AuthCheck from "./components/authCheck";
+import ProtectedData from "./components/protectedData";
 
 // On cree une constante monRouter dans laquel on definis les routes de chaques pages.
 const monRouter = createBrowserRouter([
@@ -57,11 +60,27 @@ const monRouter = createBrowserRouter([
   },
   {
     path: '/comments',
-    element: < Comment/>
+    element: 
+    <div>
+      <ProtectedData />
+      < Comment/>
+    </div>
   },
   {
     path: '/appointments',
-    element: < Appointments/>
+    element: 
+    <div>
+      <ProtectedData />
+      < Appointments/>
+    </div>
+  },
+  {
+    path: '/customers',
+    element: 
+    <div>
+      <ProtectedData />
+      < Appointments/>
+    </div>
   }
 ])
 
@@ -69,7 +88,10 @@ const monRouter = createBrowserRouter([
 function App() {
 
   return (
-  <RouterProvider router={monRouter}/>
+    <div>
+      <AuthCheck /> {/* Vérifie si l'utulisateur du site a un token pour limiter/autoriser les accès.*/}
+      <RouterProvider router={monRouter}/>
+    </div>
   )
 }
 

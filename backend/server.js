@@ -25,7 +25,7 @@ app.use(session({ // Ces lignes de code permettent de gérer la session du custo
     secret: process.env.SECRET, // On récupère la phrase secrète du .env qui permet de signer le cookies comme ca on sait qu'il viens de notre serveur et cela évite de devoir s'inscrire à chaque requêtes.
     saveUninitialized: false, // Option qui permet de déterminer si l'on sauvegarde ou non la séssion vide qui s'initialise quand un visiteur accède à notre site.
     cookie: { secure: false, // Bouton on/off qui permet de mettre en place les cookies même sur des connexions non sécurisées (HTTP car connexion privée sans certificats), en développement on reste sur false et en production on passera en true.
-              maxAge: 12*60*60*1000 // Détermine le temps de durée du cookie, ici 12h.
+              maxAge: 1*60*60*1000 // Détermine le temps de durée du cookie, ici 1h.
      }
 }));
 
