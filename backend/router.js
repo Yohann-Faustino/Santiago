@@ -5,30 +5,34 @@ import customersRoute from './routes/customersRoute.js';
 import commentsRoute from './routes/commentsRoute.js';
 import appointmentsRoute from './routes/appointmentsRoute.js';
 import authController from './controllers/authControllers.js';
+import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
 
 const router = express.Router();
 
 // Routes suivantes sont celles de notre backend:
 
-// Route pour tester la communication
+// Route pour tester la communication:
 router.get('/', (req, res) => {
     res.send('Bonjour, le serveur Express est en fonction !')
 });
+// Route d'une futur page:
 router.get('/saucisson', (req, res) => {
     res.send('saucisson');
 });
-router.get('/signup', (req, res) => {
-    res.send('signup');
+// Route qui permet la connexion:
+router.get('/profile', authController.profile, authMiddlewareToken, (req, res) => {
+    res.send('profile');
 });
 
-// Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients et les commentaires stockés dans la base de données
-router.use('/customers', customersRoute);
-router.use('/comments', commentsRoute);
-router.use('/appointments', appointmentsRoute);
+// Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients et les commentaires stockés dans la base de données:
+router.use('/customers', authMiddlewareToken, customersRoute);
+router.use('/comments', authMiddlewareToken, commentsRoute);
+router.use('/appointments', authMiddlewareToken, appointmentsRoute);
 
-// Route qui permet de récupérer les infos saisie par l'utilisateur
+// Route qui permet l'inscritption:
 router.post('/signup', authController.signup);
 
-
+// Route qui permet la connexion:
+router.post('/login', authController.login);
 
 export default router;

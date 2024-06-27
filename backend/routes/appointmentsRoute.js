@@ -1,8 +1,10 @@
 import express from 'express';
-const router = express.Router();
 import Appointments from '../models/appointments.js';
+import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
 
-router.get('/', async (req, res) => {
+const router = express.Router();
+
+router.get('/', authMiddlewareToken, async (req, res) => {
     try {
         const appointments =await Appointments.findAll();
         res.json(appointments);

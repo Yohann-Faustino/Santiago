@@ -1,8 +1,10 @@
 import express from 'express';
-const router = express.Router();
 import Comments from '../models/comments.js';
+import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
 
-router.get('/', async (req, res) => {
+const router = express.Router();
+
+router.get('/', authMiddlewareToken, async (req, res) => {
     try {
         const comments =await Comments.findAll();
         res.json(comments);

@@ -17,6 +17,8 @@ const SignUp = () => {
     password: ''
   });
 
+  const [isLogin, setIsLogin] = useState(true);
+
   const [errorMessage, setErrorMessage] = useState('');
 
 // On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
@@ -129,6 +131,7 @@ const SignUp = () => {
     <div>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
+      {!isLogin && (
       <form onSubmit={handleSignUpSubmit}>
         <input
           type="text"
@@ -189,7 +192,9 @@ const SignUp = () => {
         />
         <button type="submit">S'inscrire</button>
       </form>
+      )}
 
+      {isLogin && (
       <form onSubmit={handleLoginSubmit}>
         <input
           type="email"
@@ -209,6 +214,9 @@ const SignUp = () => {
         />
         <button type="submit">Se connecter</button>
       </form>
+      )}
+      <button onClick={() => setIsLogin(true)}>Acceder à la partie connexion</button>
+      <button onClick={() => setIsLogin(false)}>Acceder à la partie inscription</button>
     </div>
   );
 };
