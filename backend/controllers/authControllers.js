@@ -109,6 +109,17 @@ const authController = {
             console.error('Erreur lors de la récupération du profil.', error);
             res.status(500).json({ message: 'Erreur lors de la récupération du profil.' });
         }
+    },
+
+    // Fonction pour se déconnecter:
+    logout: async (req, res) => {
+        req.session.destroy(error => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send('erreur de déconnexion');
+            }
+            res.redirect('/');
+        });
     }
 };
 

@@ -35,4 +35,7 @@ router.post('/signup', authController.signup);
 // Route qui permet la connexion:
 router.post('/login', authController.login);
 
+// Route qui permet la déconnexion:
+router.get('/logout', authController.logout);
+
 export default router;

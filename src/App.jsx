@@ -55,7 +55,7 @@ const monRouter = createBrowserRouter([
     element: < Error/>
   },
   {
-    path: '/profil',
+    path: '/profile',
     element: < Profile/>
   },
   {

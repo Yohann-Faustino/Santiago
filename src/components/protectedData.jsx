@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+// Fonction qui vérifie l'authenticité et le rôle de l'utilisateur qui a un token avant de lui permettre d'accéder aux données sensibles ou non.
 const ProtectedData = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
