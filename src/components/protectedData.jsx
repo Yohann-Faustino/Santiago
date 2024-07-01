@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-// Fonction qui vérifie l'authenticité et le rôle de l'utilisateur qui a un token avant de lui permettre d'accéder aux données sensibles ou non.
-const ProtectedData = () => {
+const ProtectedData = ({ route }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   const fetchProtectedResource = async () => {
     const token = localStorage.getItem('token');
+    console.log('Authorization Header:', `Bearer ${token}`);
     try {
-      const response = await fetch('http://localhost:3000/protected', {
+      const response = await fetch(`http://localhost:3000/${route}`, { // Réfère aux routes sécurisées définies dans le App.jsx.
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ const ProtectedData = () => {
 
   useEffect(() => {
     fetchProtectedResource();
-  }, []);
+  }, [route]); // Ajout de route dans les dépendances du useEffect pour que cela se mette à jour dynamiquement lorsque route change de route.
 
   if (error) {
     return <div>Erreur: {error}</div>;

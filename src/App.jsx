@@ -62,7 +62,7 @@ const monRouter = createBrowserRouter([
     path: '/comments',
     element: 
     <div>
-      <ProtectedData />
+      <ProtectedData route="comments" />
       < Comment/>
     </div>
   },
@@ -70,7 +70,7 @@ const monRouter = createBrowserRouter([
     path: '/appointments',
     element: 
     <div>
-      <ProtectedData />
+      <ProtectedData route="appointments" />
       < Appointments/>
     </div>
   },
@@ -78,7 +78,7 @@ const monRouter = createBrowserRouter([
     path: '/customers',
     element: 
     <div>
-      <ProtectedData />
+      <ProtectedData route="customers" />
       < Appointments/>
     </div>
   }
