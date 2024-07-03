@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../components/naviguation";
 
 const Services = () => {
 
@@ -7,7 +6,6 @@ const Services = () => {
 
         <>
             <h1>Page des Prestations</h1>
-            <Nav />
         </>
     );
 };

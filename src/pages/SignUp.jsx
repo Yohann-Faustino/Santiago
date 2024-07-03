@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Nav from '../components/naviguation';
 
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
@@ -141,7 +140,6 @@ const SignUp = () => {
 
   return (
     <>
-      <Nav />
 
       <div>
         {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}

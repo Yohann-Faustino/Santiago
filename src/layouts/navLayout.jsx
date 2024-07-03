@@ -1,8 +1,8 @@
 import React from "react";
-import LogoutButton from "./logoutButton";
+import LogoutButton from "../components/logoutButton";
 import { Link } from "react-router-dom";
 
-const Nav = () => {
+const NavLayout = () => {
 
     return (
 
@@ -33,4 +33,4 @@ const Nav = () => {
     );
 };
 
-export default Nav;
+export default NavLayout;

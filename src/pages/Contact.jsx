@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../components/naviguation";
 
 const Contact = () => {
 
@@ -7,7 +6,6 @@ const Contact = () => {
 
         <>
             <h1>Page Contact</h1>
-            <Nav />
         </>
     );
 };

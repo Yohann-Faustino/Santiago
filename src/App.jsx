@@ -1,4 +1,5 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Contact from "./pages/Contact";
@@ -15,84 +16,34 @@ import Customers from "./pages/Customers";
 import './styles.css';
 import AuthCheck from "./components/authCheck";
 import ProtectedData from "./components/protectedData";
-
-// On cree une constante monRouter dans laquel on definis les routes de chaques pages.
-const monRouter = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />
-  },
-  {
-    path: '/signup',
-    element: <SignUp />
-  },
-  {
-    path: '/contact',
-    element: <Contact />
-  },
-  {
-    path: '/legalDisclaimer',
-    element: <LegalDisclaimer />
-  },
-  {
-    path: '/siteMap',
-    element: <SiteMap />
-  },
-  {
-    path: '/prestations',
-    element: <Services />
-  },
-  {
-    path: '/planning',
-    element: <Planning />
-  },
-  {
-    path: '/adminBoard',
-    element: <AdminBoard />
-  },
-  {
-    path: '*',
-    element: <Error />
-  },
-  {
-    path: '/profile',
-    element: <Profile />
-  },
-  {
-    path: '/comments',
-    element:
-      <div>
-        <ProtectedData route="comments" />
-        <Comment />
-      </div>
-  },
-  {
-    path: '/appointments',
-    element:
-      <div>
-        <ProtectedData route="appointments" />
-        <Appointments />
-      </div>
-  },
-  {
-    path: '/customers',
-    element:
-      <div>
-        <ProtectedData route="customers" />
-        <Customers />
-      </div>
-  }
-])
-
+import Layout from './layouts/layout';
 
 function App() {
-
   return (
     <div>
-      <AuthCheck /> {/* Vérifie si l'utulisateur du site a un token pour limiter/autoriser les accès.*/}
-      <RouterProvider router={monRouter} />
+      <AuthCheck /> {/* Vérifie si l'utilisateur du site a un token pour limiter/autoriser les accès. */}
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            {/* On met ce qu'il y a dans le layout (header, nav, footer) a toutes les pages suiavantes: */}
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/legalDisclaimer" element={<LegalDisclaimer />} />
+            <Route path="/siteMap" element={<SiteMap />} />
+            <Route path="/prestations" element={<Services />} />
+            <Route path="/planning" element={<Planning />} />
+            <Route path="/adminBoard" element={<AdminBoard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/comments" element={<ProtectedData route="comments"><Comment /></ProtectedData>} />
+            <Route path="/appointments" element={<ProtectedData route="appointments"><Appointments /></ProtectedData>} />
+            <Route path="/customers" element={<ProtectedData route="customers"><Customers /></ProtectedData>} />
+            <Route path="*" element={<Error />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
-  )
+  );
 }
 
 export default App;

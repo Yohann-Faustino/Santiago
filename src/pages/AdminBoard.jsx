@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../components/naviguation";
 
 const AdminBoard = () => {
 
@@ -7,7 +6,6 @@ const AdminBoard = () => {
 
         <>
             <h1>Page Tableau de bord</h1>
-            <Nav />
         </>
     );
 };
