@@ -1,4 +1,4 @@
-import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Contact from "./pages/Contact";
@@ -20,67 +20,67 @@ import ProtectedData from "./components/protectedData";
 const monRouter = createBrowserRouter([
   {
     path: '/',
-    element: < Home/>
+    element: <Home />
   },
   {
     path: '/signup',
-    element: < SignUp/>
+    element: <SignUp />
   },
   {
     path: '/contact',
-    element: < Contact/>
+    element: <Contact />
   },
   {
     path: '/legalDisclaimer',
-    element: < LegalDisclaimer/>
+    element: <LegalDisclaimer />
   },
   {
     path: '/siteMap',
-    element: < SiteMap/>
+    element: <SiteMap />
   },
   {
     path: '/prestations',
-    element: < Services/>
+    element: <Services />
   },
   {
     path: '/planning',
-    element: < Planning/>
+    element: <Planning />
   },
   {
     path: '/adminBoard',
-    element: < AdminBoard/>
+    element: <AdminBoard />
   },
   {
-    path: '/404',
-    element: < Error/>
+    path: '*',
+    element: <Error />
   },
   {
     path: '/profile',
-    element: < Profile/>
+    element: <Profile />
   },
   {
     path: '/comments',
-    element: 
-    <div>
-      <ProtectedData route="comments" />
-      < Comment/>
-    </div>
+    element:
+      <div>
+        <ProtectedData route="comments" />
+        <Comment />
+      </div>
   },
   {
     path: '/appointments',
-    element: 
-    <div>
-      <ProtectedData route="appointments" />
-      < Appointments/>
-    </div>
+    element:
+      <div>
+        <ProtectedData route="appointments" />
+        <Appointments />
+      </div>
   },
   {
     path: '/customers',
-    element: 
-    <div>
-      <ProtectedData route="customers" />
-      < Appointments/>
-    </div>
+    element:
+      <div>
+        <ProtectedData route="customers" />
+        <Customers />
+      </div>
   }
 ])
 
@@ -90,7 +90,7 @@ function App() {
   return (
     <div>
       <AuthCheck /> {/* Vérifie si l'utulisateur du site a un token pour limiter/autoriser les accès.*/}
-      <RouterProvider router={monRouter}/>
+      <RouterProvider router={monRouter} />
     </div>
   )
 }

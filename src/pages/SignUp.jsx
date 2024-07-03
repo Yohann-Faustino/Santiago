@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Nav from '../components/naviguation';
 
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
@@ -99,7 +99,7 @@ const SignUp = () => {
   // On utilise deux fonctions disctinctes pour gerer les deux forms séparements sinon a la validation d'un des deux formulaire, le formulaire vide génèrerais une erreur de champs vides.
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       // Envoi de la requête POST au serveur pour la connexion
       const response = await fetch('http://localhost:3000/login', {
@@ -109,24 +109,24 @@ const SignUp = () => {
         },
         body: JSON.stringify(loginData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         console.log('Connexion réussie:', data);
-  
+
         // Stocker le token JWT dans le localStorage si nécessaire
         localStorage.setItem('token', data.token);
-  
+
         // Réinitialisation des champs du formulaire de connexion
         setLoginData({
           email: '',
           password: ''
         });
-  
+
         // Afficher un message d'alerte
         alert('Bravo, vous êtes connecté !');
-  
+
         // Rediriger vers la page d'accueil après connexion réussie
         window.location.href = '/'; // ou toute autre URL souhaitée
       } else {
@@ -137,99 +137,103 @@ const SignUp = () => {
       setErrorMessage('Erreur lors de la connexion. Veuillez réessayer plus tard.');
     }
   };
-  
+
 
   return (
-    <div>
-      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+    <>
+      <Nav />
 
-      {!isLogin && (
-        <form onSubmit={handleSignUpSubmit}>
-          <input
-            type="text"
-            name="firstname"
-            placeholder="Prénom"
-            value={signUpData.firstname}
-            onChange={handleSignUpChange}
-            required
-          />
-          <input
-            type="text"
-            name="lastname"
-            placeholder="Nom"
-            value={signUpData.lastname}
-            onChange={handleSignUpChange}
-            required
-          />
-          <input
-            type="text"
-            name="address"
-            placeholder="Adresse"
-            value={signUpData.address}
-            onChange={handleSignUpChange}
-            required
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Téléphone"
-            value={signUpData.phone}
-            onChange={handleSignUpChange}
-            pattern="[0-9]{10}"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={signUpData.email}
-            onChange={handleSignUpChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={signUpData.password}
-            onChange={handleSignUpChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirmez le mot de passe"
-            value={signUpData.confirmPassword}
-            onChange={handleSignUpChange}
-            required
-          />
-          <button type="submit">S'inscrire</button>
-        </form>
-      )}
+      <div>
+        {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
-      {isLogin && (
-        <form onSubmit={handleLoginSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={loginData.email}
-            onChange={handleLoginChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={loginData.password}
-            onChange={handleLoginChange}
-            required
-          />
-          <button type="submit">Se connecter</button>
-        </form>
-      )}
-      <button onClick={() => setIsLogin(true)}>Acceder à la partie connexion</button>
-      <button onClick={() => setIsLogin(false)}>Acceder à la partie inscription</button>
-    </div>
+        {!isLogin && (
+          <form onSubmit={handleSignUpSubmit}>
+            <input
+              type="text"
+              name="firstname"
+              placeholder="Prénom"
+              value={signUpData.firstname}
+              onChange={handleSignUpChange}
+              required
+            />
+            <input
+              type="text"
+              name="lastname"
+              placeholder="Nom"
+              value={signUpData.lastname}
+              onChange={handleSignUpChange}
+              required
+            />
+            <input
+              type="text"
+              name="address"
+              placeholder="Adresse"
+              value={signUpData.address}
+              onChange={handleSignUpChange}
+              required
+            />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Téléphone"
+              value={signUpData.phone}
+              onChange={handleSignUpChange}
+              pattern="[0-9]{10}"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={signUpData.email}
+              onChange={handleSignUpChange}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Mot de passe"
+              value={signUpData.password}
+              onChange={handleSignUpChange}
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirmez le mot de passe"
+              value={signUpData.confirmPassword}
+              onChange={handleSignUpChange}
+              required
+            />
+            <button type="submit">S'inscrire</button>
+          </form>
+        )}
+
+        {isLogin && (
+          <form onSubmit={handleLoginSubmit}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={loginData.email}
+              onChange={handleLoginChange}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Mot de passe"
+              value={loginData.password}
+              onChange={handleLoginChange}
+              required
+            />
+            <button type="submit">Se connecter</button>
+          </form>
+        )}
+        <button onClick={() => setIsLogin(true)}>Acceder à la partie connexion</button>
+        <button onClick={() => setIsLogin(false)}>Acceder à la partie inscription</button>
+      </div>
+    </>
   );
 };
 

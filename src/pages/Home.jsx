@@ -6,8 +6,8 @@ const Home = () => {
     return (
 
         <>
-        <h1>Page d'Accueil</h1>
-        <Nav />
+            <h1>Page d'Accueil</h1>
+            <Nav />
         </>
     );
 };

@@ -1,22 +1,34 @@
 import React from "react";
 import LogoutButton from "./logoutButton";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
 
     return (
 
-        <>
-        <ul>
-            <li>Accueil</li>
-            <li>Contact</li>
-            <li>Commentaires</li>
-            <li>Prestations</li>
-            <li>Planning</li>
-            <li>Inscription/connexion</li>
-            <li>Profil</li>
-            <li><LogoutButton /></li>
-        </ul>
-        </>
+        <header>
+            <nav>
+                <ul>
+                    {/* Routes accessibles par tous: */}
+                    <li><Link to="/">Accueil</Link></li>
+                    <li><Link to="/contact">Contact</Link></li>
+                    <li><Link to="/comments">Commentaires</Link></li>
+                    <li><Link to="/prestations">Prestations</Link></li>
+                    <li><Link to="/planning">Planning</Link></li>
+                    <li><Link to="/signup">Inscription/connexion</Link></li>
+
+                    {/* Routes accessibles si l'user est connecté: */}
+                    <li><Link to="/profile">Profil</Link></li>
+
+                    {/* Routes accessibles par l'admin uniquement: */}
+                    <li><Link to="/adminBoard">Admin</Link></li>
+                    <li><Link to="/appointments">Rendez-vous</Link></li>
+                    <li><Link to="/customers">Clients</Link></li>
+
+                    <li><LogoutButton /></li>
+                </ul>
+            </nav>
+        </header>
 
     );
 };

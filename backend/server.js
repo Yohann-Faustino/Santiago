@@ -32,6 +32,12 @@ app.use(session({ // Ces lignes de code permettent de gérer la session du custo
 // On importe le router pour que le server comprenne les routes du projet.
 app.use(router);
 
+// server.js ou votre routeur principal
+
+app.use((req, res, next) => {
+    console.log('Headers:', req.headers); // Affiche tous les en-têtes de la requête
+    next();
+  });  
 
 // Permet de démmarer le serveur et affiche un message pour dire qu'il est fonctionnel.
 app.listen(port, () => {
