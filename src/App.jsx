@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthCheck from "../backend/components/securite/authCheck";
 import PublicRouter from './publicRouter/publicRouter';

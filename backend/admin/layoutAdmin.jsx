@@ -7,7 +7,7 @@ const LayoutAdmin = () => {
     return (
         <div className="layoutAdmin">
             <AdminHeader />
-            <div id="admin">
+            <div id="admin" className="admin flex justify-around bg-red-800">
                 <SideMenu />
                 <div id="adminBody"><Outlet /></div>
             </div>

@@ -8,4 +8,4 @@ const UserEdit = () => {
     );
 };
 
-export default UserEdit ;
+export default UserEdit;
