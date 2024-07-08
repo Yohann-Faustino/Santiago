@@ -2,7 +2,7 @@ import React from "react";
 
 const AppointmentsAdd = () => {
     return (
-        <div className="comments">
+        <div className="commentsAdd">
             <h1>AppointmentsAdd</h1>
         </div>
     );
