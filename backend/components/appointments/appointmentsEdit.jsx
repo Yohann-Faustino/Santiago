@@ -1,6 +1,11 @@
-import React from "react";
+// on utilise un hook: useParams est un paramètre de route utilisé pour récupérer une valeur dynamique de l'URL.
+import { useParams } from "react-router-dom";
 
 const AppointmentsEdit = () => {
+
+    let { aid } = useParams()
+    console.log(aid)
+
     return (
         <div className="commentsEdit">
             <h1>AppointmentsEdit</h1>
@@ -8,4 +13,4 @@ const AppointmentsEdit = () => {
     );
 };
 
-export default AppointmentsEdit ;
+export default AppointmentsEdit;

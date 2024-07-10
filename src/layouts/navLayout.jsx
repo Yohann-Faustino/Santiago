@@ -21,7 +21,7 @@ const NavLayout = () => {
                     <li><Link to="/profile">Profil</Link></li>
 
                     {/* Routes accessibles par l'admin uniquement: */}
-                    <li><Link to="/adminBoard">Admin</Link></li>
+                    <li><Link to="/admin/dashboard">Admin</Link></li>
                     <li><Link to="/appointments">Rendez-vous</Link></li>
                     <li><Link to="/customers">Clients</Link></li>
 

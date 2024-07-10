@@ -1,18 +1,26 @@
 import React from 'react';
 import './styles.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthCheck from "../backend/components/securite/authCheck";
+// import AuthCheck from "../backend/components/securite/authCheck";
 import PublicRouter from './publicRouter/publicRouter';
-import AdminRouter from '../backend/admin/adminRouter';
+import AdminRouter from '../backend/adminRouter/adminRouter';
+import AuthRouter from '../backend/authRouter/authRouter';
+import AuthGuard from '../backend/components/securite/authGuard';
 
 function App() {
   return (
     <div>
-      <AuthCheck /> {/* Vérifie si l'utilisateur du site a un token pour limiter/autoriser les accès. */}
+      {/*<AuthCheck />  Vérifie si l'utilisateur du site a un token pour limiter/autoriser les accès. */}
       <BrowserRouter>
         <Routes>
-          <Route path="/*" element={<PublicRouter/>}/>
-          <Route path="/admin/*" element={<AdminRouter/>}/>
+          <Route path="/*" element={<PublicRouter />} />
+          <Route path="/admin/*" element={
+            // On met AuthGuard autour de AdminRouter pour qu'il s'applique aux routes ce celui ci.
+            <AuthGuard>
+              <AdminRouter />
+            </AuthGuard>
+          } />
+          <Route path="/auth/*" element={<AuthRouter />} />
         </Routes>
       </BrowserRouter>
     </div>

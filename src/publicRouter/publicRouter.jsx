@@ -13,8 +13,8 @@ import Profile from "../pages/Profile";
 import Comment from "../pages/Comment";
 import Appointments from "../pages/Appointments";
 import Customers from "../pages/Customers";
-import ProtectedData from "../../backend/components/securite/protectedData";
 import Layout from '../layouts/layout';
+import AuthGuard from "../../backend/components/securite/authGuard";
 
 const PublicRouter = () => {
     return (
@@ -28,11 +28,11 @@ const PublicRouter = () => {
             <Route path="/siteMap" element={<SiteMap />} />
             <Route path="/prestations" element={<Services />} />
             <Route path="/planning" element={<Planning />} />
-            <Route path="/adminBoard" element={<AdminBoard />} />
+            <Route path="/admin/dashboard" element={<AdminBoard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/comments" element={<ProtectedData route="comments"><Comment /></ProtectedData>} />
-            <Route path="/appointments" element={<ProtectedData route="appointments"><Appointments /></ProtectedData>} />
-            <Route path="/customers" element={<ProtectedData route="customers"><Customers /></ProtectedData>} />
+            <Route path="/comments" element={<AuthGuard route="comments"><Comment /></AuthGuard>} />
+            <Route path="/appointments" element={<AuthGuard route="appointments"><Appointments /></AuthGuard>} />
+            <Route path="/customers" element={<AuthGuard route="customers"><Customers /></AuthGuard>} />
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>

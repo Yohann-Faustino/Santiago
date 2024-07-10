@@ -1,5 +1,6 @@
 // On cré une interface pour naviguer entre les routes admin:
-// Link to... équivalent de href permet de changer de page sans recharger de page ce qui permet une navigation plus fluide et rapide.
+// Link to... équivalent de href permet de changer de page sans faire une requete http au server ce qui permet une navigation plus fluide et rapide.
+// Le admin des links ne fait pas ref a un dossier mais à l'adminRouteur qui a pour début d'url: admin. 
 import React from "react";
 import { Link } from "react-router-dom";
 
