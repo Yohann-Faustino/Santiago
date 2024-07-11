@@ -69,32 +69,32 @@ const authController = {
 
 
     // Fonction pour la connexion des Customers:
-    // login: async (req, res) => {
-    //     const {email, password} = req.body;
+    login: async (req, res) => {
+        const {email, password} = req.body;
 
-    //     try {
-    //         // On vérifie si le Customers existe grace au mail qu'il a saisie:
-    //         const customer = await Customers.findOne({where:{email}});
-    //         if(!customer) {
-    //             return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
-    //         }
+        try {
+            // On vérifie si le Customers existe grace au mail qu'il a saisie:
+            const customer = await Customers.findOne({where:{email}});
+            if(!customer) {
+                return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
+            }
 
-    //         // On vérifie si, une fois le Customers trouvé, le mot de passe correspond:
-    //         const isPasswordValid = await bcrypt.compare(password, customer.password);
-    //         if(!isPasswordValid) {
-    //             return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
-    //         }
+            // On vérifie si, une fois le Customers trouvé, le mot de passe correspond:
+            const isPasswordValid = await bcrypt.compare(password, customer.password);
+            if(!isPasswordValid) {
+                return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
+            }
 
-    //         // On crée un token jwt:
-    //         const token = jwt.sign({ id: customer.id}, process.env.JWT_SECRET, { expiresIn: '1h'});
+            // On crée un token jwt:
+            const token = jwt.sign({ id: customer.id}, process.env.JWT_SECRET, { expiresIn: '1h'});
 
-    //         // Connexion avec un token:
-    //         res.status(200).json({ message:'connexion réussie, vous nous avez manqué !', token });
-    //     } catch (error) {
-    //         console.error('Erreur lors de la connexion.', error);
-    //         res.status(500).json({ message: 'Dommage, la connection à échouée...'});
-    //     }
-    // },
+            // Connexion avec un token:
+            res.status(200).json({ message:'connexion réussie, vous nous avez manqué !', token });
+        } catch (error) {
+            console.error('Erreur lors de la connexion.', error);
+            res.status(500).json({ message: 'Dommage, la connection à échouée...'});
+        }
+    },
 
 
     // Fonction pour récupérer le profil d'un Customers:
