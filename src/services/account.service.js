@@ -22,6 +22,11 @@ let isLogged = () => {
     return !!token
 }
 
+// On récupère le token dans le stockage du navigateur:
+let getToken = () => {
+    return localStorage.getItem('token')
+}
+
 export const accountService = {
-    login, saveToken, isLogged, logout
+    login, saveToken, isLogged, logout, getToken
 }
