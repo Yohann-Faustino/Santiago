@@ -3,11 +3,11 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // Importer prop-types
 import { Navigate } from 'react-router-dom';
-import { token } from '../../../src/components/token';
+import { accountService } from '../../../src/services/account.service';
 
 const AuthGuard = ({ children }) => {
 
-  if (!token.isLogged()) {
+  if (!accountService.isLogged()) {
     return <Navigate to="/auth/signup" />;
   }
 

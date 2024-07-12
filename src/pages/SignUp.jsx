@@ -239,10 +239,10 @@
 // export default SignUp;
 
 import React from "react";
+import AxiosCall from "../services/axiosCall";
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { token } from "../components/token";
+import { accountService } from "../services/account.service";
 
 const Login = () => {
 
@@ -273,11 +273,12 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault()
     console.log(loginConnexion)
+    accountService.login(loginConnexion)
     try {
-      const response = await axios.post('http://localhost:3000/login', loginConnexion)
+      const response = await AxiosCall.post('/login', loginConnexion)
       console.log(response)
       // On place le token en vérifiant bien le chemin d'accés a celui-çi dans le console.log de response précédent:
-      token.saveToken(response.data.token)
+      accountService.saveToken(response.data.token)
       // Petit message de succes quand on arrive à se connecter:
       alert('connexion réussie, vous nous avez manqué !');
       // On redirige l'utilisateur vers l'accueil une fois la connexion réussie:
