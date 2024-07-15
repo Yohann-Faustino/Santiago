@@ -1,6 +1,6 @@
 // authControllers.js
 
-import Customers from "../models/customers.js";
+import Users from '../models/users.js'
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -28,16 +28,16 @@ const hashPassword = async (password) => {
 };
 
 const authController = {
-    // Fonction pour l'inscription des Customers:
+    // Fonction pour l'inscription des Users:
     signup: async (req, res) => {
-        const { firstname, lastname, address, phone, email, password } = req.body;
+        const { firstname, lastname, address, city, postalcode, phone, email, password } = req.body;
 
         console.log('données de l\'inscription reçues', req.body)
         
         try {
-            // Vérifier si le Customers existe déjà:
-            const existingCustomer = await Customers.findOne({ where: { email } });
-            if (existingCustomer) {
+            // Vérifier si le Users existe déjà:
+            const existingUser = await Users.findOne({ where: { email } });
+            if (existingUser) {
                 return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
             }
 
@@ -49,17 +49,19 @@ const authController = {
             // Hasher le password:
             const hashedPassword = await hashPassword(password);
 
-            // Créer un nouveau Customers:
-            const newCustomer = await Customers.create({
+            // Créer un nouveau Users:
+            const newUser = await Users.create({
                 firstname,
                 lastname,
                 address,
+                city,
+                postalcode,
                 phone,
                 email,
                 password: hashedPassword,
             });
 
-            res.status(201).json({ message: 'Inscription réussie !', customer: newCustomer });
+            res.status(201).json({ message: 'Inscription réussie !', user: newUser });
 
         } catch (err) {
             console.error('Erreur lors de l\'inscription.', err);
@@ -68,25 +70,25 @@ const authController = {
     },
 
 
-    // Fonction pour la connexion des Customers:
+    // Fonction pour la connexion des Users:
     login: async (req, res) => {
         const {email, password} = req.body;
 
         try {
-            // On vérifie si le Customers existe grace au mail qu'il a saisie:
-            const customer = await Customers.findOne({where:{email}});
-            if(!customer) {
+            // On vérifie si le Users existe grace au mail qu'il a saisie:
+            const user = await Users.findOne({where:{email}});
+            if(!user) {
                 return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
             }
 
-            // On vérifie si, une fois le Customers trouvé, le mot de passe correspond:
-            const isPasswordValid = await bcrypt.compare(password, customer.password);
+            // On vérifie si, une fois le Users trouvé, le mot de passe correspond:
+            const isPasswordValid = await bcrypt.compare(password, user.password);
             if(!isPasswordValid) {
                 return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
             }
 
             // On crée un token jwt:
-            const token = jwt.sign({ id: customer.id}, process.env.JWT_SECRET, { expiresIn: '1h'});
+            const token = jwt.sign({ id: user.id}, process.env.JWT_SECRET, { expiresIn: '1h'});
 
             // Connexion avec un token:
             res.status(200).json({ message:'connexion réussie, vous nous avez manqué !', token });
@@ -97,14 +99,14 @@ const authController = {
     },
 
 
-    // Fonction pour récupérer le profil d'un Customers:
+    // Fonction pour récupérer le profil d'un Users:
     profile: async (req, res) => {
         try {
-            const customer = await Customers.findByPk(req.customerId);
-            if (!customer) {
+            const user = await Users.findByPk(req.userId);
+            if (!user) {
                 return res.status(404).json({ message: 'Client non trouvé.' });
             }
-            res.status(200).json({ customer });
+            res.status(200).json({ user });
         } catch (error) {
             console.error('Erreur lors de la récupération du profil.', error);
             res.status(500).json({ message: 'Erreur lors de la récupération du profil.' });

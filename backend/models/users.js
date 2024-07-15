@@ -1,21 +1,29 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../datas/database.js';
 
-class Customers extends Model { }
+class Users extends Model { }
 
-Customers.init({
+Users.init({
 
     firstname: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     lastname: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     address: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    postalcode: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     phone: {
         type: DataTypes.STRING,
@@ -49,9 +57,9 @@ Customers.init({
 
     {
         sequelize,
-        modelName: 'Customers',
-        tableName: 'Customers'
+        modelName: 'Users',
+        tableName: 'Users'
     }
 );
 
-export default Customers;
+export default Users;

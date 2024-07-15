@@ -12,7 +12,7 @@ import Error from "../pages/Error";
 import Profile from "../pages/Profile";
 import Comment from "../pages/Comment";
 import Appointments from "../pages/Appointments";
-import Customers from "../pages/Customers";
+import Users from "../pages/Users";
 import Layout from '../layouts/layout';
 import AuthGuard from "../../backend/components/securite/authGuard";
 
@@ -32,7 +32,7 @@ const PublicRouter = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/comments" element={<AuthGuard route="comments"><Comment /></AuthGuard>} />
             <Route path="/appointments" element={<AuthGuard route="appointments"><Appointments /></AuthGuard>} />
-            <Route path="/customers" element={<AuthGuard route="customers"><Customers /></AuthGuard>} />
+            <Route path="/users" element={<AuthGuard route="users"><Users /></AuthGuard>} />
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>

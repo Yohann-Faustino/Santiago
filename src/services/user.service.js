@@ -1,11 +1,11 @@
 import AxiosCall from "./axiosCall";
 
 let getAllUsers = () => {
-    return AxiosCall.get('/customers')
+    return AxiosCall.get('/users')
 }
 
 let getUser = (uid) => {
-    return AxiosCall.get('/customers/'+uid)
+    return AxiosCall.get('/users/'+uid)
 }
 
 export const userService = {

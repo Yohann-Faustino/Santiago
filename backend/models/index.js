@@ -1,24 +1,24 @@
 import sequelize from "../datas/database";
-import Customers from './customers';
+import Users from './users';
 import Appointments from './appointments';
 import Comments from './comments';
 
 // On définis la relation entre les modèles
 
-Customers.hasMany(Comments, {
-    foreignKey: 'customers_id', // foreignKey renseigne le champs qui fait le lien entre les deux tables
+Users.hasMany(Comments, {
+    foreignKey: 'users', // foreignKey renseigne le champs qui fait le lien entre les deux tables
 });
 
-Comments.belongsTo(Customers, {
-    foreignKey: 'customers_id',
+Comments.belongsTo(Users, {
+    foreignKey: 'users',
 });
 
-Customers.hasMany(Appointments, {
-    foreignKey: 'customers_id',
+Users.hasMany(Appointments, {
+    foreignKey: 'users',
 });
 
-Appointments.belongsTo(Customers, {
-    foreignKey: 'customers_id',
+Appointments.belongsTo(Users, {
+    foreignKey: 'users',
 });
 
 // Le test suivant permet de savoir si les modèles sont bien synchronisés
@@ -33,4 +33,4 @@ sequelize.sync()
     console.log('Modèles -> aucune synchronisation', err)
 });
 
-export { Customers, Comments, Appointments };
+export { Users, Comments, Appointments };

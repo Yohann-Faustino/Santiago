@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
             firstname: document.getElementById('firstname').value,
             lastname: document.getElementById('lastname').value,
             address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            postalCode: document.getElementById('postalCode').value,
             phone: document.getElementById('phone').value,
             email: document.getElementById('mailInscription').value,
             password: document.getElementById('passwordInscription').value,

@@ -17,7 +17,7 @@
 
 //   try {
 //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     req.customerId = decoded.id; // Attach customer ID to the request
+//     req.userId = decoded.id; // Attach user ID to the request
 //     next(); // Move to the next middleware or route handler
 //   } catch (error) {
 //     console.error('Erreur lors de la validation du token JWT:', error);
@@ -54,7 +54,7 @@ const authMiddlewareToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.customerId = decoded.id;
+    req.userId = decoded.id;
     next();
   } catch (error) {
     console.error('Erreur lors de la validation du token JWT:', error);

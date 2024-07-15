@@ -4,7 +4,7 @@ export { default as AdminBoard } from '../pages/AdminBoard';
 export { default as Appointments } from '../pages/Appointments';
 export { default as Comment } from '../pages/Comment';
 export { default as Contact } from '../pages/Contact';
-export { default as Customers } from '../pages/Customers';
+export { default as Users } from '../pages/Users';
 export { default as Error } from '../pages/Error';
 export { default as Home } from '../pages/Home';
 export { default as LegalDisclaimer } from '../pages/LegalDisclaimer';

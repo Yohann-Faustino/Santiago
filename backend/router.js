@@ -1,7 +1,7 @@
 import express from 'express';
 import { Router } from 'express';
 import sequelize from './datas/database.js';
-import customersRoute from './routes/customersRoute.js';
+import usersRoute from './routes/usersRoute.js';
 /*import commentsRoute from './routes/commentsRoute.js';
 import appointmentsRoute from './routes/appointmentsRoute.js';*/
 import authController from './controllers/authControllers.js';
@@ -25,7 +25,7 @@ router.get('/profile'/*, authController.profile, authMiddlewareToken*/, (req, re
 });
 
 // Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients et les commentaires stockés dans la base de données:
-router.use('/customers', authMiddlewareToken, customersRoute);
+router.use('/users', authMiddlewareToken, usersRoute);
 router.use('/comments', authMiddlewareToken/*, commentsRoute*/);
 router.use('/appointments', authMiddlewareToken/*, appointmentsRoute*/);
 
