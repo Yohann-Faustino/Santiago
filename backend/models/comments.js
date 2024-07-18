@@ -8,6 +8,10 @@ Comments.init({
     title: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    content: {
+        type: DataTypes.STRING,
+        allowNull: true,
     }
     
 },

@@ -7,27 +7,27 @@ Users.init({
 
     firstname: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     lastname: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     address: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     city: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     postalcode: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     phone: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
             isValidPhoneNumber(value) {
                 if(!/^[0-9]{10}$/.test(value)){
@@ -43,7 +43,7 @@ Users.init({
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
         validate: {
             isEmail: true // Option sequelize de qui valide si l'email est au bon format
@@ -51,7 +51,7 @@ Users.init({
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     }
 },
 

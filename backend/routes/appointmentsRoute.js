@@ -1,17 +1,17 @@
-// import express from 'express';
-// import Appointments from '../models/appointments.js';
-// import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
+import express from 'express';
+import Appointments from '../models/appointments.js';
+import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.get('/', authMiddlewareToken, async (req, res) => {
-//     try {
-//         const appointments =await Appointments.findAll();
-//         res.json(appointments);
-//     } catch (err) {
-//         console.error('Error', err);
-//         res.status(500).json({message: 'Erreur lors de la récupération des rendez vous.'})
-//     }
-// });
+router.get('/', authMiddlewareToken, async (req, res) => {
+    try {
+        const appointments =await Appointments.findAll();
+        res.json(appointments);
+    } catch (err) {
+        console.error('Error', err);
+        res.status(500).json({message: 'Erreur lors de la récupération des rendez vous.'})
+    }
+});
 
-// export default router;
+export default router;

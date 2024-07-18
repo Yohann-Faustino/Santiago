@@ -1,12 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { accountService } from "../services/account.service";
 
-const Comment = () => {
+const Comments = () => {
+  const [commentData, setCommentData] = useState({
+    title: '',
+    content: ''
+  });
 
-    return (
-        <>
-            <h1>Page des Commentaires</h1>
-        </>
-    );
+  const onChange = (e) => {
+    setCommentData({
+      ...commentData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const token = accountService.getToken();
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
+    axios.post('http://localhost:3000/comments', commentData, config)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  };
+
+  return (
+    <div>
+      <h1>Laissez un commentaire:</h1>
+
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          name="title"
+          placeholder="Titre du commentaire"
+          value={commentData.title}
+          onChange={onChange}
+          required
+        />
+        <input
+          type="text"
+          name="content"
+          placeholder="Écrivez ici votre commentaire"
+          value={commentData.content}
+          onChange={onChange}
+          required
+        />
+        <button>Envoyer votre commentaire</button>
+      </form>
+    </div>
+  );
 };
 
-export default Comment;
+export default Comments;

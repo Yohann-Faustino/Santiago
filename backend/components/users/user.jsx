@@ -8,6 +8,11 @@ const User = () => {
 
     let navigate = useNavigate()
 
+    const demon = (userId) => {
+        console.log('boom User')
+        navigate("../useredit/"+userId)
+    }
+
     // Ce hook prépare une place pour stocker les données de la bdd une fois qu'elles seront récupérées.
     const [users, setUsers] = useState([])
 
@@ -66,7 +71,9 @@ const User = () => {
                     }
                 </tbody>
             </table>
+            <button onClick={() => demon(666)}>Comments 666</button>
         </div>
+        
     );
 };
 

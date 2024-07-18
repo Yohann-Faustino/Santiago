@@ -14,7 +14,7 @@ INSERT INTO "Users" ("firstname","lastname","address","city","postalcode","phone
 INSERT INTO "Appointments" ("date", "hour", "details" ) VALUES 
 ('','','');
 
-INSERT INTO "Comments" ("title") VALUES 
-('');
+INSERT INTO "Comments" ("title", "content") VALUES 
+('Beau boulot', 'Rien à en redire, super service !');
 
 COMMIT;

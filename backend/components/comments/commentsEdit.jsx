@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 const CommentsEdit = () => {
 
-    let { cid } = useParams()
+    const {cid} = useParams()
     console.log(cid)
     
     return (

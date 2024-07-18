@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 const UserEdit = () => {
 
-    let { uid } = useParams()
+    const {uid} = useParams()
     console.log(uid)
 
     return (
