@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import AxiosCall from "../services/axiosCall";
 import { accountService } from "../services/account.service";
 
 const Comments = () => {

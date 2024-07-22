@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { userService } from "../../../src/services/user.service";
+import { Link } from "react-router-dom";
 
 const User = () => {
 
@@ -58,14 +59,21 @@ const User = () => {
                         users.map(user => (
                             // Key explique a réact qu'il sagit de la donnée importante et unique qui identifie les users:
                             <tr key={user.id}> {}
-                                <td>{user.id}</td>
-                                <td>{user.firstname}</td>
-                                <td>{user.lastname}</td>
-                                <td>{user.email}</td>
-                                <td>{user.phone}</td>
-                                <td>{user.address}</td>
-                                <td>{user.city}</td>
-                                <td>{user.postalcode}</td>
+                                <td><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.firstname}`}>{user.firstname}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.lastname}`}>{user.lastname}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.email}`}>{user.email}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.phone}`}>{user.phone}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.address}`}>{user.address}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.city}`}>{user.city}</Link></td>
+                                <td><Link to={`/admin/users/useredit/${user.postalcode}`}>{user.postalcode}</Link></td>
+                                {/* <td>{user.firstname}</td> */}
+                                {/* <td>{user.lastname}</td> */}
+                                {/* <td>{user.email}</td> */}
+                                {/* <td>{user.phone}</td> */}
+                                {/* <td>{user.address}</td> */}
+                                {/* <td>{user.city}</td> */}
+                                {/* <td>{user.postalcode}</td> */}
                             </tr>
                         ))
                     }

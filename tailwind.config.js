@@ -8,7 +8,16 @@ export default {
     './backend/**/*.{html,js,jsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        gold: '#fff000',
+      },
+    },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+    },
   },
   plugins: [],
 }

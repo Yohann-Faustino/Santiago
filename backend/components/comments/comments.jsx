@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { commentService } from "../../../src/services/comment.service";
+import { Link } from "react-router-dom";
+
 
 
 const Comments = () => {
@@ -56,9 +58,11 @@ const Comments = () => {
                         comments.map(comment => (
                             // Key explique a réact qu'il sagit de la donnée importante et unique qui identifie les users:
                             <tr key={comment}> {}
-                                <td>{comment.id}</td>
-                                <td>{comment.title}</td>
-                                <td>{comment.content}</td>
+                                <td><Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.id}</Link></td>
+                                <td><Link to={`/admin/comments/commentsedit/${comment.title}`}>{comment.title}</Link></td>
+                                <td><Link to={`/admin/comments/commentsedit/${comment.content}`}>{comment.content}</Link></td>
+                                {/* <td>{comment.title}</td> */}
+                                {/* <td>{comment.content}</td> */}
 
                             </tr>
                         ))

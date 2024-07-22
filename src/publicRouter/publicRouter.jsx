@@ -24,7 +24,7 @@ const PublicRouter = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/legalDisclaimer" element={<LegalDisclaimer />} />
+            <Route path="/legaldisclaimer" element={<LegalDisclaimer />} />
             <Route path="/siteMap" element={<SiteMap />} />
             <Route path="/prestations" element={<Services />} />
             <Route path="/planning" element={<Planning />} />
