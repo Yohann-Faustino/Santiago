@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AxiosCall from "../services/axiosCall";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { accountService } from "../services/account.service";
 
 const AuthenticationPage = () => {
@@ -13,7 +14,8 @@ const AuthenticationPage = () => {
     phone: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    consent: false // Ajouter un champ pour la case à cocher
   });
 
   const [loginData, setLoginData] = useState({
@@ -27,8 +29,8 @@ const AuthenticationPage = () => {
   const navigate = useNavigate();
 
   const handleSignUpChange = (event) => {
-    const { name, value } = event.target;
-    setSignUpData({ ...signUpData, [name]: value });
+    const { name, type, checked, value } = event.target;
+    setSignUpData({ ...signUpData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleLoginChange = (event) => {
@@ -43,6 +45,11 @@ const AuthenticationPage = () => {
 
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
+
+    if (!signUpData.consent) {
+      setErrorMessage("Vous devez consentir à la collecte et au traitement de vos données personnelles.");
+      return;
+    }
 
     if (signUpData.password !== signUpData.confirmPassword) {
       setErrorMessage("Les mots de passe ne correspondent pas");
@@ -75,7 +82,8 @@ const AuthenticationPage = () => {
           phone: '',
           email: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          consent: false
         });
         setErrorMessage('');
         navigate('/');
@@ -216,6 +224,19 @@ const AuthenticationPage = () => {
             onChange={handleSignUpChange}
             required
           />
+          <div>
+            <input
+              type="checkbox"
+              name="consent"
+              checked={signUpData.consent}
+              onChange={handleSignUpChange}
+              required
+            />
+            <label>
+              Je consens à la collecte et au traitement de mes données personnelles conformément à la{' '}
+              <Link to="/privacypolicy" className="linkClick">Politique de Confidentialité</Link>.
+            </label>
+          </div>
           <button type="submit">S'inscrire</button>
         </form>
       )}

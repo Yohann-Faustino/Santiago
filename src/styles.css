@@ -4,7 +4,16 @@
 
 .linkNav {
 
-    @apply bg-red-500 border border-gold text-white border-solid p-0 pl-1 pr-1 rounded-tr-xl rounded-br-xl w-44;
+    @apply 
+    bg-red-500 
+    border border-gold 
+    border-solid 
+    p-0 
+    pl-1 
+    pr-1 
+    rounded-tr-xl 
+    rounded-br-xl 
+    w-44;
 }
 
 .linkNav:hover {
@@ -14,5 +23,35 @@
 
 .whiteLink {
 
-    @apply bg-gold border border-red-500 border-solid p-0 pl-1 pr-1 rounded-tr-xl rounded-br-xl ml-3 scale-110;
+    @apply 
+    bg-gold 
+    border 
+    border-solid 
+    p-0 
+    pl-1 
+    pr-1 
+    rounded-tr-xl 
+    rounded-br-xl 
+    ml-3 
+    scale-110;
+}
+
+.colorTitle {
+
+    @apply  text-red-700;
+}
+
+.colorh2 {
+
+    @apply  text-blue-900;
+}
+
+.linkClick {
+
+    @apply  text-blue-500 underline;
+}
+
+.linkClick:hover {
+
+    @apply  text-black bg-blue-500;
 }

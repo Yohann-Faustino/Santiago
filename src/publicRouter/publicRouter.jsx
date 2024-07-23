@@ -9,6 +9,7 @@ import Services from "../pages/Service";
 import Planning from "../pages/Planning";
 import AdminBoard from "../pages/AdminBoard";
 import Error from "../pages/Error";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Profile from "../pages/Profile";
 import Comment from "../pages/Comment";
 import Appointments from "../pages/Appointments";
@@ -30,6 +31,7 @@ const PublicRouter = () => {
             <Route path="/planning" element={<Planning />} />
             <Route path="/admin/dashboard" element={<AdminBoard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/comments" element={<AuthGuard route="comments"><Comment /></AuthGuard>} />
             <Route path="/appointments" element={<AuthGuard route="appointments"><Appointments /></AuthGuard>} />
             <Route path="/users" element={<AuthGuard route="users"><Users /></AuthGuard>} />
