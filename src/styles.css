@@ -48,7 +48,15 @@
 
 .linkClick {
 
-    @apply  text-blue-500 underline;
+    @apply  
+    text-blue-500 
+    underline 
+    rounded-tr-xl 
+    rounded-br-xl    
+    rounded-tl-xl 
+    rounded-bl-xl
+    pl-1
+    pr-1;
 }
 
 .linkClick:hover {
