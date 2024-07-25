@@ -11,9 +11,9 @@ const FooterLayout = () => {
             <div>
                 <nav className="footerNav">
                     <ul className=" flex flex-row">
-                        <li className=" mx-auto"><Link to="/legaldisclaimer">Mentions légales</Link></li>
-                        <li className=" mx-auto"><Link to="/sitemap">Plan du site</Link></li>
-                        <li className=" mx-auto"><Link to="/privacypolicy">Politique de Confidentialité</Link></li>
+                        <li className=" mx-auto linkClick"><Link to="/legaldisclaimer">Mentions légales</Link></li>
+                        <li className=" mx-auto linkClick"><Link to="/sitemap">Plan du site</Link></li>
+                        <li className=" mx-auto linkClick"><Link to="/privacypolicy">Politique de Confidentialité</Link></li>
                     </ul>
                 </nav>
             </div>

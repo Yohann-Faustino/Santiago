@@ -2,13 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+     /* Taille du texte */
+    font-size: 16px;
+}
+
+h1 {
+     /* Taille des h1 */
+     font-size: 32px;
+}
+
+h2 {
+    /* Taille des h2 */
+    font-size: 24px;
+}
+
+h3 {
+    /* Taille des h3 */
+    font-size: 20px;
+}
+
+/* Classes: */
 .linkNav {
 
     @apply 
     bg-red-500 
-    border border-gold 
-    border-solid 
-    p-0 
+    border 
+    border-gold 
+    border-solid
     pl-1 
     pr-1 
     rounded-tr-xl 
@@ -18,7 +39,7 @@
 
 .linkNav:hover {
 
-    @apply scale-110;
+    @apply scale-110 pl-3;
 }
 
 .whiteLink {
@@ -27,7 +48,6 @@
     bg-gold 
     border 
     border-solid 
-    p-0 
     pl-1 
     pr-1 
     rounded-tr-xl 
@@ -62,4 +82,30 @@
 .linkClick:hover {
 
     @apply  text-black bg-blue-500;
+}
+
+.allButton {
+
+    @apply 
+    bg-blue-500 
+    rounded-tr-xl 
+    rounded-br-xl
+    rounded-tl-xl 
+    rounded-bl-xl
+    self-center
+    mb-5
+    w-32;
+}
+
+.allButton:hover {
+
+    @apply 
+    scale-110;
+}
+
+.inputHeight {
+
+    @apply
+    h-6
+    w-60
 }

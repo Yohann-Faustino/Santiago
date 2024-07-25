@@ -28,10 +28,11 @@ const Home = () => {
             </div>
             <div className="homeRigthBlock w-1/2 ml-5">
                 <h2 className=" colorTitle">Contact:</h2>
+                <p className=" colorh2">24 HEURES SUR 24 / 7 JOURS SUR 7</p>
+
                 <ul>
-                    <li className=" colorh2">24 HEURES SUR 24 / 7 JOURS SUR 7</li>
-                    <li className=" colorh2"><a href="tel:+33695451933"> 📞 06.95.45.19.33</a></li>
-                    <li className=" colorh2"><a href="mailto:decp@decp.fr">📧 decp@decp.fr</a></li>
+                    <li className=" colorh2"><a href="tel:+33695451933" className="linkClick"> 📞 06.95.45.19.33</a></li>
+                    <li className=" colorh2"><a href="mailto:decp@decp.fr" className="linkClick">📧 decp@decp.fr</a></li>
                 </ul>
                 <h2 className=" mt-5 mb-5 colorTitle">Apparut sur le site de recommandation d'artisants aude-location:</h2>
                 {/* https://www.aude-location.fr/quel-est-le-meilleur-plombier-de-creteil/ */}
