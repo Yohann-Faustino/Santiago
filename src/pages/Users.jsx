@@ -1,13 +1,13 @@
-import React from "react";
+// import React from "react";
 
-const Users = () => {
+// const Users = () => {
 
-    return (
+//     return (
 
-        <>
-            <h1>Page des Users</h1>
-        </>
-    );
-};
+//         <>
+//             <h1>Page des Users</h1>
+//         </>
+//     );
+// };
 
-export default Users;
+// export default Users;

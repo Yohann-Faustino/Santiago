@@ -21,7 +21,7 @@ router.get('/saucisson', (req, res) => {
     res.send('saucisson');
 });
 // Route qui permet la connexion:
-router.get('/profile'/*, authController.profile, authMiddlewareToken*/, (req, res) => {
+router.get('/profile', authMiddlewareToken, usersRoute, (req, res) => {
     res.send('profile');
 });
 

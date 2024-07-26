@@ -14,4 +14,14 @@ router.get('/', authMiddlewareToken, async (req, res) => {
     }
 });
 
+router.get('/', authMiddlewareToken, async (req, res) => {
+    try {
+        const users = await Users.findOne();
+        res.json(users);
+    } catch (err) {
+        console.error('Error', err);
+        res.status(500).json({message: 'Erreur lors de la récupération du profile.'});
+    }
+});
+
 export default router;

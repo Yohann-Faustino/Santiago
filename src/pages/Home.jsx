@@ -8,7 +8,7 @@ const Home = () => {
 
         <div className="homeBlock flex flex-row">
             <div className="homeLeftBlock w-1/2">
-                <h1 className=" colorTitle flex flex-row">La société<Link to="/legaldisclaimer"><img className="h-4 ml-3" src={Decp} alt="Nom de l'entreprise" /></Link></h1>
+                <h1 className=" colorTitle flex flex-row">La société<Link to="/legaldisclaimer"><img className="h-4 ml-3 inline-block" src={Decp} alt="Decp" /></Link></h1>
                 <p className=" mb-5 colorh2" >Dégorgement, Entretien, Chauffage, Plomberie.</p>
                 <p>DECP intervient sur les installations collectives et individuelles dans le domaine génie climatique.</p>
                 <p>Nous vous proposons des services et des solutions de qualités à tous vos problèmes de plomberie, de chauffage (Chaudière à gaz au sol basse température, Chaudière murale à gaz, électrique ou à condensation), de traitement de l’eau et réseaux aérauliques.</p>

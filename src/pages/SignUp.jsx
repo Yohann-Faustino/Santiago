@@ -124,7 +124,7 @@ const AuthenticationPage = () => {
   };
 
   return (
-    <div className="signupBlock text-center w-full">
+    <div className="signupBlock text-center w-full flex flex-col items-center">
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
       <h1 className="text-2xl font-bold mb-6">Connexion/Inscription</h1>

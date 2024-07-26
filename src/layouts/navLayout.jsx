@@ -10,7 +10,7 @@ const NavLayout = () => {
   };
 
   return (
-    <nav className="mr-10">
+    <nav className="mr-2">
       <ul>
         {/* Routes accessibles par tous: */}
         <li className={`${activeIndex === 0 ? 'whiteLink' : 'linkNav'}`}>
@@ -33,11 +33,11 @@ const NavLayout = () => {
             <Link to="/prestations" className="block w-full h-full">Prestations</Link>
           </button>
         </li>
-        <li className={`${activeIndex === 4 ? 'whiteLink' : 'linkNav'}`}>
+        {/* <li className={`${activeIndex === 4 ? 'whiteLink' : 'linkNav'}`}>
           <button className="w-full text-left" onClick={() => handleClick(4)}>
             <Link to="/planning" className="block w-full h-full">Planning</Link>
           </button>
-        </li>
+        </li> */}
         <li className={`${activeIndex === 5 ? 'whiteLink' : 'linkNav'}`}>
           <button className="w-full text-left" onClick={() => handleClick(5)}>
             <Link to="/signup" className="block w-full h-full">Inscription/connexion</Link>
@@ -62,11 +62,11 @@ const NavLayout = () => {
             <Link to="/appointments" className="block w-full h-full">Rendez-vous</Link>
           </button>
         </li>
-        <li className={`${activeIndex === 9 ? 'whiteLink' : 'linkNav'}`}>
+        {/* <li className={`${activeIndex === 9 ? 'whiteLink' : 'linkNav'}`}>
           <button className="w-full text-left" onClick={() => handleClick(9)}>
             <Link to="/users" className="block w-full h-full">Clients</Link>
           </button>
-        </li>
+        </li> */}
 
         <li className={`${activeIndex === 10 ? 'whiteLink' : 'linkNav'}`}>
           <button className="w-full text-left" onClick={() => handleClick(10)}>

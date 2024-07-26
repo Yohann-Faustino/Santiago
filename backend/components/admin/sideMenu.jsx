@@ -6,13 +6,11 @@ import { Link } from "react-router-dom";
 
 const SideMenu = () => {
     return (
-        <div className="sideMenu">
-            <h1>SideMenu</h1>
+        <div className="sideMenu h-full">
             <ul>
-                <li><Link to="/">Accueil</Link></li>
-                <li><Link to="/admin/dashboard">Dashboard</Link></li>
+                {/* <li><Link to="/admin/dashboard">Dashboard</Link></li> */}
                 <li>
-                    <h3 className="userSideMenuTitle bg-red-600">Users:</h3>
+                    <p className="userSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Users:</p>
                     <ul>
                         <li><Link to="/admin/users/indexuser">Liste</Link></li>
                         <li><Link to="/admin/users/useradd">Ajouter</Link></li>
@@ -21,7 +19,7 @@ const SideMenu = () => {
                     </ul>
                 </li>
                 <li>
-                    <h3 className="commentSideMenuTitle bg-red-600">Comments:</h3>
+                    <p className="commentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Comments:</p>
                     <ul>
                         <li><Link to="/admin/comments/indexcomments">Liste</Link></li>
                         <li><Link to="/admin/comments/commentsadd">Ajouter</Link></li>
@@ -30,7 +28,7 @@ const SideMenu = () => {
                     </ul>
                 </li>
                 <li>
-                    <h3 className="appointmentSideMenuTitle bg-red-600">Appointment:</h3>
+                    <p className="appointmentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Appointment:</p>
                     <ul>
                         <li><Link to="/admin/appointments/indexappointment">Liste</Link></li>
                         <li><Link to="/admin/appointments/appointmentsadd">Ajouter</Link></li>
@@ -38,6 +36,7 @@ const SideMenu = () => {
                         <li><Link to="/admin/appointments/appointmentsDel">Supprimer</Link></li>
                     </ul>
                 </li>
+                <li className=" mt-5"><Link to="/">Retour vers l'<a href="/" className="linkClick">Accueil</a></Link></li>
             </ul>
         </div>
     );
