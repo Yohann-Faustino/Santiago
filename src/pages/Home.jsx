@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Decp from "../assets/decp.png";
+import Slider from "../components/slider"
 
 const Home = () => {
 
@@ -13,6 +14,8 @@ const Home = () => {
                 <p>DECP intervient sur les installations collectives et individuelles dans le domaine génie climatique.</p>
                 <p>Nous vous proposons des services et des solutions de qualités à tous vos problèmes de plomberie, de chauffage (Chaudière à gaz au sol basse température, Chaudière murale à gaz, électrique ou à condensation), de traitement de l’eau et réseaux aérauliques.</p>
                 <p>La société s’engage à vous proposer des services avec réactivité.</p>
+
+                <Slider />
 
                 <h2 className="mt-5 colorTitle">Services:</h2>
                 <p className=" mb-5 colorh2">Entretien, Installation, Rénovation.</p>

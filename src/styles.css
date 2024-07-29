@@ -109,3 +109,33 @@ h3 {
     h-6
     w-60
 }
+
+/* Carousel */
+
+/* Retire les ronds en bas du carousel pour changer d'images */
+.control-dots {
+
+    display: none;
+}
+
+/* Retire les images miniatures sous le carousel */
+.thumbs-wrapper {
+
+    display: none;
+}
+
+/* Retire la position de l'images dans le file en haut a droite (3/10) */
+.carousel-status {
+
+    display: none;
+}
+
+.control-arrow.control-prev::before{
+
+    background-color: black;
+}
+
+.control-arrow.control-next::before{
+
+    background-color: black;
+}
