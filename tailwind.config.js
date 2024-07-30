@@ -12,6 +12,12 @@ export default {
       colors: {
         gold: '#fff000',
       },
+      fontSize: {
+        'base': '16px',
+        'h1': '28px',
+        'h2': '24px',
+        'h3': '20px',
+      },
     },
     screens: {
       'sm': '640px',

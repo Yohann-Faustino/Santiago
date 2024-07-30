@@ -40,8 +40,8 @@ const Slider = () => {
             <Carousel>
                 {datasImages.map(slide => (
                     <div className='carousel-slide' key={slide.id}>
-                        <img className='carousel-image h-40 object-contain' src={slide.image} alt="carousel d'images de l'équipement et du travail de l'entreprise" />
-                        <p className=' bg-black opacity-40 mb-4 mt-1 p-1 rounded-full text-center text-white'>{slide.title}</p>
+                        <img className='carousel-image relative h-40 object-contain' src={slide.image} alt="carousel d'images de l'équipement et du travail de l'entreprise" />
+                        <p className=' bg-black absolute bottom-0 left-1/2 -translate-x-1/2 mb-1 pl-1 pr-1 rounded-full text-center text-white'>{slide.title}</p>
                         {/* On prevois un text si le client souhaite une descritption a ses images: */}
                         {/* <p>{slide.text}</p> */}
                     </div>

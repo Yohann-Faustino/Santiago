@@ -8,7 +8,7 @@ const Layout = () => {
     return (
         <div>
             <HeaderLayout />
-            <div className=" flex flex-row">
+            <div className=" flex md:flex-row sm:flex-col">
                 <NavLayout />
                 <Outlet />
             </div>

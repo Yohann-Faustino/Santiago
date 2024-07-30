@@ -2,27 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Styles généraux définis dans tailwind.config par mes soins */
+
 body {
-     /* Taille du texte */
-    font-size: 16px;
+  @apply text-base;
 }
 
 h1 {
-     /* Taille des h1 */
-     font-size: 32px;
+  @apply text-h1;
 }
 
 h2 {
-    /* Taille des h2 */
-    font-size: 24px;
+  @apply text-h2;
 }
 
 h3 {
-    /* Taille des h3 */
-    font-size: 20px;
+  @apply text-h3;
 }
 
+/* Styles pour la taille d'écran md */
+
+@media (min-width: 768px) {
+  body {
+    @apply text-lg;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+}
+
+
 /* Classes: */
+
 .linkNav {
 
     @apply 
@@ -35,6 +54,13 @@ h3 {
     rounded-tr-xl 
     rounded-br-xl 
     w-44;
+}
+
+.linkNavSm {
+
+    @apply 
+    rounded-tl-xl 
+    rounded-bl-xl 
 }
 
 .linkNav:hover {
