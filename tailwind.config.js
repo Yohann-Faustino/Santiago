@@ -1,3 +1,5 @@
+// On personnalise Tailwind en lui spécifiant le chemin du contenue, la taille de police des éléments et des breakpoints.
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [

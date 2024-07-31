@@ -1,3 +1,5 @@
+//  Point d'entrée des composants React de l'application.
+
 import React from 'react';
 import './styles.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -20,6 +22,7 @@ function App() {
               <AdminRouter />
             </AuthGuard>
           } />
+          {/* Router spécifique aux personnes identifiées: */}
           <Route path="/auth/*" element={<AuthRouter />} />
         </Routes>
       </BrowserRouter>
