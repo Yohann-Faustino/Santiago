@@ -1,3 +1,5 @@
+// Carousel de la bibliothèque react-responsive-carousel:
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -5,7 +7,10 @@ import { Carousel } from 'react-responsive-carousel';
 
 const Slider = () => {
 
+    // Définis le chemin pour accéder aux images stockées dans le projet:
     const baseUrl = "./src/assets/Photos/"
+
+    // Crée un tableau d'objets représentant les images à afficher dans le carousel:
     const datasImages = [
         {
             id: 1,
@@ -33,6 +38,7 @@ const Slider = () => {
         },
     ]
 
+    // On reprend la base de l'url pour chaque image son nom et on fait attention a leurs extensions (.jpg, .png...).
     
 
     return (

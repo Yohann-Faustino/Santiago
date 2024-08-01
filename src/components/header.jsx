@@ -4,7 +4,7 @@ import Vague from "../assets/vague.png";
 import Decp from "../assets/decp.png";
 
 
-const HeaderLayout = () => {
+const Header = () => {
     return (
         <header>
             <div className=" relative">
@@ -18,4 +18,4 @@ const HeaderLayout = () => {
     )
 };
 
-export default HeaderLayout;
+export default Header;

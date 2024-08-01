@@ -1,4 +1,4 @@
-// On crée le server pour le backend
+// On crée le server pour le backend:
 
 import express from 'express';
 import sequelize from './datas/database.js';
@@ -32,10 +32,8 @@ app.use(session({ // Ces lignes de code permettent de gérer la session du user.
 // On importe le router pour que le server comprenne les routes du projet.
 app.use(router);
 
-// server.js ou votre routeur principal
-
 app.use((req, res, next) => {
-    console.log('Headers:', req.headers); // Affiche tous les en-têtes de la requête
+    console.log('Headers:', req.headers); // Affiche tous les en-têtes de la requête.
     next();
   });  
 

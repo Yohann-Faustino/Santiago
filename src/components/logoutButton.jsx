@@ -11,8 +11,11 @@ const LogoutButton = () => {
   const handleLogout = () => {
     // Supprimez le token JWT:
     localStorage.removeItem('token');
-    // On redirige l'utilisateur vers l'accueil une fois la déconnexion réussie:
-    navigate('/')
+    // Redirige après l'affichage du message de déconnexion aprês le délai qu'on va définir:
+    setTimeout(() => {
+      navigate('/');
+    }, 3000); // 3000 ms = 3 secondes
+    // Affiche un message pour voir si la déconnexion a bien réussie:
     console.log('Déconnexion réussie');
   };
 

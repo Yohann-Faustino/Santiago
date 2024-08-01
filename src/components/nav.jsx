@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import LogoutButton from "../components/logoutButton";
+import LogoutButton from "./logoutButton";
 import { Link } from "react-router-dom";
 
-const NavLayout = () => {
+const Nav = () => {
+  // Gère l'état des boutons de la nav pour déterminer lequel à été cliqué en dernier:
   const [activeIndex, setActiveIndex] = useState(null);
 
+  // Fonction qui met à jour activeIndex lorsqu'un élément de navigation est cliqué:
   const handleClick = (index) => {
     setActiveIndex(index);
   };
+
+  // Lorsque l'utilisateur clique sur le bouton la fonction handleClick est appelée avec son chiffre attribué.
+  // La fonction handleClick met à jour l'état activeIndex avec le chiffre de l'élément cliqué.
+  // Ainsi l'on vérifie si le chiffre attribué au bouton fraichement cliqué correspond à celui du activeIndex.
+  // Si les chiffres ne correspondent pas on applique la classe whiteLink à la place de la classe linkNav.
+  // Si les chiffres correspondent on laisse la classe whiteLink pour indiquer que l'élément cliqué est actif.
 
   return (
     <nav className="mr-2">
@@ -78,4 +86,4 @@ const NavLayout = () => {
   );
 };
 
-export default NavLayout;
+export default Nav;

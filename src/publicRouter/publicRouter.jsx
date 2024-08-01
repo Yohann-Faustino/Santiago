@@ -1,6 +1,26 @@
+// Gére la configuration et le rendu des routes accessibles sans être connecté:
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
+// On peut importer simplement comme suit car on a fait un fichier indexPublic:
+import { 
+  Layout, 
+  Nav,
+  Appointments, 
+  Comment, 
+  Contact, 
+  Error,
+  Home, 
+  LegalDisclaimer, 
+  Planning, 
+  PrivacyPolicy, 
+  Profile, 
+  Services, 
+  SignUp, 
+  SiteMap, 
+  AuthGuard 
+} from './indexPublic';
+
+/*import Home from "../pages/Home";
 import SignUp from "../pages/SignUp";
 import Contact from "../pages/Contact";
 import LegalDisclaimer from "../pages/LegalDisclaimer";
@@ -15,7 +35,7 @@ import Comment from "../pages/Comment";
 import Appointments from "../pages/Appointments";
 // import Users from "../pages/Users";
 import Layout from '../layouts/layout';
-import AuthGuard from "../../backend/components/securite/authGuard";
+import AuthGuard from "../../backend/components/securite/authGuard";*/
 
 const PublicRouter = () => {
     return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const FooterLayout = () => {
+const Footer = () => {
 
     return (
 
@@ -21,4 +21,4 @@ const FooterLayout = () => {
     );
 };
 
-export default FooterLayout;
+export default Footer;

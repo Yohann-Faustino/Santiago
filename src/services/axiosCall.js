@@ -1,16 +1,18 @@
+// Ce service configure une instance Axios avec une URL de base et un intercepteur pour ajouter automatiquement un token JWT à chaque requête si l'utilisateur est authentifié.
 
 import axios from "axios";
 import { accountService } from "./account.service";
 
+// Crée une instance d'axios qui fait que toutes les requêtes utiliseront l'url de départ comme définis:
 const AxiosCall = axios.create({
     baseURL: 'http://localhost:3000'
 });
 
-// Intercepteur pour récupérer le token
+// Intercepteur pour récupérer le token:
 AxiosCall.interceptors.request.use(request => {
     if (accountService.isLogged()) {
         const token = accountService.getToken();
-        // Vérifie la présence du token
+        // Montre que le token est présent ou non:
         console.log('Token récupéré:', token); 
         if (token) {
             request.headers.Authorization = 'Bearer ' + token;

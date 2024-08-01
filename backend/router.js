@@ -1,3 +1,5 @@
+// Définis et gère les routes BACKEND de notre projet:
+
 import express from 'express';
 import sequelize from './datas/database.js';
 import usersRoute from './routes/usersRoute.js';
@@ -8,8 +10,6 @@ import commentController from './controllers/comentsController.js';
 import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
 
 const router = express.Router();
-
-// Routes suivantes sont celles de notre backend:
 
 // Route pour tester la communication:
 router.get('/', (req, res) => {

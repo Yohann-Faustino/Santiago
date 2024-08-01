@@ -1,13 +1,13 @@
-import React from "react";
+// import React from "react";
 
-const AdminBoard = () => {
+// const AdminBoard = () => {
 
-    return (
+//     return (
 
-        <>
-            <h1>Page Tableau de bord</h1>
-        </>
-    );
-};
+//         <>
+//             <h1>Page Tableau de bord</h1>
+//         </>
+//     );
+// };
 
-export default AdminBoard;
+// export default AdminBoard;

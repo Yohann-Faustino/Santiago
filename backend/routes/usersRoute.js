@@ -25,3 +25,5 @@ router.get('/', authMiddlewareToken, async (req, res) => {
 });
 
 export default router;
+
+// On peut pas avoir deux fois la meme route saucisson 

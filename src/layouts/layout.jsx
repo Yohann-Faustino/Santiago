@@ -1,18 +1,21 @@
+// Les components sont des composants et le layout est la manière dont sont organisés les components.
+
 import React from "react";
-import NavLayout from "./navLayout";
-import HeaderLayout from "./headerLayout";
-import FooterLayout from "./footerLayout";
+import Nav from "../components/nav";
+import Header from "../components/header";
+import Footer from "../components/footer";
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {
     return (
         <div>
-            <HeaderLayout />
+            <Header />
             <div className=" flex md:flex-row sm:flex-col">
-                <NavLayout />
+                <Nav />
+                {/* Composant spécial de React Router qui récupère les routes du App.js et permet leur rendues: */}
                 <Outlet />
             </div>
-            <FooterLayout />
+            <Footer />
         </div>
     );
 };
