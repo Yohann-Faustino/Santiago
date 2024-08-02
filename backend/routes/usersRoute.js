@@ -1,29 +1,30 @@
 import express from 'express';
-import Users from "../models/users.js";
-import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
+import Users from '../models/users.js'; // Assurez-vous que le chemin est correct
+const router = express.Router();
 
-const router =express.Router();
-
-router.get('/', authMiddlewareToken, async (req, res) => {
+// Route pour récupérer tous les utilisateurs
+router.get('/', async (req, res) => {
     try {
         const users = await Users.findAll();
         res.json(users);
     } catch (err) {
         console.error('Error', err);
-        res.status(500).json({message: 'Erreur lors de la récupération des clients.'});
+        res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs.' });
     }
 });
 
-router.get('/', authMiddlewareToken, async (req, res) => {
+// Route pour récupérer un utilisateur par ID
+router.get('/:id', async (req, res) => {
     try {
-        const users = await Users.findOne();
-        res.json(users);
+        const user = await Users.findOne({ where: { id: req.params.id } });
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+        res.json(user);
     } catch (err) {
         console.error('Error', err);
-        res.status(500).json({message: 'Erreur lors de la récupération du profile.'});
+        res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur.' });
     }
 });
 
 export default router;
-
-// On peut pas avoir deux fois la meme route saucisson 

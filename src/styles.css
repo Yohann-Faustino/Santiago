@@ -50,10 +50,11 @@ h3 {
     border-gold 
     border-solid
     pl-1 
-    pr-1 
+    pr-1
     rounded-tr-xl 
     rounded-br-xl 
-    w-44;
+    text-center
+    w-auto;
 }
 
 .linkNavSm {
@@ -65,7 +66,8 @@ h3 {
 
 .linkNav:hover {
 
-    @apply scale-110 pl-3;
+    @apply 
+    scale-110;
 }
 
 .whiteLink {

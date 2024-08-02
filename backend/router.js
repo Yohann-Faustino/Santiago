@@ -8,7 +8,7 @@ import appointmentsRoute from './routes/appointmentsRoute.js';
 import authController from './controllers/authControllers.js';
 import commentController from './controllers/comentsController.js';
 import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
-
+import profileRoute from './routes/profileRoute.js';
 const router = express.Router();
 
 // Route pour tester la communication:
@@ -21,26 +21,11 @@ router.get('/saucisson', (req, res) => {
     res.send('saucisson');
 });
 
-// Route qui permet d'accèder au profil:
-router.get('/profile', authMiddlewareToken, (req, res) => {
-    const profileData = {
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'john.doe@example.com',
-        phone: '123-456-7890',
-        address: '123 Main St',
-        city: 'Paris',
-        postalcode: '75000'
-    };
-    // Vérifie si la route est atteinte
-    console.log('Route /profile atteinte'); 
-    res.status(200).json(profileData);
-});
-
-// Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients et les commentaires stockés dans la base de données:
+// Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients, les commentaires et le profil stockés dans la base de données:
 router.use('/users', authMiddlewareToken, usersRoute);
 router.use('/comments', authMiddlewareToken, commentsRoute);
 router.use('/appointments', authMiddlewareToken, appointmentsRoute);
+router.use('/profile', authMiddlewareToken, profileRoute);
 
 // Route qui permet l'inscription:
 router.post('/signup', authController.signup);

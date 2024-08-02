@@ -18,7 +18,7 @@ const Nav = () => {
   // Si les chiffres correspondent on laisse la classe whiteLink pour indiquer que l'élément cliqué est actif.
 
   return (
-    <nav className="mr-2">
+    <nav className="mr-4">
       <ul className=" flex md:flex-col sm:flex-row">
         {/* Routes accessibles par tous: */}
         <li className={`${activeIndex === 0 ? 'whiteLink' : 'linkNav'} sm:linkNavSm`}>

@@ -25,7 +25,7 @@ const Comments = () => {
         // Ce hook sert de pense bête pour que mon code se rappel d'une fonction décrite plus bas.
         const flag = useRef(false)
 
-            // Ce hook s'active en même temps qu'un événement particulier choisis par le dev et si il y a pas d'événement particulier on met un tableau vide pour qu'il s'execute qu'une seule fois.
+    // Ce hook s'active en même temps qu'un événement particulier choisis par le dev et si il y a pas d'événement particulier on met un tableau vide pour qu'il s'execute qu'une seule fois.
     // useEffect permet de charger progressivement les donées car il demande a charger les données de la bdd apres que la page soit chargée.
     // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
     useEffect(() => {
