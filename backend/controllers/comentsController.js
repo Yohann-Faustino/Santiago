@@ -1,3 +1,5 @@
+// controllers/commentController.js
+
 import Comments from "../models/comments.js";
 
 const commentController = {
@@ -12,7 +14,6 @@ const commentController = {
             const newComment = await Comments.create({
                 title,
                 content,
-                // Ajouter d'autres champs si nécessaire
             });
 
             res.status(201).json({ message: 'Commentaire ajouté avec succès !', comment: newComment });
@@ -20,6 +21,17 @@ const commentController = {
         } catch (err) {
             console.error('Erreur lors de l\'ajout du commentaire.', err);
             res.status(500).json({ message: 'Erreur lors de l\'ajout du commentaire.' });
+        }
+    },
+
+    // Fonction pour récupérer tous les commentaires:
+    getAllComments: async (req, res) => {
+        try {
+            const comments = await Comments.findAll();
+            res.status(200).json(comments);
+        } catch (err) {
+            console.error('Erreur lors de la récupération des commentaires.', err);
+            res.status(500).json({ message: 'Erreur lors de la récupération des commentaires.' });
         }
     }
 };
