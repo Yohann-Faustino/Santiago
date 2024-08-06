@@ -43,7 +43,7 @@ const Slider = () => {
 
     return (
         <div className="carousel-container w-2/5 m-auto">
-            <Carousel>
+            <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} showArrows={true}>
                 {datasImages.map(slide => (
                     <div className='carousel-slide' key={slide.id}>
                         <img className='carousel-image relative h-40 object-contain' src={slide.image} alt="carousel d'images de l'équipement et du travail de l'entreprise" />

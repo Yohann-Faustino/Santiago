@@ -55,39 +55,48 @@ const Comments = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Laissez un commentaire:</h1>
+    <div className=" commentBlock flex flex-row-reverse m-auto">
 
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Titre du commentaire"
-          value={commentData.title}
-          onChange={onChange}
-          required
-        />
-        <input
-          type="text"
-          name="content"
-          placeholder="Écrivez ici votre commentaire"
-          value={commentData.content}
-          onChange={onChange}
-          required
-        />
-        <button>Envoyer votre commentaire</button>
-      </form>
+      <div className=" commentInputBlock flex flex-col w-1/2 m-3 justify-center text-center">
+        <h1 className="colorh2 mb-3">Laissez un commentaire:</h1>
 
-      <h2>Liste des Commentaires:</h2>
-      {error && <div>{error}</div>}
-      <ul>
-        {comments.map(comment => (
-          <li key={comment.id}>
-            <h3>{comment.title}</h3>
-            <p>{comment.content}</p>
-          </li>
-        ))}
-      </ul>
+        <form onSubmit={onSubmit} className=" flex flex-col">
+          <label htmlFor="">Titre du commentaire:</label>
+          <input
+            className=" border"
+            type="text"
+            name="title"
+            value={commentData.title}
+            onChange={onChange}
+            required
+          />
+          <label htmlFor="">Ecrivez votre commentaire:</label>
+          <input
+            className=" border"
+            type="text"
+            name="content"
+            value={commentData.content}
+            onChange={onChange}
+            required
+          />
+          <button className="allButton mt-3">Envoyer</button>
+        </form>
+      </div>
+
+      <div className=" commentListBlock w-1/2">
+        <h2 className="colorh2 mb-3 text-center">Liste des Commentaires:</h2>
+        {error && <div>{error}</div>}
+        <div className="cards">
+          <ul>
+            {comments.map(comment => (
+              <li key={comment.id}>
+                <h3 className=" text-red-700">{comment.title}</h3>
+                <p className=" mb-3">{comment.content}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
