@@ -19,7 +19,7 @@ const Nav = () => {
 
   return (
     <nav className="mr-4">
-      <ul className=" flex md:flex-col sm:flex-row">
+      <ul className=" flex md:flex-row sm:flex-row lg:flex-col">
         {/* Routes accessibles par tous: */}
         <li className={`${activeIndex === 0 ? 'whiteLink' : 'linkNav'} sm:linkNavSm`}>
           <button className=" text-left" onClick={() => handleClick(0)}>

@@ -52,7 +52,7 @@ const PublicRouter = () => {
             {/* <Route path="/admin/dashboard" element={<AdminBoard />} /> */}
             <Route path="/profile" element={<AuthGuard route="profile"><Profile /></AuthGuard>} />
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-            <Route path="/comments" element={<AuthGuard route="comments"><Comment /></AuthGuard>} />
+            <Route path="/comments" element={<Comment />} />
             <Route path="/appointments" element={<AuthGuard route="appointments"><Appointments /></AuthGuard>} />
             {/* <Route path="/users" element={<AuthGuard route="users"><Users /></AuthGuard>} /> */}
             <Route path="*" element={<Error />} />

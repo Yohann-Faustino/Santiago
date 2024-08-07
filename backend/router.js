@@ -23,7 +23,7 @@ router.get('/saucisson', (req, res) => {
 
 // Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients, les commentaires et le profil stockés dans la base de données:
 router.use('/users', authMiddlewareToken, usersRoute);
-router.use('/comments', authMiddlewareToken, commentsRoute);
+router.use('/comments'/*, authMiddlewareToken*/, commentsRoute);
 router.use('/appointments', authMiddlewareToken, appointmentsRoute);
 router.use('/profile', authMiddlewareToken, profileRoute);
 
@@ -40,6 +40,6 @@ router.get('/logout', authController.logout);
 router.post('/comments', authMiddlewareToken, commentController.addComment)
 
 // Route pour récupérer tous les commentaires:
-router.get('/allcomments', authMiddlewareToken, commentController.getAllComments);
+router.get('/allcomments', /*authMiddlewareToken,*/ commentController.getAllComments);
 
 export default router;

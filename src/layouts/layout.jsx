@@ -10,7 +10,7 @@ const Layout = () => {
     return (
         <div>
             <Header />
-            <div className=" flex md:flex-row sm:flex-col">
+            <div className=" flex sm:flex-col md:flex-col lg:flex-row w-full overflow-x-hidden"> {/* Met l'appli en full screen et cache ce qui depasse */}
                 <Nav />
                 {/* Composant spécial de React Router qui récupère les routes du App.js et permet leur rendues: */}
                 <Outlet />

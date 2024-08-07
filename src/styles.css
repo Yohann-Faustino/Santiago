@@ -20,9 +20,9 @@ h3 {
   @apply text-h3;
 }
 
-/*___________________________________ Styles pour la taille d'écran md _______________________*/
+/*___________________________________ Styles pour la taille d'écran sm _______________________*/
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   body {
     @apply text-lg;
   }
@@ -37,7 +37,7 @@ h3 {
   h3 {
     @apply text-xl;
   }
-}
+} 
 
 
 /*_________________________________ Classes générales _________________________________________________*/
@@ -178,8 +178,4 @@ h3 {
 .control-arrow.control-next::before{
 
     background-color: black;
-}
-
-.carousel .slide:empty {
-  display: none;
 }

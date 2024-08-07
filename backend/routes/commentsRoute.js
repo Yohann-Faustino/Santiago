@@ -5,7 +5,7 @@ import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
 const router = express.Router();
 
 // Middleware d'authentification pour toutes les routes
-router.use(authMiddlewareToken);
+// router.use(authMiddlewareToken);
 
 // Ajouter un nouveau commentaire
 router.post('/', async (req, res) => {
