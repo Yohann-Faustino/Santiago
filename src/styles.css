@@ -79,7 +79,7 @@ h3 {
     pr-1 
     rounded-tr-xl 
     rounded-br-xl 
-    ml-3 
+    lg:ml-3
     scale-110;
 }
 

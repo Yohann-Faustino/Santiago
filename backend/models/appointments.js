@@ -6,11 +6,11 @@ class Appointments extends Model {}
 Appointments.init({
 
     date: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING, // Peut être necessaire plus tard de remplacer.string par .date
         allowNull: true,
     },
     hour: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING, // Peut être necessaire plus tard de remplacer.string par .time
         allowNull: true,
     },
     details: {

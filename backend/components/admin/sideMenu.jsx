@@ -36,7 +36,7 @@ const SideMenu = () => {
                         <li><Link to="/admin/appointments/appointmentsDel">Supprimer</Link></li>
                     </ul>
                 </li> */}
-                <li className=" mt-5"><Link to="/">Retour vers l'<a href="/" className="linkClick">Accueil</a></Link></li>
+                <li className=" mt-5"><Link to="/">Retour à l'<a href="/" className="linkClick">Accueil</a></Link></li>
             </ul>
         </div>
     );
