@@ -5,9 +5,9 @@ import SideMenu from "../components/admin/sideMenu";
 
 const LayoutAdmin = () => {
     return (
-        <div className="layoutAdmin w-3/4 m-auto">
+        <div className="layoutAdmin">
             {/* <AdminHeader /> */}
-            <div id="admin" className="admin flex justify-around">
+            <div id="admin" className="admin flex border border-gold m-3 p-2 rounded-lg">
                 <SideMenu />
                 <div id="adminBody"><Outlet /></div>
             </div>

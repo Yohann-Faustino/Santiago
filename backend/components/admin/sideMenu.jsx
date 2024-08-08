@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const SideMenu = () => {
     return (
-        <div className="sideMenu h-full">
+        <div className="sideMenu border border-gold rounded-lg p-1">
             <ul>
                 {/* <li><Link to="/admin/dashboard">Dashboard</Link></li> */}
                 <li>
@@ -27,7 +27,7 @@ const SideMenu = () => {
                         <li><Link to="/admin/comments/commentsdel">Supprimer</Link></li>
                     </ul>
                 </li>
-                <li>
+                {/* <li>
                     <p className="appointmentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Appointment:</p>
                     <ul>
                         <li><Link to="/admin/appointments/indexappointment">Liste</Link></li>
@@ -35,7 +35,7 @@ const SideMenu = () => {
                         <li><Link to="/admin/appointments/appointmentsedit">Modifier</Link></li>
                         <li><Link to="/admin/appointments/appointmentsDel">Supprimer</Link></li>
                     </ul>
-                </li>
+                </li> */}
                 <li className=" mt-5"><Link to="/">Retour vers l'<a href="/" className="linkClick">Accueil</a></Link></li>
             </ul>
         </div>

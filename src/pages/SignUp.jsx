@@ -149,6 +149,7 @@ const AuthenticationPage = () => {
         alert('Connexion réussie !');
         setErrorMessage(''); // Efface tout message d'erreur précédent pour que ce soit propre lors d'une nouvelle connexion.
         navigate('/'); // Redirige l'utilisateur vers la page d'accueil.
+        window.location.reload(); // On rafraîchis la page après la redirection car sinon l'user connecté vois toujours la nav de l'user non connecté.    
       } else {
         // Message d'erreur au cas ou il manquerait des données ou seraient incorrectes:
         const errorData = response.data.message || 'Erreur lors de la connexion.';

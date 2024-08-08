@@ -1,87 +1,67 @@
-// useState crée une 'boîte' vide pour stocker des données, useEffect demande que userService.getAllUsers() récupère EN DIFFERÉ les données de la base de données et map permet de parcourir ces données pour les afficher selon les props.
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { userService } from "../../../src/services/user.service";
 import { Link } from "react-router-dom";
 
 const User = () => {
-
-    let navigate = useNavigate()
+    let navigate = useNavigate();
 
     const demon = (userId) => {
-        console.log('boom User')
-        navigate("../useredit/"+userId)
-    }
+        console.log('boom User');
+        navigate("../useredit/" + userId);
+    };
 
-    // Ce hook prépare une place pour stocker les données de la bdd une fois qu'elles seront récupérées.
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState([]);
 
-    // Ce hook sert de pense bête pour que mon code se rappel d'une fonction décrite plus bas.
-    const flag = useRef(false)
+    const flag = useRef(false);
 
-    // Ce hook s'active en même temps qu'un événement particulier choisis par le dev et si il y a pas d'événement particulier on met un tableau vide pour qu'il s'execute qu'une seule fois.
-    // useEffect permet de charger progressivement les donées car il demande a charger les données de la bdd apres que la page soit chargée.
-    // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
     useEffect(() => {
-
-        // On utilise flag.current pour éviter de rappeler userService.getAllUsers() plus d'une fois lors du rendu du composant:
         if (flag.current === false) {
             userService.getAllUsers()
                 .then(res => {
-                    console.log(res.data)
-                    setUsers(res.data)
+                    console.log(res.data);
+                    setUsers(res.data);
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
         }
-        return () => flag.current = true
-    }, [])
+        return () => flag.current = true;
+    }, []);
 
     return (
-        <div className="user">
-            <h1>User</h1>
-            <table>
+        <div className="user flex flex-col p-4">
+            <h1 className="mb-4">User</h1>
+            <table className="min-w-full border-collapse border border-gray-300">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
-                        <th>Email</th>
-                        <th>Téléphone</th>
-                        <th>Adresse</th>
-                        <th>Ville</th>
-                        <th>Code Postale</th>
+                    <tr className="bg-red-500">
+                        <th className="p-2 text-center border border-gray-300">#</th>
+                        <th className="p-2 text-center border border-gray-300">Prénom</th>
+                        <th className="p-2 text-center border border-gray-300">Nom</th>
+                        <th className="p-2 text-center border border-gray-300">Email</th>
+                        <th className="p-2 text-center border border-gray-300">Téléphone</th>
+                        <th className="p-2 text-center border border-gray-300">Adresse</th>
+                        <th className="p-2 text-center border border-gray-300">Ville</th>
+                        <th className="p-2 text-center border border-gray-300">Code Postale</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        // On utilise map pour parcourir le tableau des données des users et on utilise les props pour l'organiser.
                         users.map(user => (
-                            // Key explique a réact qu'il sagit de la donnée importante et unique qui identifie les users:
-                            <tr key={user.id}> {}
-                                <td><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.firstname}`}>{user.firstname}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.lastname}`}>{user.lastname}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.email}`}>{user.email}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.phone}`}>{user.phone}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.address}`}>{user.address}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.city}`}>{user.city}</Link></td>
-                                <td><Link to={`/admin/users/useredit/${user.postalcode}`}>{user.postalcode}</Link></td>
-                                {/* <td>{user.firstname}</td> */}
-                                {/* <td>{user.lastname}</td> */}
-                                {/* <td>{user.email}</td> */}
-                                {/* <td>{user.phone}</td> */}
-                                {/* <td>{user.address}</td> */}
-                                {/* <td>{user.city}</td> */}
-                                {/* <td>{user.postalcode}</td> */}
+                            <tr key={user.id} className="hover:bg-gray-100">
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.firstname}`}>{user.firstname}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.lastname}`}>{user.lastname}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.email}`}>{user.email}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.phone}`}>{user.phone}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.address}`}>{user.address}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.city}`}>{user.city}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.postalcode}`}>{user.postalcode}</Link></td>
                             </tr>
                         ))
                     }
                 </tbody>
             </table>
-            <button onClick={() => demon(666)}>Comments 666</button>
+            <button onClick={() => demon(666)} className="mt-4 p-2 bg-blue-500 text-white rounded">Comments 666</button>
         </div>
-        
     );
 };
 
