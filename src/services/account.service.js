@@ -1,37 +1,57 @@
-// Ce service expose des méthodes pour gérer l'authentification de l'utilisateur via des appels HTTP et le stockage du token JWT dans le localStorage du navigateur.  
+import AxiosCall from "./axiosCall";
+import { jwtDecode } from "jwt-decode";
 
-import AxiosCall from "./axiosCall"
-
+// Fonction envoie une requête POST à l'API d'authentification avec les données de connexion fournies:
 let login = (loginConnexion) => {
     return AxiosCall.post('auth/login', loginConnexion);
 }
 
-// On stock le token dans le localStorage (zone de stockage du navigateur qui se rappel du token même si tu coupes le navigateur).
+// Sauvegarde le token JWT dans le localStorage:
 let saveToken = (token) => {
     localStorage.setItem('token', token);
     console.log('Token sauvegardé dans le localStorage:', token);
 }
 
-// On retire le token de la session:
+// Déconnecte l'utilisateur en retirant le token du localStorage:
 let logout = () => {
     localStorage.removeItem('token');
     console.log('Token retiré du localStorage.');
 }
 
-// On vérifie la présence du token pour savoir si l'utilisateur est identifié:
+// Vérifie si l'utilisateur est connecté en testant la présence du token:
 let isLogged = () => {
-    const logged = !!localStorage.token;
+    const logged = !!localStorage.getItem('token'); // Utilise getItem pour accéder au token.
     console.log('Utilisateur connecté:', logged);
     return logged;
 }
 
-// On récupère le token dans le stockage du navigateur:
+// Récupère le token du localStorage:
 let getToken = () => {
-    const token = localStorage.token;
+    const token = localStorage.getItem('token'); // Utilise getItem pour accéder au token.
     console.log('Token récupéré du localStorage:', token);
     return token;
 }
 
+// Décode le token JWT pour obtenir l'id de l'utilisateur afin de pouvoir ensuite limiter le post de com par une limite de temps:
+let getCurrentUserId = () => {
+    const token = getToken();
+    if (token) {
+        try {
+            const decodedToken = jwtDecode(token);
+            return decodedToken.id; // On renvoie l'id de l'user pour l'utiliser ultérieurement.
+        } catch (error) {
+            console.error('Erreur lors du décodage du token:', error);
+            return null;
+        }
+    }
+    return null;
+}
+
 export const accountService = {
-    login, saveToken, isLogged, logout, getToken
+    login,
+    saveToken,
+    isLogged,
+    logout,
+    getToken,
+    getCurrentUserId
 };

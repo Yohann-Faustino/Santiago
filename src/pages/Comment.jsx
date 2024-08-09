@@ -4,58 +4,77 @@ import { commentService } from "../services/comment.service";
 import { accountService } from "../services/account.service";
 
 const Comments = () => {
-  // useState gère le stockage des données du nouveau commentaire:
+
+  // Récupérer l'ID utilisateur depuis accountService:
+  const userId = accountService.getCurrentUserId();
+  console.log("userId:", userId);  // On vérifie si l'ID utilisateur est correctement récupéré.
+
   const [commentData, setCommentData] = useState({
     title: '',
-    content: ''
+    content: '',
+    users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
   });
 
-  // useState gère le stockage des données de la liste des commentaires:
+  // useState gère la récupération des commentaires dynamiquement:
   const [comments, setComments] = useState([]);
 
   // useState gère l'état des messages d'erreur de toute la page afin d'avoir un code simple et propre:
   const [error, setError] = useState(null);
 
-  // useNavigate pour rediriger l'utilisateur si il veut laisser un commentaire alors qu'il n'est pas connecté.
-  const navigate = useNavigate(); 
-  
-  // Fonction met à jour setCommentData lorsque l'utilisateur saisit des informations dans le formulaire de commentaires:
+  // Ce hook permet de rediriger le navigateur vers la page souhaitée par le dev:
+  const navigate = useNavigate();
+
+  // Met à jour commentData lors des modifications du formulaire
   const onChange = (e) => {
     setCommentData({
-      ...commentData, // Cela copie toutes les propriétés de commentData dans le nouvel objet.
-      [e.target.name]: e.target.value // Événement surveille où sont les modifications apportées par l'utilisateur et récupère le nom de l'élément et sa valeur pour prendre en compte son changement.
+      ...commentData, // Récupère toutes les données dans commentData (destructuration).
+      [e.target.name]: e.target.value // Evènement qui écoute les modifs de l'utilisateur cible de nom de ce qui est modifié et lui assigne sa nouvelle valeur.
     });
   };
 
-  // Fonction qui s'applique à la soumission du formulaire de commentaire:
+  // Gère la soumission du formulaire:
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire qui est de soumettre celui ci.
 
-    // Redirige vers la page de connexion si l'utilisateur n'est pas connecté:
+    // Vérifie si l'utilisateur est connecté avant de soumettre le commentaire sinon direction signup:
     if (!accountService.isLogged()) {
       navigate("/signup");
       return;
     }
 
-    // On appelle la méthode addComment du service commentService en lui passant commentData qui contient les données du nouveau commentaire saisi dans le formulaire:
-    commentService.addComment(commentData)
+    // Ajoute users_id aux données du commentaire:
+    const commentWithUserId = {
+      ...commentData, // Récupère toutes les données dans commentData (destructuration).
+      users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
+    };
+    console.log('Commentaire à envoyer:', commentWithUserId);
+
+    // Appelle le commentService pour ajouter le commentaire:
+    commentService.addComment(commentWithUserId)
       .then(res => {
         console.log(res);
-        fetchComments(); // Rafraîchit les commentaires après l'ajout.
+        fetchComments(); // Rafraîchit les commentaires après l'ajout pour voir dessuite son commentaire dans la liste.
 
-        // Réinitialiser les champs du formulaire une fois soumit pour éviter l'envoie de plusieurs commentaires:
+        // Réinitialise les champs du formulaire:
         setCommentData({
           title: '',
-          content: ''
+          content: '',
+          users_id: userId
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        // Gère le cas spécifique où l'utilisateur essaie de poster deux commentaires en moins de 24h
+        if (err.response && err.response.status === 400) {
+          alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
+        } else {
+          console.log('Erreur lors de l\'ajout du commentaire.');
+        }
+      });
   };
 
-  // Fonction chargée de récupérer la liste des commentaires:
+  // Récupère la liste des commentaires grâce au commentService:
   const fetchComments = async () => {
     try {
-      // On appelle la méthode getAllComments du service commentService en lui passant setComments pour mettre à jour l'état local comments avec les données récupérées:
       const response = await commentService.getAllComments();
       setComments(response.data);
     } catch (error) {
@@ -63,19 +82,17 @@ const Comments = () => {
       setError('Erreur lors de la récupération des commentaires.');
     }
   };
-
-  // useEffect permet de charger progressivement les données car il demande à charger les données de la bdd après que la page soit chargée.
-  // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
+  // Ce hook s'active en même temps qu'un événement particulier choisis par le dev et si il y a pas d'événement particulier on met un tableau vide pour qu'il s'execute qu'une seule fois.
+  // useEffect permet de charger progressivement les donées car il demande a charger les données de la bdd apres que la page soit chargée.
+  // Charge les commentaires lors du premier rendu du composant.
   useEffect(() => {
-    fetchComments(); // Lors du premier rendu du composant fetchComments est appelé pour récupérer la liste des commentaires.
+    fetchComments();
   }, []);
 
   return (
     <div className="commentBlock flex flex-row-reverse m-auto">
-
       <div className="commentInputBlock flex flex-col w-1/2 m-3 justify-center text-center">
         <h1 className="colorh2 mb-3">Laissez un commentaire:</h1>
-
         <form onSubmit={onSubmit} className="flex flex-col">
           <label htmlFor="title">Titre du commentaire:</label>
           <input
@@ -98,7 +115,6 @@ const Comments = () => {
           <button className="allButton mt-3">Envoyer</button>
         </form>
       </div>
-
       <div className="commentListBlock w-1/2">
         <h2 className="colorh2 mb-3 text-center">Liste des Commentaires:</h2>
         {error && <div>{error}</div>}

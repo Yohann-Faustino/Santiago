@@ -39,7 +39,4 @@ router.get('/logout', authController.logout);
 // Route qui permet d'ajouter un commentaire:
 router.post('/comments', authMiddlewareToken, commentController.addComment)
 
-// Route pour récupérer tous les commentaires:
-router.get('/allcomments', /*authMiddlewareToken,*/ commentController.getAllComments);
-
 export default router;
