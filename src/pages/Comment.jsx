@@ -63,7 +63,6 @@ const Comments = () => {
         });
       })
       .catch(err => {
-        // Gère le cas spécifique où l'utilisateur essaie de poster deux commentaires en moins de 24h
         if (err.response && err.response.status === 400) {
           alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
         } else {
@@ -82,9 +81,7 @@ const Comments = () => {
       setError('Erreur lors de la récupération des commentaires.');
     }
   };
-  // Ce hook s'active en même temps qu'un événement particulier choisis par le dev et si il y a pas d'événement particulier on met un tableau vide pour qu'il s'execute qu'une seule fois.
-  // useEffect permet de charger progressivement les donées car il demande a charger les données de la bdd apres que la page soit chargée.
-  // Charge les commentaires lors du premier rendu du composant.
+
   useEffect(() => {
     fetchComments();
   }, []);
@@ -115,10 +112,13 @@ const Comments = () => {
           <button className="allButton mt-3">Envoyer</button>
         </form>
       </div>
+
+      {/* Liste des commentaires avec une div déroulante */}
       <div className="commentListBlock w-1/2">
         <h2 className="colorh2 mb-3 text-center">Liste des Commentaires:</h2>
         {error && <div>{error}</div>}
-        <div className="cards">
+        {/* maxHeight: '400px', overflowY: 'auto' -> fixe une hauteur max de 400px et rend la div défilante verticalement(Y) lorsque le contenu dépasse la hauteur fixée. */}
+        <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <ul>
             {comments.map(comment => (
               <li key={comment.id}>

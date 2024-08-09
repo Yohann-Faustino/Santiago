@@ -1,5 +1,5 @@
 // on utilise un hook: useParams est un paramètre de route utilisé pour récupérer une valeur dynamique de l'URL.
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { userService } from "../../../src/services/user.service";
 

@@ -9,6 +9,8 @@ import authController from './controllers/authControllers.js';
 import commentController from './controllers/comentsController.js';
 import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
 import profileRoute from './routes/profileRoute.js';
+import profileController from './controllers/profileControllers.js';
+
 const router = express.Router();
 
 // Route pour tester la communication:
@@ -26,6 +28,9 @@ router.use('/users', authMiddlewareToken, usersRoute);
 router.use('/comments'/*, authMiddlewareToken*/, commentsRoute);
 router.use('/appointments', authMiddlewareToken, appointmentsRoute);
 router.use('/profile', authMiddlewareToken, profileRoute);
+
+// Route pour mettre à jour le profil
+router.put('/profile/update', profileController.updateProfile);
 
 // Route qui permet l'inscription:
 router.post('/signup', authController.signup);
