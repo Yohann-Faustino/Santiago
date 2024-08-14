@@ -30,7 +30,7 @@ Users.init({
         allowNull: true,
         validate: {
             isValidPhoneNumber(value) {
-                if(!/^[0-9]{10}$/.test(value)){
+                if (!/^[0-9]{10}$/.test(value)) {
                     // ^ : Début de la chaîne
                     // [0-9] : Accepte les chiffres de 0 à 9
                     // {10} : Doit être exactement de 10 caractères
@@ -46,12 +46,17 @@ Users.init({
         allowNull: true,
         unique: true,
         validate: {
-            isEmail: true // Option sequelize de qui valide si l'email est au bon format
+            isEmail: true // Option sequelize de qui valide si l'email est au bon format.
         }
     },
     password: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    role: { 
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'user' // Valeur par défaut, par exemple, 'user' pour les utilisateurs normaux.
     }
 },
 

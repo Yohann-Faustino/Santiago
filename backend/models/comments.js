@@ -14,10 +14,15 @@ Comments.init({
         type: DataTypes.STRING,
         allowNull: true,
     },
-    createdAt: {
+    created: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW, // Enregistre la date/heure de création automatiquement.
+    },
+    updated: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
     },
     users_id: {
         type: DataTypes.INTEGER,
@@ -31,7 +36,7 @@ Comments.init({
     sequelize,
     modelName: 'Comments',
     tableName: 'Comments',
-    timestamps: true, // Sequelize ajoute automatiquement les champs `createdAt` et `updatedAt` ce qui évite de modifier la bdd et donc le seeding/migrate.
+    timestamps: false, // Sequelize ajoute automatiquement les champs `created` et `updated` ce qui évite de modifier la bdd et donc le seeding/migrate.
 });
 
 export default Comments;

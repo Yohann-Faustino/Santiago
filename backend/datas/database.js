@@ -7,7 +7,7 @@ dotenv.config(); // Charge les variables d'environnement à partir d'un fichier 
 const sequelize = new Sequelize(process.env.PG_URL, {
 
     define: {
-        timestamps: false, // Indique à Sequelize de ne pas ajouter automatiquement les champs createdAt et updatedAt dans les modèles de la base de données.
+        timestamps: false, // Indique à Sequelize de ne pas ajouter automatiquement les champs created et updated dans les modèles de la base de données.
         underscored: true //Indique à Sequelize d'utiliser des noms de colonnes en snake_case au lieu de camelCase
     }
 });

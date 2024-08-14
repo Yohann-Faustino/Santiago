@@ -15,7 +15,7 @@ const commentController = {
             const lastComment = await Comments.findOne({
                 where: {
                     users_id: users_id, // On recherche par ID d'utilisateur
-                    createdAt: { [Op.gte]: dateLimite } // Et on filtre par date de création après la date limite
+                    created: { [Op.gte]: dateLimite } // Et on filtre par date de création après la date limite
                 }
             });
 

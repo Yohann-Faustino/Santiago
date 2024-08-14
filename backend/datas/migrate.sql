@@ -14,9 +14,10 @@ CREATE TABLE "Users" (
     address TEXT,
     city TEXT,
     postalcode TEXT,
-    phone INTEGER,
+    phone TEXT,
     email TEXT UNIQUE,
-    password TEXT
+    password TEXT,
+    role TEXT
 
 );
 
@@ -36,7 +37,9 @@ CREATE TABLE "Comments" (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title TEXT,
     content TEXT,
-    users_id INTEGER REFERENCES "Users"("id") ON DELETE CASCADE
+    users_id INTEGER REFERENCES "Users"("id") ON DELETE CASCADE,
+    created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     -- ON DELETE CASCADE fait en sorte que les enregistrements liés sont également supprimés lorsque le parent est supprimé
 );
 
