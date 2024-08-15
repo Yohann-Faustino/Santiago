@@ -41,6 +41,7 @@ const User = () => {
                         <th className="p-2 text-center border border-gray-300">Adresse</th>
                         <th className="p-2 text-center border border-gray-300">Ville</th>
                         <th className="p-2 text-center border border-gray-300">Code Postale</th>
+                        <th className="p-2 text-center border border-gray-300">Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,7 @@ const User = () => {
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.address}`}>{user.address}</Link></td>
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.city}`}>{user.city}</Link></td>
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.postalcode}`}>{user.postalcode}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.role}`}>{user.role}</Link></td>
                             </tr>
                         ))
                     }
