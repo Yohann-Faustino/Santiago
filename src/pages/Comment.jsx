@@ -24,7 +24,7 @@ const Comments = () => {
   // Ce hook permet de rediriger le navigateur vers la page souhaitée par le dev:
   const navigate = useNavigate();
 
-  // Met à jour commentData lors des modifications du formulaire
+  // Met à jour commentData lors des modifications du formulaire:
   const onChange = (e) => {
     setCommentData({
       ...commentData, // Récupère toutes les données dans commentData (destructuration).
@@ -83,17 +83,17 @@ const Comments = () => {
   };
 
   useEffect(() => {
-    fetchComments();
+    fetchComments(); // Déclenche la requête pour récupérer les commentaires.
   }, []);
 
   return (
     <div className="commentBlock flex flex-row-reverse m-auto">
       <div className="commentInputBlock flex flex-col w-1/2 m-3 justify-center text-center">
-        <h1 className="colorh2 mb-3">Laissez un commentaire:</h1>
+        <h1 className="colorTitle mb-3">Laissez un commentaire:</h1>
         <form onSubmit={onSubmit} className="flex flex-col">
           <label htmlFor="title">Titre du commentaire:</label>
           <input
-            className="border"
+            className="inputGeneral"
             type="text"
             name="title"
             value={commentData.title}
@@ -102,7 +102,7 @@ const Comments = () => {
           />
           <label htmlFor="content">Écrivez votre commentaire:</label>
           <input
-            className="border"
+            className="inputGeneral"
             type="text"
             name="content"
             value={commentData.content}
@@ -115,7 +115,7 @@ const Comments = () => {
 
       {/* Liste des commentaires avec une div déroulante */}
       <div className="commentListBlock w-1/2">
-        <h2 className="colorh2 mb-3 text-center">Liste des Commentaires:</h2>
+        <h2 className="colorTitle mb-3 text-center">Liste des Commentaires:</h2>
         {error && <div>{error}</div>}
         {/* maxHeight: '400px', overflowY: 'auto' -> fixe une hauteur max de 400px et rend la div défilante verticalement(Y) lorsque le contenu dépasse la hauteur fixée. */}
         <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>

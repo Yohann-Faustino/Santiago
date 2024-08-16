@@ -25,6 +25,22 @@ let isLogged = () => {
     return logged;
 }
 
+// Vérifie le role de l'user:
+let getRole = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            const decodedToken = jwtDecode(token);
+            console.log('Contenu du token décodé:', decodedToken);
+            return decodedToken.role;
+        } catch (error) {
+            console.error('Erreur lors du décodage du token:', error);
+            return null;
+        }
+    }
+    return null;
+}
+
 // Récupère le token du localStorage:
 let getToken = () => {
     const token = localStorage.getItem('token'); // Utilise getItem pour accéder au token.
@@ -51,6 +67,7 @@ export const accountService = {
     login,
     saveToken,
     isLogged,
+    getRole,
     logout,
     getToken,
     getCurrentUserId

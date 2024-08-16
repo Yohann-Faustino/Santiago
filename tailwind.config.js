@@ -16,9 +16,9 @@ export default {
       },
       fontSize: {
         'base': '16px',
-        'h1': '28px',
-        'h2': '24px',
-        'h3': '20px',
+        'h1': '20px',
+        'h2': '20px',
+        'h3': '18px',
       },
     },
     screens: {

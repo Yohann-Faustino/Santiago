@@ -108,9 +108,15 @@ const authController = {
             }
 
             // Création du token JWT
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            res.status(200).json({ token });
+            // Envoi du token et des informations de l'utilisateur
+            res.status(200).json({
+                token,
+                user: {
+                    role: user.role,
+                }
+            });
         } catch (error) {
             console.error('Erreur lors de la connexion.', error);
             res.status(500).json({ message: 'Dommage, la connexion a échoué.' });

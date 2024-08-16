@@ -6,7 +6,7 @@ const Footer = () => {
     return (
 
         <div className="footer mb-3 w-full">
-            <p className="preventionMessage mt-5 mb-5 text-center">L 'entretien de votre installation de chauffage est obligatoire, que vous soyez propriétaire ou locataire. Cet entretien améliore la longévité de votre
+            <p className="preventionMessage text-center">L 'entretien de votre installation de chauffage est obligatoire, que vous soyez propriétaire ou locataire. Cet entretien améliore la longévité de votre
                 appareil, entraîne des économies d'énergie et vous garantit confort et sécurité.</p>
             <div>
                 <nav className="footerNav">

@@ -2,21 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles généraux définis dans tailwind.config par mes soins */
+/* Styles généraux des polices définis dans tailwind.config par mes soins */
 
 body {
+
   @apply text-base;
 }
 
 h1 {
+
   @apply text-h1;
 }
 
 h2 {
+
   @apply text-h2;
 }
 
 h3 {
+
   @apply text-h3;
 }
 
@@ -24,17 +28,21 @@ h3 {
 
 @media (max-width: 768px) {
   body {
+
     @apply text-lg;
   }
 
   h1 {
+
     @apply text-2xl;
   }
   h2 {
+
     @apply text-2xl;
   }
 
   h3 {
+
     @apply text-xl;
   }
 } 
@@ -123,7 +131,8 @@ h3 {
     rounded-bl-xl
     self-center
     mb-5
-    w-32;
+    p-1
+    w-auto;
 }
 
 .allButton:hover {
@@ -137,6 +146,17 @@ h3 {
     h-6
     w-60
 }
+
+.inputGeneral {
+
+  @apply
+  border
+  border-gray-600
+  rounded-xl
+  text-center
+  pl-1
+  pr-1
+}
 /* _____________________________ CARDS ___________________________________________________ */
 
 
@@ -149,6 +169,26 @@ h3 {
   p-2
   space-y-4
 }
+
+/* _____________________________ PROFILE ___________________________________________________ */
+
+.profile {
+  @apply 
+  border 
+  border-blue-500 
+  rounded-2xl 
+  p-4 
+  space-y-4;
+}
+
+.input-group {
+  @apply 
+  flex
+  justify-between
+  ml-5
+  mr-5
+}
+
 
 /*______________________________ Carousel __________________________________________________*/
 

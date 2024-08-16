@@ -23,58 +23,61 @@ const AuthenticationPage = () => {
     password: ''
   });
 
-  const [isLogin, setIsLogin] = useState(true); // Par défaut, affichage du formulaire de connexion
+  const [isLogin, setIsLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
-  // Mise à jour des données d'inscription
+  // Mise à jour des données d'inscription:
   const handleSignUpChange = (event) => {
     const { name, type, checked, value } = event.target;
     setSignUpData({ ...signUpData, [name]: type === 'checkbox' ? checked : value });
   };
 
-  // Mise à jour des données de connexion
+  // Mise à jour des données de connexion:
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
     setLoginData({ ...loginData, [name]: value });
   };
 
-  // Validation du mot de passe
+  // Validation du mot de passe:
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
   };
 
-  // Soumission du formulaire d'inscription
+  // Soumission du formulaire d'inscription:
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
 
-    // Vérification du consentement
+    // Vérification du consentement:
     if (!signUpData.consent) {
       setErrorMessage("Vous devez consentir à la collecte et au traitement de vos données personnelles.");
       return;
     }
 
-    // Vérification des mots de passe
+    // Vérification des mots de passe:
     if (signUpData.password !== signUpData.confirmPassword) {
       setErrorMessage("Les mots de passe ne correspondent pas.");
       return;
     }
 
-    // Validation du mot de passe
+    // Validation du mot de passe:
     if (!validatePassword(signUpData.password)) {
       setErrorMessage("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
       return;
     }
 
     try {
-      // Envoi des données d'inscription
+      // Envoi des données d'inscription:
       const response = await AxiosCall.post('/signup', signUpData);
 
       if (response.status === 201) {
-        // Sauvegarde du token d'authentification
+        // Sauvegarde du token d'authentification:
         accountService.saveToken(response.data.token);
+
+        // Sauvegarde du rôle de l'utilisateur dans le localStorage:
+        localStorage.setItem('role', response.data.user.role);
 
         alert('Inscription réussie !');
         setSignUpData({
@@ -100,23 +103,32 @@ const AuthenticationPage = () => {
     }
   };
 
-  // Soumission du formulaire de connexion
+  // Soumission du formulaire de connexion:
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Envoi des données de connexion
+      // Envoi des données de connexion:
       const response = await AxiosCall.post('/login', loginData);
 
       if (response.status === 200) {
-        // Sauvegarde du token d'authentification
+        // Sauvegarde du token d'authentification:
         accountService.saveToken(response.data.token);
+
+        // Vérifie si l'objet user et le rôle existent:
+        if (response.data.user && response.data.user.role) {
+          // Sauvegarde du rôle de l'utilisateur dans le localStorage:
+          localStorage.setItem('role', response.data.user.role);
+        } else {
+          console.warn("Les informations de rôle sont manquantes dans la réponse.");
+          localStorage.setItem('role', 'roleParDefaut'); // ou gérez cela selon le cas
+        }
 
         setLoginData({ email: '', password: '' });
         alert('Connexion réussie !');
         setErrorMessage('');
         navigate('/');
-        window.location.reload(); // Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur
+        window.location.reload(); // Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur:
       } else {
         setErrorMessage(response.data.message || 'Erreur lors de la connexion.');
       }

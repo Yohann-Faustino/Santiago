@@ -4,7 +4,7 @@ const Contact = () => {
 
     return (
 
-        <div className="flex flex-col text-center w-full ">            
+        <div className="flex flex-col text-center w-full mb-3">            
         <h1 className="colorTitle">Contact</h1>
         <h2 className=" colorh2 mb-5">24 HEURES SUR 24 / 7 JOURS SUR 7</h2>
 

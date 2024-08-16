@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Decp from "../assets/decp.png";
 import Slider from "../components/slider";
 import SliderCom from "../components/sliderCom";
 
 const Home = () => {
+  // État pour gérer l'affichage du texte "Voir plus et "Voir moins":
+  const [showMore, setShowMore] = useState(false);
+
+  // Fonction pour basculer l'état entre "Voir plus" et "Voir moins":
+  const handleToggle = () => {
+    setShowMore(!showMore);
+  };
+
   return (
     <div className="homeBlock flex flex-col lg:flex-row w-full">
-      <div className="homeLeftBlock w-full lg:w-2/5 p-4">
+      {/* Section gauche de la page */}
+      <div className="homeLeftBlock w-full lg:w-2/5 p-4 mr-8">
         <h1 className="colorTitle flex items-center">
           La société
+          {/* Lien vers la page des mentions légales avec le logo */}
           <Link to="/legaldisclaimer">
             <img className="h-4 ml-3 inline-block" src={Decp} alt="Decp" />
           </Link>
@@ -24,22 +34,14 @@ const Home = () => {
           de l’eau et réseaux aérauliques.
         </p>
         <p>La société s’engage à vous proposer des services avec réactivité.</p>
-        <h2 className="mt-5 colorTitle">Services:</h2>
-        <p className="mb-5 colorh2">Entretien, Installation, Rénovation.</p>
-        <ul>
-          <li>🔧 Chaudières, Chauffage, réseaux de distribution.</li>
-          <li>🔧 Centrale d'air.</li>
-          <li>🔧 Réseaux VMC (Ramonage et dépoussièrage).</li>
-          <li>🔧 Dégorgement tous types.</li>
-          <li>🔧 Salle de bains.</li>
-          <li>🔧 Nettoyage des gouttières.</li>
-          <li>🔧 Travaux électriques.</li>
-        </ul>
-        <div className="mt-8">
-          <h2 className="colorh2 text-center mb-3">DECP en images:</h2>
-          <Slider />
+
+        <div className="mt-1">
+          <h2 className="colorh2 text-center">Commentaires des clients:</h2>
+          <SliderCom /> {/* Slider pour afficher les commentaires des clients*/}
         </div>
       </div>
+
+      {/* Section droite de la page */}
       <div className="homeRightBlock w-full lg:w-2/5 p-4">
         <h2 className="colorTitle">Contact:</h2>
         <p className="colorh2 mb-3">24 HEURES SUR 24 / 7 JOURS SUR 7</p>
@@ -55,25 +57,42 @@ const Home = () => {
             </a>
           </li>
         </ul>
-        <h2 className="mt-5 mb-5 colorTitle">
-          Apparut sur le site de recommandation d'artisans aude-location:
-        </h2>
-        <p>
-          DECP est une entreprise de plomberie située à Créteil depuis plus de 3 ans. Elle offre un large éventail de
-          services pour tous vos travaux et projets de plomberie. DECP propose une gamme complète de services pour répondre
-          à tous vos besoins : installation (douche, WC, chauffe-eau), entretien chaudière, débouchage canalisations etc…
-        </p>
-        <p>
-          Toutes les prestations sont effectuées par des artisans qualifiés qui disposent d’un matériel performant et
-          moderne. Leurs tarifs sont très accessibles !
-        </p>
-        <p>
-          Les utilisateurs ayant fait appel aux services proposés par DECP sont satisfaits du résultat obtenu ! Ils saluent
-          l’excellent rapport qualité/prix ainsi que la grande disponibilité des techniciens intervenants.
-        </p>
+        <h2 className="mt-2 mb-1 colorTitle">Recommandé par le célèbre site d'artisans: aude-location.</h2>
+
+        {/* Texte avec la fonctionnalité "Voir plus et "Voir moins" */}
+        <div>
+          <p>
+            {/* Texte visible avant showMore" */}
+            DECP est une entreprise de plomberie située à Créteil depuis plus de 3 ans.
+            {showMore && (
+              <>
+                {/* Texte caché après showMore" */}
+                {" "}Elle offre un large éventail de services pour tous vos travaux et projets de plomberie. DECP propose une gamme complète de services pour répondre
+                à tous vos besoins : installation (douche, WC, chauffe-eau), entretien chaudière, débouchage canalisations etc…
+                <p>
+                  Toutes les prestations sont effectuées par des artisans qualifiés qui disposent d’un matériel performant et
+                  moderne. Leurs tarifs sont très accessibles !
+                </p>
+                <p>
+                  Les utilisateurs ayant fait appel aux services proposés par DECP sont satisfaits du résultat obtenu ! Ils
+                  saluent l’excellent rapport qualité/prix ainsi que la grande disponibilité des techniciens intervenants.
+                </p>
+                <button onClick={handleToggle} className="text-blue-500 underline">
+                  Voir moins
+                </button>
+              </>
+            )}
+            {!showMore && (
+              <button onClick={handleToggle} className="text-blue-500 underline ml-1">
+                Voir plus
+              </button>
+            )}
+          </p>
+        </div>
+
         <div className="mt-8">
-          <h2 className="colorh2 text-center mb-3">Commentaires des clients:</h2>
-          <SliderCom />
+          <h2 className="colorh2 text-center mb-3">DECP en images:</h2>
+          <Slider /> {/* Slider pour afficher des images */}
         </div>
       </div>
     </div>
