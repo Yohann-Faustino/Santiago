@@ -1,4 +1,5 @@
-// Ce service expose des méthodes pour récupérer des commentaires depuis le backend. 
+// Ce service expose des méthodes pour récupérer/ajouter des commentaires depuis le backend.
+
 import Comments from "../models/comments.js";
 import { Op } from "sequelize";
 
@@ -14,8 +15,8 @@ const commentController = {
             // On vérifie si l'utilisateur a déjà posté un commentaire dans les dernières 24h:
             const lastComment = await Comments.findOne({
                 where: {
-                    users_id: users_id, // On recherche par ID d'utilisateur
-                    created: { [Op.gte]: dateLimite } // Et on filtre par date de création après la date limite
+                    users_id: users_id, // On recherche par ID d'utilisateur.
+                    created: { [Op.gte]: dateLimite } // Et on filtre par date de création après la date limite.
                 }
             });
 
@@ -44,8 +45,8 @@ const commentController = {
     // Méthode pour récupérer tous les commentaires:
     getAllComments: async (req, res) => {
         try {
-            const comments = await Comments.findAll(); // On récupère tous les commentaires de la base de données
-            res.status(200).json(comments); // On renvoie la liste des commentaires avec un statut 200 (succès)
+            const comments = await Comments.findAll(); // On récupère tous les commentaires de la base de données.
+            res.status(200).json(comments); // On renvoie la liste des commentaires avec un statut 200 (succès).
         } catch (err) {
             console.error('Erreur lors de la récupération des commentaires.', err);
             // En cas d'erreur, on renvoie un message d'erreur général:

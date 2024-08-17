@@ -4,10 +4,9 @@ import { commentService } from "../services/comment.service";
 import { accountService } from "../services/account.service";
 
 const Comments = () => {
-
   // Récupérer l'ID utilisateur depuis accountService:
   const userId = accountService.getCurrentUserId();
-  console.log("userId:", userId);  // On vérifie si l'ID utilisateur est correctement récupéré.
+  console.log("userId:", userId); // On vérifie si l'ID utilisateur est correctement récupéré.
 
   const [commentData, setCommentData] = useState({
     title: '',
@@ -15,45 +14,39 @@ const Comments = () => {
     users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
   });
 
-  // useState gère la récupération des commentaires dynamiquement:
+  // État pour gérer les commentaires et les erreurs:
   const [comments, setComments] = useState([]);
-
-  // useState gère l'état des messages d'erreur de toute la page afin d'avoir un code simple et propre:
   const [error, setError] = useState(null);
 
-  // Ce hook permet de rediriger le navigateur vers la page souhaitée par le dev:
   const navigate = useNavigate();
 
   // Met à jour commentData lors des modifications du formulaire:
   const onChange = (e) => {
     setCommentData({
-      ...commentData, // Récupère toutes les données dans commentData (destructuration).
-      [e.target.name]: e.target.value // Evènement qui écoute les modifs de l'utilisateur cible de nom de ce qui est modifié et lui assigne sa nouvelle valeur.
+      ...commentData,
+      [e.target.name]: e.target.value
     });
   };
 
   // Gère la soumission du formulaire:
   const onSubmit = (e) => {
-    e.preventDefault(); // Empêche le comportement par défaut du formulaire qui est de soumettre celui ci.
+    e.preventDefault();
 
-    // Vérifie si l'utilisateur est connecté avant de soumettre le commentaire sinon direction signup:
     if (!accountService.isLogged()) {
       navigate("/signup");
       return;
     }
 
-    // Ajoute users_id aux données du commentaire:
     const commentWithUserId = {
-      ...commentData, // Récupère toutes les données dans commentData (destructuration).
-      users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
+      ...commentData,
+      users_id: userId
     };
     console.log('Commentaire à envoyer:', commentWithUserId);
 
-    // Appelle le commentService pour ajouter le commentaire:
     commentService.addComment(commentWithUserId)
       .then(res => {
         console.log(res);
-        fetchComments(); // Rafraîchit les commentaires après l'ajout pour voir dessuite son commentaire dans la liste.
+        fetchComments(); // Rafraîchit les commentaires après l'ajout.
 
         // Réinitialise les champs du formulaire:
         setCommentData({
@@ -71,7 +64,7 @@ const Comments = () => {
       });
   };
 
-  // Récupère la liste des commentaires grâce au commentService:
+  // Récupère la liste des commentaires:
   const fetchComments = async () => {
     try {
       const response = await commentService.getAllComments();
@@ -82,8 +75,11 @@ const Comments = () => {
     }
   };
 
+  // Ce hook s'active en même temps qu'un événement particulier choisi par le dev, et s'il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
+  // useEffect permet de charger progressivement les données car il demande de charger les données de la bdd après que la page soit chargée.
+  // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
   useEffect(() => {
-    fetchComments(); // Déclenche la requête pour récupérer les commentaires.
+    fetchComments();
   }, []);
 
   return (
@@ -99,25 +95,24 @@ const Comments = () => {
             value={commentData.title}
             onChange={onChange}
             required
+            aria-label="Titre du commentaire"
           />
           <label htmlFor="content">Écrivez votre commentaire:</label>
-          <input
+          <textarea
             className="inputGeneral"
-            type="text"
             name="content"
             value={commentData.content}
             onChange={onChange}
             required
+            aria-label="Écrivez votre commentaire"
           />
-          <button className="allButton mt-3">Envoyer</button>
+          <button className="allButton mt-3" type="submit">Envoyer</button>
         </form>
       </div>
 
-      {/* Liste des commentaires avec une div déroulante */}
       <div className="commentListBlock w-1/2">
         <h2 className="colorTitle mb-3 text-center">Liste des Commentaires:</h2>
         {error && <div>{error}</div>}
-        {/* maxHeight: '400px', overflowY: 'auto' -> fixe une hauteur max de 400px et rend la div défilante verticalement(Y) lorsque le contenu dépasse la hauteur fixée. */}
         <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <ul>
             {comments.map(comment => (

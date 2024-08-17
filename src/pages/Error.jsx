@@ -1,3 +1,5 @@
+// On garde deux anime pour que le client choisisse celle qu'il préfère?
+
 import React from "react";
 import { Link } from "react-router-dom";
 // import animation from "../../src/assets/404.gif";
@@ -7,8 +9,13 @@ const Error = () => {
     return (
         <div className="flex flex-col items-center">
             {/* <img src={animation} alt="Error" className="w-2/5" /> */}
-            <img src={animation1} alt="Error" className="w-2/5" />
-            <p><Link to="/">Retour vers l'<a href="/" className="linkClick mt-4">Accueil</a></Link></p>
+            <img src={animation1} alt="Erreur 404 - Page non trouvée" className="w-2/5" />
+            <p className="mt-4">
+                Retourner à l'
+                <Link to="/" className="linkClick">
+                    Accueil
+                </Link>
+            </p>
         </div>
     );
 };

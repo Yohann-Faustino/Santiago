@@ -8,7 +8,7 @@ let getAllUsers = () => {
 }
 
 // Méthode qui récupère l'id d'un user:
-let getUser = (uid) => {
+let getUser = (uid) => { // uid (users id) définis dans userEdit.jsx
     return AxiosCall.get('/users/'+uid)
 }
 

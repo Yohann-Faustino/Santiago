@@ -2,7 +2,7 @@ import express from 'express';
 import Users from '../models/users.js';
 const router = express.Router();
 
-// Route pour récupérer le profil de l'utilisateur connecté
+// Route pour récupérer le profil de l'utilisateur connecté:
 router.get('/', async (req, res) => {
     try {
         const user = await Users.findOne({ where: { id: req.userId } });

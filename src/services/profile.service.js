@@ -9,7 +9,7 @@ let getProfile = () => {
 
 // Fonction pour mettre à jour le profil utilisateur:
 let updateProfile = (profileData) => {
-    return AxiosCall.put('/profile/update', profileData);  // Requête PUT pour mettre à jour le profil.
+    return AxiosCall.put('/profile/update', profileData);  // Requête PUT pour mettre à jour les données du profil.
 };
 
 // Fonction pour mettre à jour le mot de passe utilisateur:

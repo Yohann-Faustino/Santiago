@@ -1,10 +1,12 @@
+// Attention on a fait deux fonctions de soumissions de form car sinon il y aurait un message d'erreur lors de la soumission de l'un d'eux car l'autre n'est pas soumis avec des données.
+
 import React, { useState } from "react";
 import AxiosCall from "../services/axiosCall";
 import { useNavigate, Link } from "react-router-dom";
 import { accountService } from "../services/account.service";
 
 const AuthenticationPage = () => {
-  // Gestion des données d'inscription et de connexion via useState
+  // Surveille et met à jour le code qui proviens des éléments de l'inscription:
   const [signUpData, setSignUpData] = useState({
     firstname: '',
     lastname: '',
@@ -18,26 +20,35 @@ const AuthenticationPage = () => {
     consent: false
   });
 
+  // Surveille et met à jour le code qui proviens des éléments de la connexion:
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
   });
 
-  const [isLogin, setIsLogin] = useState(true);
+  // Surveille l'état du form actuel affiché inscription ou connexion et on bascule de l'un à l'autre grâce aux boutons.
+  const [showForm, setShowForm] = useState(true);
+
+  // Centralisation des messages d'erreurs et évite qu'on recharge la page pour les afficher:
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Permet de rediriger l'user vers la page choisie dans la suite du code:
   const navigate = useNavigate();
 
   // Mise à jour des données d'inscription:
   const handleSignUpChange = (event) => {
     const { name, type, checked, value } = event.target;
     setSignUpData({ ...signUpData, [name]: type === 'checkbox' ? checked : value });
+    /* "..." conserve toutes les données existantes dans signUpData (destructuration).
+     On trouve les names et on modifie leurs valeurs si la case est cochée (checkbox).*/
   };
 
   // Mise à jour des données de connexion:
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
     setLoginData({ ...loginData, [name]: value });
+    /* "..." conserve toutes les données existantes dans loginData (destructuration).
+     On trouve les names et on modifie leurs valeurs.*/
   };
 
   // Validation du mot de passe:
@@ -77,7 +88,7 @@ const AuthenticationPage = () => {
         accountService.saveToken(response.data.token);
 
         // Sauvegarde du rôle de l'utilisateur dans le localStorage:
-        localStorage.setItem('role', response.data.user.role);
+        localStorage.setItem('role', response.data.user.role); // Permet de stocker  le role.
 
         alert('Inscription réussie !');
         setSignUpData({
@@ -118,17 +129,17 @@ const AuthenticationPage = () => {
         // Vérifie si l'objet user et le rôle existent:
         if (response.data.user && response.data.user.role) {
           // Sauvegarde du rôle de l'utilisateur dans le localStorage:
-          localStorage.setItem('role', response.data.user.role);
+          localStorage.setItem('role', response.data.user.role); // Permet de stocker le role.
         } else {
           console.warn("Les informations de rôle sont manquantes dans la réponse.");
-          localStorage.setItem('role', 'roleParDefaut'); // ou gérez cela selon le cas
+          localStorage.setItem('role', 'roleParDefaut'); // Permet de stocker le role.
         }
 
         setLoginData({ email: '', password: '' });
         alert('Connexion réussie !');
         setErrorMessage('');
         navigate('/');
-        window.location.reload(); // Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur:
+        window.location.reload(); // Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur sinon il est considéré comme non connecté.
       } else {
         setErrorMessage(response.data.message || 'Erreur lors de la connexion.');
       }
@@ -139,12 +150,12 @@ const AuthenticationPage = () => {
   };
 
   return (
-    <div className="signupBlock text-center w-full flex flex-col items-center">
+    <div className="signupBlock text-center w-full flex flex-col items-center mb-3">
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
       <h1 className="text-2xl font-bold mb-6">Connexion/Inscription</h1>
 
-      {isLogin ? (
+      {showForm ? (
         <div className="connexionBlock flex w-11/12">
           <div className="connexionLeft w-1/2 flex flex-col items-center justify-center bg-yellow-300 border-4 border-yellow-300 rounded-tl-lg rounded-bl-lg">
             <p className="mt-5 mb-5 text-center">Heureux de vous revoir !</p>
@@ -172,7 +183,7 @@ const AuthenticationPage = () => {
           </div>
           <div className="connexionRight w-1/2 flex flex-col items-center justify-center bg-red-500 border-4 border-red-500 rounded-tr-lg rounded-br-lg">
             <p className="mt-5 mb-5 text-center">Pas de compte chez nous ?</p>
-            <button type="button" onClick={() => setIsLogin(false)} className="allButton">Inscription</button>
+            <button type="button" onClick={() => setShowForm(false)} className="allButton">Inscription</button>
           </div>
         </div>
       ) : (
@@ -280,14 +291,10 @@ const AuthenticationPage = () => {
           </div>
           <div className="inscriptionRight w-1/2 flex flex-col items-center justify-center bg-red-500 border-4 border-red-500 rounded-tr-lg rounded-br-lg">
             <p className="mt-5 mb-5 text-center">Déjà un compte ?</p>
-            <button type="button" onClick={() => setIsLogin(true)} className="allButton">Connexion</button>
+            <button type="button" onClick={() => setShowForm(true)} className="allButton">Connexion</button>
           </div>
         </div>
       )}
-
-      <div className="mt-4">
-        <Link to="/">Retour à la page d'accueil</Link>
-      </div>
     </div>
   );
 };

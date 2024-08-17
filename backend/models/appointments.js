@@ -1,3 +1,6 @@
+// Représentation de la structure des données dans une base de données:
+// Code pour la suite du projet.
+
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../datas/database.js";
 

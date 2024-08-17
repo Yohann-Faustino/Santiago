@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 const authMiddlewareToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  console.log('En-têtes de la requête:', req.headers); // Affiche tous les en-têtes de la requête pour déboguer
-  console.log('L\'Authorization Header est:', authHeader); // Affiche l'en-tête Authorization
+  console.log('En-têtes de la requête:', req.headers); // Affiche tous les en-têtes de la requête pour déboguer.
+  console.log('L\'Authorization Header est:', authHeader); // Affiche l'en-tête Authorization.
 
   if (!authHeader) {
     return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });

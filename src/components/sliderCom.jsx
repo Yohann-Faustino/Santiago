@@ -11,13 +11,16 @@ const SliderCom = () => {
     try {
       const response = await commentService.getAllComments();
       setComments(response.data);
-      setError(null); // Réinitialise l'erreur s'il n'y a pas de problème
+      setError(null); // Réinitialise l'erreur s'il n'y a pas de problème.
     } catch (error) {
       console.error('Erreur lors de la récupération des commentaires:', error);
       setError('Erreur lors de la récupération des commentaires.');
     }
   };
 
+  // Ce hook s'active en même temps qu'un événement particulier choisi par le dev, et s'il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
+  // useEffect permet de charger progressivement les données car il demande de charger les données de la bdd après que la page soit chargée.
+  // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
   useEffect(() => {
     fetchComments();
   }, []);
@@ -28,7 +31,7 @@ const SliderCom = () => {
         <div>{error}</div>
       ) : (
         <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} showArrows={true} interval={3000}>
-          {comments.length > 0 ? (
+          {comments.length > 0 ? ( // Si il y a plus de 0 com on les affiches sinon on affiche le code en-dessous:  ") : (" 
             comments.map(comment => (
               <div className="carousel-slide object-contain w-auto" key={comment.id}>
                 <div className="carousel-content p-4 bg-white rounded-lg ">

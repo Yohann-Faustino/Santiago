@@ -5,10 +5,10 @@ import Slider from "../components/slider";
 import SliderCom from "../components/sliderCom";
 
 const Home = () => {
-  // État pour gérer l'affichage du texte "Voir plus et "Voir moins":
+  // État pour gérer l'affichage du texte "Voir plus" et "Voir moins"
   const [showMore, setShowMore] = useState(false);
 
-  // Fonction pour basculer l'état entre "Voir plus" et "Voir moins":
+  // Fonction pour basculer l'état entre "Voir plus" et "Voir moins"
   const handleToggle = () => {
     setShowMore(!showMore);
   };
@@ -24,20 +24,24 @@ const Home = () => {
             <img className="h-4 ml-3 inline-block" src={Decp} alt="Decp" />
           </Link>
         </h1>
-        <p className="mb-5 colorh2">Dégorgement, Entretien, Chauffage, Plomberie.</p>
-        <p>
-          DECP intervient sur les installations collectives et individuelles dans le domaine génie climatique.
+        <p className="mb-5 colorh2">
+          Dégorgement, Entretien, Chauffage, Plomberie.
         </p>
         <p>
-          Nous vous proposons des services et des solutions de qualité à tous vos problèmes de plomberie, de chauffage
-          (Chaudière à gaz au sol basse température, Chaudière murale à gaz, électrique ou à condensation), de traitement
-          de l’eau et réseaux aérauliques.
+          DECP intervient sur les installations collectives et individuelles
+          dans le domaine génie climatique.
+        </p>
+        <p>
+          Nous vous proposons des services et des solutions de qualité à tous
+          vos problèmes de plomberie, de chauffage (Chaudière à gaz au sol basse
+          température, Chaudière murale à gaz, électrique ou à condensation), de
+          traitement de l’eau et réseaux aérauliques.
         </p>
         <p>La société s’engage à vous proposer des services avec réactivité.</p>
 
         <div className="mt-1">
           <h2 className="colorh2 text-center">Commentaires des clients:</h2>
-          <SliderCom /> {/* Slider pour afficher les commentaires des clients*/}
+          <SliderCom /> {/* Slider pour afficher les commentaires des clients */}
         </div>
       </div>
 
@@ -48,42 +52,61 @@ const Home = () => {
         <ul>
           <li className="colorh2">
             <a href="tel:+33695451933" className="linkClick">
-              📞 06.95.45.19.33
+              <span role="img" aria-label="phone" className="emoji">📞</span> 06.95.45.19.33
             </a>
           </li>
           <li className="colorh2">
             <a href="mailto:decp@decp.fr" className="linkClick">
-              📧 decp@decp.fr
+              <span role="img" aria-label="email" className="emoji">📧</span> decp@decp.fr
             </a>
           </li>
         </ul>
-        <h2 className="mt-2 mb-1 colorTitle">Recommandé par le célèbre site d'artisans: aude-location.</h2>
+        <h2 className="mt-2 mb-1 colorTitle">
+          Recommandé par le célèbre site d'artisans: aude-location.
+        </h2>
 
         {/* Texte avec la fonctionnalité "Voir plus et "Voir moins" */}
         <div>
           <p>
-            {/* Texte visible avant showMore" */}
-            DECP est une entreprise de plomberie située à Créteil depuis plus de 3 ans.
+            {/* Texte visible avant "Voir plus" */}
+            DECP est une entreprise de plomberie située à Créteil depuis plus de
+            3 ans.
             {showMore && (
               <>
-                {/* Texte caché après showMore" */}
-                {" "}Elle offre un large éventail de services pour tous vos travaux et projets de plomberie. DECP propose une gamme complète de services pour répondre
-                à tous vos besoins : installation (douche, WC, chauffe-eau), entretien chaudière, débouchage canalisations etc…
+                {/* Texte caché après "Voir plus" */}
+                {" "}Elle offre un large éventail de services pour tous vos
+                travaux et projets de plomberie. DECP propose une gamme complète
+                de services pour répondre à tous vos besoins : installation
+                (douche, WC, chauffe-eau), entretien chaudière, débouchage
+                canalisations etc…
                 <p>
-                  Toutes les prestations sont effectuées par des artisans qualifiés qui disposent d’un matériel performant et
-                  moderne. Leurs tarifs sont très accessibles !
+                  Toutes les prestations sont effectuées par des artisans
+                  qualifiés qui disposent d’un matériel performant et moderne.
+                  Leurs tarifs sont très accessibles !
                 </p>
                 <p>
-                  Les utilisateurs ayant fait appel aux services proposés par DECP sont satisfaits du résultat obtenu ! Ils
-                  saluent l’excellent rapport qualité/prix ainsi que la grande disponibilité des techniciens intervenants.
+                  Les utilisateurs ayant fait appel aux services proposés par
+                  DECP sont satisfaits du résultat obtenu ! Ils saluent
+                  l’excellent rapport qualité/prix ainsi que la grande
+                  disponibilité des techniciens intervenants.
                 </p>
-                <button onClick={handleToggle} className="text-blue-500 underline">
+                <button
+                  onClick={handleToggle}
+                  className="text-blue-500 underline"
+                  aria-expanded="true" // Cela signifie que l'élément cible est actuellement visible ou non (texte caché).
+                  aria-label="Voir moins de détails"
+                >
                   Voir moins
                 </button>
               </>
             )}
             {!showMore && (
-              <button onClick={handleToggle} className="text-blue-500 underline ml-1">
+              <button
+                onClick={handleToggle}
+                className="text-blue-500 underline ml-1"
+                aria-expanded="false" // Cela signifie que l'élément cible est actuellement visible ou non (texte caché).
+                aria-label="Voir plus de détails"
+              >
                 Voir plus
               </button>
             )}

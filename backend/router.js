@@ -18,18 +18,13 @@ router.get('/', (req, res) => {
     res.send('Bonjour, le serveur Express est en fonction !')
 });
 
-// Route d'une futur page:
-router.get('/saucisson', (req, res) => {
-    res.send('saucisson');
-});
-
 // Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients, les commentaires et le profil stockés dans la base de données:
 router.use('/users', authMiddlewareToken, usersRoute);
 router.use('/comments'/*, authMiddlewareToken*/, commentsRoute);
 router.use('/appointments', authMiddlewareToken, appointmentsRoute);
 router.use('/profile', authMiddlewareToken, profileRoute);
 
-// Route pour mettre à jour le profil
+// Route pour mettre à jour le profil:
 router.put('/profile/update', profileController.updateProfile);
 
 // Route qui permet l'inscription:

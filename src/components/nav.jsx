@@ -4,99 +4,125 @@ import { accountService } from "../services/account.service";
 import LogoutButton from "./logoutButton";
 
 const Nav = () => {
-  // Gère l'état des boutons de la nav pour déterminer lequel à été cliqué en dernier:
+  // Gère l'état des éléments de navigation pour déterminer lequel est actif:
   const [activeIndex, setActiveIndex] = useState(null);
 
-  // Gère l'état de connexion ou non ainsi que le rôle de l'utilisateur:
+  // Gère l'état de connexion et le rôle de l'utilisateur:
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Vérifier l'état de connexion et le role pour afficher ou non certains élémznts de la nav:
+  // Vérifie l'état de connexion et le rôle de l'utilisateur au chargement du composant:
   useEffect(() => {
     const loggedIn = accountService.isLogged();
     setIsLoggedIn(loggedIn);
 
     if (loggedIn) {
       const role = accountService.getRole();
-      console.log("Rôle de l'utilisateur:", role);
       setIsAdmin(role === 'admin');
     }
-  }, []);
+  }, []); // Tableau vide signifie que ce useEffect s'exécute uniquement au chargement initial du composant.
 
-  // Fonction qui met à jour activeIndex lorsqu'un élément de navigation est cliqué:
+  // Fonction pour mettre à jour l'élément sur lequel on a cliqué:
   const handleClick = (index) => {
     setActiveIndex(index);
   };
 
   return (
-    <nav className="mr-4">
+    <nav className="mr-4" aria-label="Navigation principale">
       <ul className="flex md:flex-row sm:flex-row lg:flex-col">
-        {/* Routes accessibles par tous: */}
+        {/* Routes accessibles par tous */}
         <li className={`${activeIndex === 0 ? 'whiteLink' : 'linkNav'} sm:linkNavSm`}>
-          <button className="text-left" onClick={() => handleClick(0)}>
-            <Link to="/">Accueil</Link>
-          </button>
+          <Link
+            to="/"
+            onClick={() => handleClick(0)}
+            aria-current={activeIndex === 0 ? 'page' : undefined}
+            className="text-left"
+          >
+            Accueil
+          </Link>
         </li>
         <li className={`${activeIndex === 1 ? 'whiteLink' : 'linkNav'}`}>
-          <button className="text-left" onClick={() => handleClick(1)}>
-            <Link to="/contact">Contact</Link>
-          </button>
+          <Link
+            to="/contact"
+            onClick={() => handleClick(1)}
+            aria-current={activeIndex === 1 ? 'page' : undefined}
+            className="text-left"
+          >
+            Contact
+          </Link>
         </li>
         <li className={`${activeIndex === 2 ? 'whiteLink' : 'linkNav'}`}>
-          <button className="text-left" onClick={() => handleClick(2)}>
-            <Link to="/comments">Commentaires</Link>
-          </button>
+          <Link
+            to="/comments"
+            onClick={() => handleClick(2)}
+            aria-current={activeIndex === 2 ? 'page' : undefined}
+            className="text-left"
+          >
+            Commentaires
+          </Link>
         </li>
         <li className={`${activeIndex === 3 ? 'whiteLink' : 'linkNav'}`}>
-          <button className="text-left" onClick={() => handleClick(3)}>
-            <Link to="/prestations">Prestations</Link>
-          </button>
+          <Link
+            to="/prestations"
+            onClick={() => handleClick(3)}
+            aria-current={activeIndex === 3 ? 'page' : undefined}
+            className="text-left"
+          >
+            Prestations
+          </Link>
         </li>
 
-        {/* Routes accessibles une fois connecté: */}
+        {/* Routes accessibles uniquement si l'utilisateur n'est pas connecté */}
         {!isLoggedIn && (
           <li className={`${activeIndex === 5 ? 'whiteLink' : 'linkNav'}`}>
-            <button className="text-left" onClick={() => handleClick(5)}>
-              <Link to="/signup">S'identifier</Link>
-            </button>
+            <Link
+              to="/signup"
+              onClick={() => handleClick(5)}
+              aria-current={activeIndex === 5 ? 'page' : undefined}
+              className="text-left"
+            >
+              S'identifier
+            </Link>
           </li>
         )}
 
+        {/* Routes accessibles uniquement si l'utilisateur est connecté */}
         {isLoggedIn && (
           <>
-            {/* Routes accessibles si l'utilisateur est connecté: */}
             <li className={`${activeIndex === 6 ? 'whiteLink' : 'linkNav'}`}>
-              <button className="text-left" onClick={() => handleClick(6)}>
-                <Link to="/profile">Profil</Link>
-              </button>
+              <Link
+                to="/profile"
+                onClick={() => handleClick(6)}
+                aria-current={activeIndex === 6 ? 'page' : undefined}
+                className="text-left"
+              >
+                Profil
+              </Link>
             </li>
 
-            {/* Routes accessibles par l'admin uniquement: */}
+            {/* Routes accessibles uniquement par les admins */}
             {isAdmin && (
               <li className={`${activeIndex === 7 ? 'whiteLink' : 'linkNav'}`}>
-                <button className="text-left" onClick={() => handleClick(7)}>
-                  <Link to="/admin/dashboard">Admin</Link>
-                </button>
+                <Link
+                  to="/admin/dashboard"
+                  onClick={() => handleClick(7)}
+                  aria-current={activeIndex === 7 ? 'page' : undefined}
+                  className="text-left"
+                >
+                  Admin
+                </Link>
               </li>
             )}
 
-            {/* Routes pour les éléments de la v2: */}
-            {/* <li className={`${activeIndex === 8 ? 'whiteLink' : 'linkNav'}`}>
-              <button className="text-left" onClick={() => handleClick(8)}>
-                <Link to="/appointments">Rendez-vous</Link>
-              </button>
-            </li>
-            <li className={`${activeIndex === 9 ? 'whiteLink' : 'linkNav'}`}>
-              <button className="text-left" onClick={() => handleClick(9)}>
-                <Link to="/users">Clients</Link>
-              </button>
-            </li> */}
-
-            {/* Routes déconnexion: */}
+            {/* Route pour la déconnexion */}
             <li className={`${activeIndex === 10 ? 'whiteLink' : 'linkNav'}`}>
-              <button className="text-left" onClick={() => handleClick(10)}>
+              <div
+                onClick={() => handleClick(10)}
+                className="text-left"
+                aria-label="Déconnexion"
+              >
                 <LogoutButton />
-              </button>
+              </div>
             </li>
           </>
         )}

@@ -31,7 +31,7 @@ const ProfilePage = () => {
             fetchProfileData();
         }
 
-        // Assure que la récupération des données ne sera pas tentée de nouveau si le composant est démonté:
+        // On utilise flag.current pour éviter de rappeler getProfile plus d'une fois lors du rendu du composant:
         return () => flag.current = true;
     }, []);
 
@@ -65,7 +65,7 @@ const ProfilePage = () => {
     // Gère les modifications des champs du formulaire:
     const handleChange = (e) => {
         setEditData({
-            ...editData,
+            ...editData, // Conserve toutes les données existantes dans editData (destructuration).
             [e.target.name]: e.target.value // Evènement qui écoute les modifs de l'utilisateur cible de nom de ce qui est modifié et lui assigne sa nouvelle valeur.
         });
     };
@@ -80,7 +80,7 @@ const ProfilePage = () => {
     // Gère les modifications des champs de mot de passe:
     const handlePasswordChange = (e) => {
         setPasswordData({
-            ...passwordData,
+            ...passwordData, // Conserve toutes les données existantes dans passwordData (destructuration).
             [e.target.name]: e.target.value // Evènement qui écoute les modifs de l'utilisateur cible de nom de ce qui est modifié et lui assigne sa nouvelle valeur.
         });
     };

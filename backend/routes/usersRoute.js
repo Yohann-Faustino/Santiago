@@ -1,8 +1,8 @@
 import express from 'express';
-import Users from '../models/users.js'; // Assurez-vous que le chemin est correct
+import Users from '../models/users.js';
 const router = express.Router();
 
-// Route pour récupérer tous les utilisateurs
+// Route pour récupérer tous les utilisateurs:
 router.get('/', async (req, res) => {
     try {
         const users = await Users.findAll();
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route pour récupérer un utilisateur par ID
+// Route pour récupérer un utilisateur par ID:
 router.get('/:id', async (req, res) => {
     try {
         const user = await Users.findOne({ where: { id: req.params.id } });

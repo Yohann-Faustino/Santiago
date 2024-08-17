@@ -30,9 +30,9 @@ const LegalDisclaimer = () => {
             <h2 className=" mb-5 mt-5 colorTitle">Nous contacter</h2>
 
             <ul>
-                <li><a href="tel:+33695451933" className="linkClick"> 📞 06.95.45.19.33</a></li>
-                <li><a href="mailto:decp@decp.fr" className="linkClick">📧 decp@decp.fr</a></li>
-                <li>📩 8, Rue Estienne d'Orves  94000 CRETEIL</li>
+                <li><a href="tel:+33695451933" className="linkClick"><span role="img" aria-label="phone" className="emoji">📞</span> 06.95.45.19.33</a></li>
+                <li><a href="mailto:decp@decp.fr" className="linkClick"><span role="img" aria-label="email" className="emoji">📧</span> decp@decp.fr</a></li>
+                <li><span role="img" aria-label="address" className="emoji">📩</span> 8, Rue Estienne d'Orves  94000 CRETEIL</li>
             </ul>
 
             <h2 className=" mb-5 mt-5 colorTitle">Données personnelles</h2>
