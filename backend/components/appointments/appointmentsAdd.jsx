@@ -1,3 +1,5 @@
+// Parite pour la suite du projet:
+
 import React from "react";
 
 const AppointmentsAdd = () => {

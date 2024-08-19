@@ -6,26 +6,30 @@ const authMiddlewareToken = (req, res, next) => {
   console.log('En-têtes de la requête:', req.headers); // Affiche tous les en-têtes de la requête pour déboguer.
   console.log('L\'Authorization Header est:', authHeader); // Affiche l'en-tête Authorization.
 
+  // Si l'authorization n'est pas présent on rejette la requête:
   if (!authHeader) {
     return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });
   }
 
-  if (!authHeader.startsWith('Bearer ')) {
+// Vérifie que Le token soit au bon format Bearer sinon la requête est rejetée:
+  if (!authHeader.startsWith('Bearer ')) { // Vérifie si l'authorization commence par la chaîne "Bearer " sinon cela signifie que le format du token est invalide.
     return res.status(401).json({ message: 'Accès non autorisé. Format du token invalide.' });
   }
 
-  const token = authHeader.split(' ')[1];
+// Vérifie la présence du token sinon la requête est rejetée:
+  const token = authHeader.split(' ')[1]; // On séparer le mot baerer du token pour garder que ce dernier.
   if (!token) {
     return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });
   }
 
   try {
+    // On vérifie que la clé secrète JWT_SECRET est définie dans les variables d'environnement (.env).
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET est manquant dans les variables d\'environnement');
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id;
+    req.userId = decoded.id; 
     req.userRole = decoded.role;
     next();
   } catch (error) {

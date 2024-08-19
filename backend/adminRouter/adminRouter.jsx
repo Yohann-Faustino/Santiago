@@ -1,4 +1,5 @@
 // On déterminent quel composant React doit être rendu sur une URL choisie:
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LayoutAdmin from "../admin/layoutAdmin";
@@ -43,7 +44,7 @@ const AdminRouter = () => {
 
                 <Route path="appointments">
                     <Route path="indexappointment" element={<Appointments/>}/>
-                    <Route path="appointmentsedit/:aid" element={<AppointmentsEdit/>}/>                    {/* cid est définis dans commentsedit et est un paramètre de route pour récupérer une valeur dans l'URL. */}
+                    <Route path="appointmentsedit/:aid" element={<AppointmentsEdit/>}/>
                     {/* aid est définis dans appointmentsedit et est un paramètre de route pour récupérer une valeur dans l'URL. */}
                     <Route path="appointmentsadd" element={<AppointmentsAdd/>}/>
                     <Route path="appointmentsdel" element={<AppointmentsDel/>}/>

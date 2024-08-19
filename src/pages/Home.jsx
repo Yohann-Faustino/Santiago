@@ -92,7 +92,7 @@ const Home = () => {
                 </p>
                 <button
                   onClick={handleToggle}
-                  className="text-blue-500 underline"
+                  className="linkClick"
                   aria-expanded="true" // Cela signifie que l'élément cible est actuellement visible ou non (texte caché).
                   aria-label="Voir moins de détails"
                 >
@@ -103,7 +103,7 @@ const Home = () => {
             {!showMore && (
               <button
                 onClick={handleToggle}
-                className="text-blue-500 underline ml-1"
+                className="linkClick ml-1"
                 aria-expanded="false" // Cela signifie que l'élément cible est actuellement visible ou non (texte caché).
                 aria-label="Voir plus de détails"
               >

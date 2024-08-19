@@ -1,3 +1,4 @@
+// Parite pour la suite du projet:
 // Permet de naviguer vers une autre page (useredit) tout en passant un paramètre d'ID utilisateur:
 import React from "react";
 import { useNavigate } from "react-router-dom";

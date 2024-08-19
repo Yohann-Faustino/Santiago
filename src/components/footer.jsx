@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
-        <footer className="footer mb-3 w-full">
+        <footer className="footer mb-3 mt-1 w-full">
             <p className="preventionMessage text-center">
                 L'entretien de votre installation de chauffage est obligatoire, que vous soyez propriétaire ou locataire. Cet entretien améliore la longévité de votre appareil, entraîne des économies d'énergie et vous garantit confort et sécurité.
             </p>

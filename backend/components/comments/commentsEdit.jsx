@@ -34,7 +34,7 @@ const CommentsEdit = () => {
                 .catch(err => console.log(err))
         }
         return () => flag.current = true
-    }, []) // erreur video 29
+    }, [])
 
     return (
         <div className="commentsEdit">

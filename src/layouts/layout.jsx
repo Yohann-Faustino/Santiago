@@ -1,4 +1,4 @@
-// Les components sont des composants et le layout est la manière dont sont organisés les components.
+// Les layout sont des composants qui organisent les autres components.
 
 import React from "react";
 import Nav from "../components/nav";

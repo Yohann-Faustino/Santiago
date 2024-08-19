@@ -4,17 +4,20 @@ import { userService } from "../../../src/services/user.service";
 import { Link } from "react-router-dom";
 
 const User = () => {
+    // Permet de rediriger l'user vers la page souhaitée:
     let navigate = useNavigate();
 
-    const demon = (userId) => {
-        console.log('boom User');
+    const userEdit = (userId) => {
+        console.log('modif User');
         navigate("../useredit/" + userId);
     };
 
+    // Récupères l'utilisateur que l'on souhaite modifier: 
     const [users, setUsers] = useState([]);
 
     const flag = useRef(false);
 
+    // On utilise flag.current pour éviter de rappeler commentService.getAllUsers() plus d'une fois lors du rendu du composant:
     useEffect(() => {
         if (flag.current === false) {
             userService.getAllUsers()
@@ -62,7 +65,7 @@ const User = () => {
                     }
                 </tbody>
             </table>
-            <button onClick={() => demon(666)} className="mt-4 p-2 bg-blue-500 text-white rounded">Comments 666</button>
+            <button onClick={() => userEdit(666)} className="mt-4 p-2 bg-blue-900 text-white rounded"> Edit Comments 666</button>
         </div>
     );
 };

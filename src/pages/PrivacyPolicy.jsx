@@ -4,8 +4,8 @@ const PrivacyPolicy = () => {
 
     return (
 
-        <div className="flex flex-col">
-            <h1>PAGE POLITIQUE DE CONFIDENTIALITÉ</h1>
+        <div className="flex flex-col p-1">
+            <h1 className="colorTitle">POLITIQUE DE CONFIDENTIALITÉ</h1>
 
             <h2 className=" mt-5 mb-5 colorTitle">Dernière mise à jour le 23 juillet 2024</h2>
 
@@ -150,7 +150,7 @@ const PrivacyPolicy = () => {
 
             <p>En fonction des lois applicables dans votre pays, vous pouvez avoir le droit de demander l'accès aux informations personnelles que nous collectons auprès de vous, aux détails sur la manière dont nous les avons traitées, de corriger des inexactitudes ou de supprimer vos informations personnelles. Vous pouvez également avoir le droit de retirer votre consentement au traitement de vos informations personnelles. Ces droits peuvent être limités dans certaines circonstances par la loi applicable. Pour demander la révision, la mise à jour ou la suppression de vos informations personnelles, veuillez visiter : accéder à la page pour modifier les données de l'utilisateur ou suppression.</p>
 
-            <a className=" text-blue-500 mt-5 flex justify-end underline" href="#">Remonter en haut de la page ⬆️</a>
+            <a className="linkClick mt-3 flex justify-end" href="#">Remonter en haut de la page ⬆️</a>
 
         </div >
     );

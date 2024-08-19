@@ -1,10 +1,12 @@
+// Ce service expose des méthodes pour s'authentifier.
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Op } from 'sequelize'; // Assurez-vous d'importer Op
+import { Op } from 'sequelize';
 import Users from '../models/users.js';
 import validator from 'validator';
 
-// Fonction pour valider le mot de passe
+// Fonction pour valider le mot de passe:
 const validatePassword = (password) => {
     const isPasswordValid = validator.isStrongPassword(password, {
         minLength: 8,
@@ -16,7 +18,7 @@ const validatePassword = (password) => {
     return isPasswordValid;
 };
 
-// Fonction pour hacher le mot de passe
+// Fonction pour hacher le mot de passe:
 const hashPassword = async (password) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,25 +29,25 @@ const hashPassword = async (password) => {
 };
 
 const authController = {
-    // Fonction pour l'inscription des utilisateurs
+    // Fonction pour l'inscription des utilisateurs:
     signup: async (req, res) => {
         const { firstname, lastname, address, city, postalcode, phone, email, password } = req.body;
 
         console.log('Données de l\'inscription reçues', req.body);
 
         try {
-            // Vérifie si l'utilisateur existe déjà
+            // Vérifie si l'utilisateur existe déjà:
             const existingUser = await Users.findOne({ where: { email } });
             if (existingUser) {
                 return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
             }
 
-            // Valide le mot de passe
+            // Valide le mot de passe:
             if (!validatePassword(password)) {
                 return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.' });
             }
 
-            // Hache le mot de passe
+            // Hache le mot de passe:
             const hashedPassword = await hashPassword(password);
 
             // Vérifie combien d'utilisateurs valides existent déjà (ignore l'user vide de la bdd):
@@ -62,7 +64,7 @@ const authController = {
             console.log(`Nombre d'utilisateurs valides: ${userCount}`);
             console.log(`Défini comme admin: ${isAdmin}`);
 
-            // Crée un nouvel utilisateur
+            // Crée un nouvel utilisateur:
             const newUser = await Users.create({
                 firstname,
                 lastname,
@@ -75,7 +77,7 @@ const authController = {
                 role: isAdmin ? 'admin' : 'user' // Détermine si l'utilisateur est un admin ou non
             });
 
-            // Création du token JWT
+            // Création du token JWT:
             const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
             res.status(201).json({ token });
@@ -85,7 +87,7 @@ const authController = {
         }
     },
 
-    // Fonction pour la connexion des utilisateurs
+    // Fonction pour la connexion des utilisateurs:
     login: async (req, res) => {
         const { email, password } = req.body;
 
@@ -95,13 +97,13 @@ const authController = {
         }
 
         try {
-            // Recherche de l'utilisateur par email
+            // Recherche de l'utilisateur par email:
             const user = await Users.findOne({ where: { email } });
             if (!user) {
                 return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
             }
 
-            // Vérification du mot de passe
+            // Vérification du mot de passe:
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
@@ -110,7 +112,7 @@ const authController = {
             // Création du token JWT
             const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            // Envoi du token et des informations de l'utilisateur
+            // Envoi du token et des informations de l'utilisateur:
             res.status(200).json({
                 token,
                 user: {
@@ -123,7 +125,7 @@ const authController = {
         }
     },
 
-    // Fonction pour récupérer le profil d'un utilisateur
+    // Fonction pour récupérer le profil d'un utilisateur:
     profile: async (req, res) => {
         try {
             const user = await Users.findByPk(req.userId);
@@ -137,7 +139,7 @@ const authController = {
         }
     },
 
-    // Fonction pour se déconnecter
+    // Fonction pour se déconnecter:
     logout: async (req, res) => {
         req.session.destroy(error => {
             if (error) {
