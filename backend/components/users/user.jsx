@@ -52,20 +52,19 @@ const User = () => {
                         users.map(user => (
                             <tr key={user.id} className="hover:bg-gray-100">
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.firstname}`}>{user.firstname}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.lastname}`}>{user.lastname}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.email}`}>{user.email}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.phone}`}>{user.phone}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.address}`}>{user.address}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.city}`}>{user.city}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.postalcode}`}>{user.postalcode}</Link></td>
-                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.role}`}>{user.role}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.firstname}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.lastname}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.email}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.phone}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.address}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.city}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.postalcode}</Link></td>
+                                <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.role}</Link></td>
                             </tr>
                         ))
                     }
                 </tbody>
             </table>
-            <button onClick={() => userEdit(666)} className="mt-4 p-2 bg-blue-900 text-white rounded"> Edit Comments 666</button>
         </div>
     );
 };

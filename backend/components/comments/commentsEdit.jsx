@@ -37,22 +37,22 @@ const CommentsEdit = () => {
     }, [])
 
     return (
-        <div className="commentsEdit">
-            <h1>CommentsEdit</h1>
+        <div className="commentsEdit p-4">
+            <h1 className=" mb-3">CommentsEdit</h1>
             <form onSubmit={onSubmit}>
-                <div>
+                <div className=" flex flex-col mb-3">
                     <label htmlFor="idComment">Modifier l'Id</label>
-                    <input type="text" name="idComment" value={comment.id} onChange={onChange} />
+                    <input className="modifiable" type="text" name="idComment" value={comment.id} onChange={onChange} />
                 </div>
-                <div>
+                <div className=" flex flex-col mb-3">
                     <label htmlFor="title">Modifier le Titre</label>
-                    <input type="text" name="title" value={comment.title} onChange={onChange} />
+                    <input className="modifiable" type="text" name="title" value={comment.title} onChange={onChange} />
                 </div>
-                <div>
+                <div className=" flex flex-col mb-3">
                     <label htmlFor="content">Modifier le Commentaire</label>
-                    <input type="text" name="content" value={comment.content} onChange={onChange} />
+                    <input className="modifiable" type="text" name="content" value={comment.content} onChange={onChange} />
                 </div>
-                <div>
+                <div className=" flex flex-col mb-3">
                     <button>Enregistrer les modifications</button>
                 </div>
             </form>

@@ -12,7 +12,12 @@ let getUser = (uid) => { // uid (users id) définis dans userEdit.jsx
     return AxiosCall.get('/users/'+uid)
 }
 
+// Méthode qui modifie les données d'un user:
+let getUpdate = (user) => { // uid (users id) définis dans userEdit.jsx
+    return AxiosCall.patch('/users/' + user.id, user) // Correction de la route
+}
+
 // On exporte les méthodes pour pouvoir s'en servir ailleur:
 export const userService = {
-    getAllUsers, getUser
+    getAllUsers, getUser, getUpdate
 }

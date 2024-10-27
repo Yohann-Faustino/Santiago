@@ -67,7 +67,6 @@ const Comments = () => {
                     }
                 </tbody>
             </table>
-            <button onClick={() => marcel(666)} className="mt-4 p-2 bg-blue-900 text-white rounded">Edit Comments</button>
         </div>
     );
 };

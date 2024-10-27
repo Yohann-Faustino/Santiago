@@ -230,3 +230,16 @@ h3 {
 
     background-color: black;
 }
+
+/*______________________________ UserEdit __________________________________________________*/
+
+.modifiable{
+
+  color: blue
+}
+
+.modifiable:hover{
+
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
