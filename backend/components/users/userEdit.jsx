@@ -32,7 +32,6 @@ const UserEdit = () => {
         try {
             const res = await userService.getUpdate(userWithId);
             console.log(res);
-            // Ajoutez un message de succès ou redirigez
         } catch (err) {
             console.log(err);
         }

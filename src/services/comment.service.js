@@ -30,7 +30,19 @@ let addComment = (commentData) => {
     });
 }
 
+// Méthode qui met à jour un commentaire:
+let updatedComment = (comment) => { 
+    const token = accountService.getToken();
+    
+    return AxiosCall.patch('/comments/' + comment.id, comment, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+};
+
+
 // On exporte les méthodes pour pouvoir s'en servir ailleur:
 export const commentService = {
-    getAllComments, getComment, addComment
+    getAllComments, getComment, addComment, updatedComment
 };

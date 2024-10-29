@@ -29,7 +29,7 @@ const commentController = {
             const newComment = await Comments.create({
                 title,
                 content,
-                users_id 
+                users_id
             });
 
             // On renvoie un message de succès avec les détails du nouveau commentaire:
@@ -51,6 +51,23 @@ const commentController = {
             console.error('Erreur lors de la récupération des commentaires.', err);
             // En cas d'erreur, on renvoie un message d'erreur général:
             res.status(500).json({ message: 'Erreur lors de la récupération des commentaires.' });
+        }
+    },
+
+    // Fonction pour mettre à jour un commentaire par ID
+    updateComment: async (req, res) => { 
+        try {
+            const [updated] = await Comments.update(req.body, { where: { id: req.params.id } });
+
+            if (updated) {
+                const updatedComment = await Comments.findOne({ where: { id: req.params.id } });
+                return res.status(200).json(updatedComment);
+            }
+
+            res.status(404).json({ message: 'Commentaire non trouvé.' });
+        } catch (err) {
+            console.error('Erreur lors de la mise à jour du commentaire :', err);
+            res.status(500).json({ message: 'Erreur interne du serveur lors de la mise à jour du commentaire.' });
         }
     }
 };

@@ -1,17 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { commentService } from "../../../src/services/comment.service";
 import { Link } from "react-router-dom";
 
 const Comments = () => {
-
-    let navigate = useNavigate();
-
-    // Permet de naviguer vers une autre page (commentsEdit) tout en passant un paramètre d'ID commentaire:
-    const marcel = (commentId) => {
-        console.log('boom Comments');
-        navigate("../commentsedit/" + commentId);
-    };
 
     // Ce hook prépare une place pour stocker les données des commentaires une fois qu'elles seront récupérées.
     const [comments, setComments] = useState([]);

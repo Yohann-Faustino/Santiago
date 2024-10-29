@@ -1,11 +1,54 @@
-// Ceci est un router qui découle de la route /coments:
-
 import express from 'express';
 import commentController from '../controllers/comentsController.js';
+import Comments from '../models/comments.js';
 
 const router = express.Router();
 
+// Route pour ajouter un commentaire
 router.post('/', commentController.addComment);
+
+// Route pour récupérer tous les commentaires
 router.get('/', commentController.getAllComments);
+
+// Route pour récupérer un commentaire par ID
+router.get('/:id', async (req, res) => {
+    try {
+        const comment = await Comments.findOne({ where: { id: req.params.id } });
+        if (!comment) {
+            return res.status(404).json({ message: 'Commentaire non trouvé.' });
+        }
+        res.json(comment);
+    } catch (err) {
+        console.error('Erreur lors de la récupération du commentaire :', err);
+        res.status(500).json({ message: 'Erreur lors de la récupération du commentaire.' });
+    }
+});
+
+// Route pour mettre à jour un commentaire par ID
+router.patch('/:id', async (req, res) => {
+    const commentId = req.params.id; 
+    console.log('ID du commentaire à mettre à jour :', commentId);
+    console.log('Données de mise à jour :', req.body);
+
+    // Extraire seulement les champs nécessaires
+    const { title, content, users_id } = req.body;
+
+    try {
+        const updatedComment = await Comments.update(
+            { title, content, users_id },
+            { where: { id: commentId } }
+        );
+
+        // Vérifie si la mise à jour a bien eu lieu
+        if (updatedComment[0] === 0) {
+            return res.status(404).json({ message: 'Commentaire non trouvé ou aucune modification effectuée.' });
+        }
+
+        res.json({ message: 'Commentaire mis à jour avec succès.' });
+    } catch (err) {
+        console.error('Erreur lors de la mise à jour du commentaire :', err);
+        res.status(500).json({ message: 'Erreur lors de la mise à jour du commentaire.' });
+    }
+});
 
 export default router;

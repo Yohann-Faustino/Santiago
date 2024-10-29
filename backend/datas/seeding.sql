@@ -14,10 +14,10 @@ INSERT INTO "Users" ("firstname","lastname","address","city","postalcode","phone
 INSERT INTO "Appointments" ("date", "hour", "details" ) VALUES 
 ('','','');
 
-INSERT INTO "Comments" ("title", "content", "created", "updated") VALUES 
-('Beau boulot', 'Rien à en redire, super service !', NOW(), NOW()),
-('Nipon, ni mauvais', 'Personne super agréable.', NOW(), NOW()),
-('Génial', 'Prens le temps d''expliquer le problème.', NOW(), NOW()),
-('Super expérience', 'Je recommande.', NOW(), NOW());
+INSERT INTO "Comments" ("title", "content", "created", "updated", "users_id") VALUES 
+('Beau boulot', 'Rien à en redire, super service !', NOW(), NOW(), 1),
+('Nipon, ni mauvais', 'Personne super agréable.', NOW(), NOW(), 1),
+('Génial', 'Prens le temps d''expliquer le problème.', NOW(), NOW(), 1),
+('Super expérience', 'Je recommande.', NOW(), NOW(), 1);
 
 COMMIT;
