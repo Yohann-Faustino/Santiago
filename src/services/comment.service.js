@@ -41,8 +41,17 @@ let updatedComment = (comment) => {
     });
 };
 
+let deleteComment = (cid) => {
+    const token = accountService.getToken();
+    
+    return AxiosCall.delete('/comments/' + cid, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+};
 
 // On exporte les méthodes pour pouvoir s'en servir ailleur:
 export const commentService = {
-    getAllComments, getComment, addComment, updatedComment
+    getAllComments, getComment, addComment, updatedComment, deleteComment
 };

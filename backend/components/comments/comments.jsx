@@ -27,12 +27,22 @@ const Comments = () => {
         return () => flag.current = true;
     }, []);
 
+    const delComment = (commentId) => {
+        console.log(commentId)
+        commentService.deleteComment(commentId)
+        .then(res => {
+            console.log(res)
+            setComments((current) => current.filter(comment => comment.id !== commentId))
+        })        .catch(err => console.log(err))
+    }
+
     return (
         <div className="comments flex flex-col p-4">
             <h1 className="mb-4">Comments</h1>
             <table className="min-w-full border-collapse border border-gray-300">
                 <thead>
                     <tr className="bg-red-500">
+                        <th className="p-2 text-center border border-gray-300">🚮</th>
                         <th className="p-2 text-center border border-gray-300">#</th>
                         <th className="p-2 text-center border border-gray-300">Titre</th>
                         <th className="p-2 text-center border border-gray-300">Contenu</th>
@@ -44,6 +54,7 @@ const Comments = () => {
                         comments.map(comment => (
                             // Key explique à React qu'il s'agit de la donnée importante et unique qui identifie les commentaires:
                             <tr key={comment.id} className="hover:bg-gray-100">
+                                <td className=" text-center border border-gray-300" onClick={() => delComment(comment.id)}><span>🗑️</span></td>
                                 <td className="p-2 text-center border border-gray-300">
                                     <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.id}</Link>
                                 </td>

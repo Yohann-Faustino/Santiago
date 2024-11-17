@@ -51,4 +51,21 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
+// Route pour supprimer un commentaire par ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const commentId = req.params.id;
+        const deleted = await Comments.destroy({ where: { id: commentId } });
+
+        if (deleted) {
+            res.status(200).json({ message: "Commentaire supprimé" });
+        } else {
+            res.status(404).json({ error: "Commentaire non trouvé." });
+        }
+    } catch (error) {
+        console.error("Erreur lors de la suppression du commentaire :", error);
+        res.status(500).json({ error: "Erreur lors de la suppression" });
+    }
+});
+
 export default router;

@@ -69,6 +69,26 @@ const commentController = {
             console.error('Erreur lors de la mise à jour du commentaire :', err);
             res.status(500).json({ message: 'Erreur interne du serveur lors de la mise à jour du commentaire.' });
         }
+    },
+
+    // Méthode pour supprimer un commentaire par ID
+    deleteComment: async (req, res) => {
+        try {
+            const { id } = req.params; // Récupère l'ID du commentaire dans l'URL
+            const comment = await Comments.findByPk(id); // Cherche le commentaire en base de données
+
+            if (!comment) {
+                return res.status(404).json({ message: 'Commentaire non trouvé' });
+            }
+
+            // Si le commentaire est trouvé, on le supprime
+            await comment.destroy();
+            return res.status(200).json({ message: 'Commentaire supprimé' });
+        } catch (err) {
+            console.error('Erreur lors de la suppression du commentaire.', err);
+            // En cas d'erreur, on renvoie un message d'erreur général:
+            res.status(500).json({ message: 'Erreur lors de la suppression du commentaire.' });
+        }
     }
 };
 

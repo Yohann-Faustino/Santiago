@@ -39,4 +39,6 @@ router.get('/logout', authController.logout);
 // Route qui permet d'ajouter un commentaire:
 router.post('/comments', authMiddlewareToken, commentController.addComment)
 
+// Route qui permet de supprimer un commentaire:
+router.delete('/:id', commentController.deleteComment);
 export default router;
