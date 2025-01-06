@@ -10,6 +10,7 @@ import commentController from './controllers/comentsController.js';
 import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
 import profileRoute from './routes/profileRoute.js';
 import profileController from './controllers/profileControllers.js';
+import userController from './controllers/userControllers.js';
 
 const router = express.Router();
 
@@ -41,4 +42,8 @@ router.post('/comments', authMiddlewareToken, commentController.addComment)
 
 // Route qui permet de supprimer un commentaire:
 router.delete('/:id', commentController.deleteComment);
+
+// Route qui permet de supprimer un utilisateur:
+router.delete('/users/:id', userController.deleteUser);
+
 export default router;

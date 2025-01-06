@@ -46,4 +46,22 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
+// Route pour supprimer un utilisateur par ID:
+router.delete("/users/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await Users.findByPk(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé." });
+        }
+
+        await user.destroy();
+        res.status(200).json({ message: "Utilisateur supprimé avec succès." });
+    } catch (error) {
+        console.error("Erreur lors de la suppression :", error);
+        res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+});
+
 export default router;
