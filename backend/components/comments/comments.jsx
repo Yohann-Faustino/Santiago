@@ -30,10 +30,10 @@ const Comments = () => {
     const delComment = (commentId) => {
         console.log(commentId)
         commentService.deleteComment(commentId)
-        .then(res => {
-            console.log(res)
-            setComments((current) => current.filter(comment => comment.id !== commentId))
-        })        .catch(err => console.log(err))
+            .then(res => {
+                console.log(res)
+                setComments((current) => current.filter(comment => comment.id !== commentId))
+            }).catch(err => console.log(err))
     }
 
     return (
@@ -54,7 +54,13 @@ const Comments = () => {
                         comments.map(comment => (
                             // Key explique à React qu'il s'agit de la donnée importante et unique qui identifie les commentaires:
                             <tr key={comment.id} className="hover:bg-gray-100">
-                                <td className=" text-center border border-gray-300" onClick={() => delComment(comment.id)}><span>🗑️</span></td>
+                                <td
+                                    className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
+                                    onClick={() => delComment(comment.id)}
+                                    title="Supprimer le commentaire" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer le commentaire
+                                >
+                                    🗑️
+                                </td>
                                 <td className="p-2 text-center border border-gray-300">
                                     <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.id}</Link>
                                 </td>

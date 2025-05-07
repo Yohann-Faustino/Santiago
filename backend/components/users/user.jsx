@@ -35,14 +35,14 @@ const User = () => {
         return () => flag.current = true;
     }, []);
 
-        const delUser = (userId) => {
-            console.log(userId)
-            userService.delUser(userId)
+    const delUser = (userId) => {
+        console.log(userId)
+        userService.delUser(userId)
             .then(res => {
                 console.log(res)
                 setUsers((current) => current.filter(user => user.id !== userId))
-            })        .catch(err => console.log(err))
-        }
+            }).catch(err => console.log(err))
+    }
 
     return (
         <div className="user flex flex-col p-4">
@@ -66,7 +66,13 @@ const User = () => {
                     {
                         users.map(user => (
                             <tr key={user.id} className="hover:bg-gray-100">
-                                <td className=" text-center border border-gray-300" onClick={() => delUser(user.id)}><span>🗑️</span></td>
+                                <td
+                                    className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
+                                    onClick={() => delUser(user.id)}
+                                    title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
+                                >
+                                    🗑️
+                                </td>
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.firstname}</Link></td>
                                 <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.lastname}</Link></td>
