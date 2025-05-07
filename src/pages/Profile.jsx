@@ -2,8 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getProfile, updateProfile, updatePassword } from '../services/profile.service'; // Import des services pour récupérer et mettre à jour les données du profil.
 
 const ProfilePage = () => {
+
+    // Gere le message de prise en compte de la modification du profile.
+    const [message, setMessage] = useState('');
+
     // useState gère le stockage des données du profil de l'utilisateur récupérées par fetchProfileData plus bas:
     const [profileData, setProfileData] = useState(null);
+
     // useState gère l'état des messages d'erreur de toute la page afin d'avoir un code simple et propre:
     const [error, setError] = useState(null);
 
@@ -110,8 +115,12 @@ const ProfilePage = () => {
             }
 
             console.log('Profil mis à jour:', response.data);
+            setMessage('✅ Modifications du profil enregistrées.');
+            // Effacement du message après 3 secondes
+            setTimeout(() => setMessage(''), 3000);
         } catch (error) {
             console.error('Erreur lors de la mise à jour du profil:', error);
+            setMessage('❌ Une erreur est survenue.');
             setError('Erreur lors de la mise à jour du profil.');
         }
     };
@@ -255,6 +264,12 @@ const ProfilePage = () => {
                                 onChange={handlePasswordChange}
                             />
                         </div>
+                    </div>
+                    <div>
+                        {/* Affiche un message de succès ou d'erreur */}
+                        {message && (
+                            <p className="text-green-600 font-semibold mb-4">{message}</p>
+                        )}
                     </div>
 
                     <button type="submit" className="allButton mt-6 mx-auto">

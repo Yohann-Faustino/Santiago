@@ -17,7 +17,8 @@ const UserEdit = () => {
     const flag = useRef(false);
     // Récupération de l'ID du commentaire depuis les paramètres d'URL
 
-    const [message, setMessage] = useState(''); // Gere le message de prise en compte de la modification sur l'user.
+     // Gere le message de prise en compte de la modification sur l'user.
+    const [message, setMessage] = useState('');
 
     const { uid } = useParams();
     console.log(uid);
