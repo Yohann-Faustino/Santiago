@@ -30,7 +30,8 @@ const SliderCom = () => {
       {error ? (
         <div>{error}</div>
       ) : (
-        <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} showArrows={true} interval={3000}>
+        // key={comments.length} relance le carousel apres que les coms soient chargés
+        <Carousel key={comments.length} autoPlay infiniteLoop showThumbs={false} showStatus={false} showArrows={true} interval={3000}>
           {comments.length > 0 ? ( // Si il y a plus de 0 com on les affiches sinon on affiche le code en-dessous:  ") : (" 
             comments.map(comment => (
               <div className="carousel-slide object-contain w-auto" key={comment.id}>

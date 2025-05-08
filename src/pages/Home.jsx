@@ -14,10 +14,10 @@ const Home = () => {
   };
 
   return (
-    <div className="homeBlock flex flex-col lg:flex-row w-full">
-      {/* Section gauche de la page */}
-      <div className="homeLeftBlock w-full lg:w-2/5 p-4 mr-8">
-        <h1 className="colorTitle flex items-center">
+<div className="homeBlock flex flex-col lg:flex-row justify-around">
+{/* Section gauche de la page */}
+      <div className="homeLeftBlock flex-1 p-4 max-w-[600px]">
+      <h1 className="colorTitle flex items-center">
           La société
           {/* Lien vers la page des mentions légales avec le logo */}
           <Link to="/legaldisclaimer">
@@ -46,8 +46,8 @@ const Home = () => {
       </div>
 
       {/* Section droite de la page */}
-      <div className="homeRightBlock w-full lg:w-2/5 p-4">
-        <h2 className="colorTitle">Contact:</h2>
+      <div className="homeRightBlock flex-1 p-4 max-w-[600px]">
+      <h2 className="colorTitle">Contact:</h2>
         <p className="colorh2 mb-3">24 HEURES SUR 24 / 7 JOURS SUR 7</p>
         <ul>
           <li className="colorh2">
@@ -113,7 +113,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-1">
           <h2 className="colorh2 text-center mb-3">DECP en images:</h2>
           <Slider /> {/* Slider pour afficher des images */}
         </div>
