@@ -57,6 +57,12 @@ const AuthenticationPage = () => {
     return passwordRegex.test(password);
   };
 
+  // Permet de voir/cacher le mdp de la page connexionn
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+
+  // Permet de voir/cacher les mdp de la page inscription
+  const [showPasswords, setShowPasswords] = useState(false);
+
   // Soumission du formulaire d'inscription:
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
@@ -167,17 +173,26 @@ const AuthenticationPage = () => {
                 value={loginData.email}
                 onChange={handleLoginChange}
                 required
-                className="border p-2 mb-4 rounded"
+                className="mb-4 p-1 rounded text-center"
               />
-              <input
-                type="password"
-                name="password"
-                placeholder="Mot de passe"
-                value={loginData.password}
-                onChange={handleLoginChange}
-                required
-                className="border p-2 mb-4 rounded"
-              />
+              <div className="relative">
+                <input
+                  type={showLoginPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Mot de passe"
+                  value={loginData.password}
+                  onChange={handleLoginChange}
+                  required
+                  className=" mb-4 p-1 rounded text-center"
+                />
+                <span
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                  className="absolute right-3 top-3 cursor-pointer"
+                >
+                  {showLoginPassword ? "🙈" : "👁️"}
+                </span>
+              </div>
+
               <button type="submit" className="allButton">Se connecter</button>
             </form>
           </div>
@@ -256,26 +271,40 @@ const AuthenticationPage = () => {
                   required
                   className="inputHeight border p-2 mb-4 rounded"
                 />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Mot de passe"
-                  value={signUpData.password}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputHeight border p-2 mb-4 rounded"
-                />
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirmez le mot de passe"
-                  value={signUpData.confirmPassword}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputHeight border p-2 mb-4 rounded"
-                />
+
+                <div className="relative">
+                  <input
+                    type={showPasswords ? "text" : "password"}
+                    name="password"
+                    placeholder="Mot de passe"
+                    value={signUpData.password}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputHeight border p-2 mb-4 rounded w-full pr-10"
+                  />
+
+                  <input
+                    type={showPasswords ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirmez le mot de passe"
+                    value={signUpData.confirmPassword}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputHeight border p-2 mb-4 rounded w-full pr-10"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswords(!showPasswords)}
+                    className="absolute right-3 top-3 text-gray-500"
+                    aria-label="Afficher ou masquer le mot de passe"
+                  >
+                    {showPasswords ? "🙈" : "👁️"}
+                  </button>
+                </div>
+
               </div>
-              <div className="flex items-center mb-4">
+              <div className="mb-4">
                 <input
                   type="checkbox"
                   name="consent"
