@@ -11,9 +11,18 @@ const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Vérifie l'état de connexion et le rôle de l'utilisateur au chargement du composant:
+  // Vérifie l'état de connexion, le rôle de l'utilisateur et si le token a expiré au chargement du composant:
   useEffect(() => {
     const loggedIn = accountService.isLogged();
+
+    if (loggedIn && accountService.isTokenExpired()) {
+      accountService.logout();
+      setIsLoggedIn(false);
+      setIsAdmin(false);
+      console.log("Déconnexion automatique : token expiré.");
+      return;
+    }
+
     setIsLoggedIn(loggedIn);
 
     if (loggedIn) {

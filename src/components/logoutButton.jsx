@@ -10,6 +10,7 @@ const LogoutButton = () => {
 
   // Fonction de déconnection:
   const handleLogout = () => {
+    
     // Supprimez le token JWT:
     accountService.logout();
     // Redirige après l'affichage du message de déconnexion après le délai défini:

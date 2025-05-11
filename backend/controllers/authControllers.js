@@ -81,7 +81,7 @@ const authController = {
             }
 
             // Création du token JWT
-            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "1m" });
 
             // Structure de la réponse avec les informations de l'utilisateur et le token
             const userToReturn = {
@@ -122,7 +122,7 @@ const authController = {
             }
 
             // Crée un token JWT pour l'utilisateur au moment de l'authentification
-            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1m' });
 
             // Réponse avec le token et le rôle de l'utilisateur
             res.status(200).json({
@@ -153,17 +153,11 @@ const authController = {
         }
     },
 
-    // Fonction pour se déconnecter:
+    // Fonction logout:
     async logout(req, res) {
-        // Détruie la session de l'utilisateur pour le déconnecter
-        req.session.destroy(error => {
-            if (error) {
-                return res.status(500).send('Erreur de déconnexion');
-            }
-            // Redirige l'utilisateur après la déconnexion
-            res.redirect('/');
-        });
-    }
+        return res.status(200).json({ message: 'Déconnexion réussie.' });
+    },
+
 };
 
 export default authController;

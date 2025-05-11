@@ -21,10 +21,31 @@ let logout = () => {
 }
 
 // Vérifie si l'utilisateur est connecté en testant la présence du token:
+let isTokenExpired = () => {
+    const token = getToken();
+    if (!token) return true;
+
+    try {
+        const decoded = jwtDecode(token);
+        const now = Date.now() / 1000;
+        return decoded.exp < now;
+    } catch (error) {
+        console.error("Erreur de décodage du token:", error);
+        return true;
+    }
+}
+
 let isLogged = () => {
-    const logged = !!localStorage.getItem('token'); // Utilise getItem pour accéder au token.
-    console.log('Utilisateur connecté:', logged);
-    return logged;
+    const token = getToken();
+    if (!token) return false;
+
+    if (isTokenExpired()) {
+        console.log("Token expiré, déconnexion automatique.");
+        logout(); // supprime le token expiré
+        return false;
+    }
+
+    return true;
 }
 
 // Vérifie le role de l'user:
@@ -68,6 +89,7 @@ let getCurrentUserId = () => {
 export const accountService = {
     login,
     saveToken,
+    isTokenExpired,
     isLogged,
     getRole,
     logout,
