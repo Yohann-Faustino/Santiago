@@ -81,7 +81,8 @@ const authController = {
             }
 
             // Création du token JWT
-            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "1m" });
+            // Penser a modifier aussi la durée du JWT a la ligne 126
+            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
             // Structure de la réponse avec les informations de l'utilisateur et le token
             const userToReturn = {
@@ -122,7 +123,8 @@ const authController = {
             }
 
             // Crée un token JWT pour l'utilisateur au moment de l'authentification
-            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1m' });
+            // Penser a modifier aussi la durée du JWT a la ligne 85
+            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '10m' });
 
             // Réponse avec le token et le rôle de l'utilisateur
             res.status(200).json({

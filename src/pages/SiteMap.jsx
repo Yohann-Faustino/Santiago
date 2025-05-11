@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const SiteMap = () => {
     return (
-        <div className="flex flex-col mb-3">
+        <div className="flex flex-col m-auto mb-3">
             <h1 className="colorTitle" role="heading" aria-level="1">Plan du site</h1>
             <h2 className="colorh2 mb-3" role="heading" aria-level="2">Hiérarchie des pages:</h2>
             <ol className="site-map-list" aria-label="Plan du site">

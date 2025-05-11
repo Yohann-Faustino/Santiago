@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { commentService } from "../../../src/services/comment.service";
 import { Link } from "react-router-dom";
+import SideMenu from "../admin/sideMenu";
 
 const Comments = () => {
 
@@ -37,44 +38,51 @@ const Comments = () => {
     }
 
     return (
-        <div className="comments flex flex-col p-4">
-            <h1 className="mb-4">Comments</h1>
-            <table className="min-w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr className="bg-red-500">
-                        <th className="p-2 text-center border border-gray-300">🚮</th>
-                        <th className="p-2 text-center border border-gray-300">#</th>
-                        <th className="p-2 text-center border border-gray-300">Titre</th>
-                        <th className="p-2 text-center border border-gray-300">Contenu</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        // On utilise map pour parcourir le tableau des données des commentaires et on utilise les props pour les organiser.
-                        comments.map(comment => (
-                            // Key explique à React qu'il s'agit de la donnée importante et unique qui identifie les commentaires:
-                            <tr key={comment.id} className="hover:bg-gray-100">
-                                <td
-                                    className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
-                                    onClick={() => delComment(comment.id)}
-                                    title="Supprimer le commentaire" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer le commentaire
-                                >
-                                    🗑️
-                                </td>
-                                <td className="p-2 text-center border border-gray-300">
-                                    <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.id}</Link>
-                                </td>
-                                <td className="p-2 text-center border border-gray-300">
-                                    <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.title}</Link>
-                                </td>
-                                <td className="p-2 text-center border border-gray-300">
-                                    <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.content}</Link>
-                                </td>
+        <div className="comments flex-col p-4">
+            <h1 className="mb-4">Liste des commentaires:</h1>
+            <div className="commentsSideMenu flex justify-around">
+                <div>
+                    <SideMenu />
+                </div>
+                <div className=" commentsBoard">
+                    <table className="border-collapse border border-gray-300">
+                        <thead>
+                            <tr className="bg-red-500">
+                                <th className="p-2 text-center border border-gray-300">🚮</th>
+                                <th className="p-2 text-center border border-gray-300">#</th>
+                                <th className="p-2 text-center border border-gray-300">Titre</th>
+                                <th className="p-2 text-center border border-gray-300">Contenu</th>
                             </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            {
+                                // On utilise map pour parcourir le tableau des données des commentaires et on utilise les props pour les organiser.
+                                comments.map(comment => (
+                                    // Key explique à React qu'il s'agit de la donnée importante et unique qui identifie les commentaires:
+                                    <tr key={comment.id} className="hover:bg-gray-100">
+                                        <td
+                                            className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
+                                            onClick={() => delComment(comment.id)}
+                                            title="Supprimer le commentaire" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer le commentaire
+                                        >
+                                            🗑️
+                                        </td>
+                                        <td className="p-2 text-center border border-gray-300">
+                                            <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.id}</Link>
+                                        </td>
+                                        <td className="p-2 text-center border border-gray-300">
+                                            <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.title}</Link>
+                                        </td>
+                                        <td className="p-2 text-center border border-gray-300">
+                                            <Link to={`/admin/comments/commentsedit/${comment.id}`}>{comment.content}</Link>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };

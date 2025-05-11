@@ -9,24 +9,9 @@ const SideMenu = () => {
     return (
         <div className="sideMenu border border-gold rounded-lg p-1">
             <ul>
-                <li>
-                    <p className="userSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Users:</p>
-                    <ul>
-                        <li><Link to="/admin/users/indexuser">Liste</Link></li>
-                        <li><Link to="/admin/users/useradd">Ajouter</Link></li>
-                        <li><Link to="/admin/users/useredit">Modifier</Link></li>
-                        <li><Link to="/admin/users/userdel">Supprimer</Link></li>
-                    </ul>
-                </li>
-                <li>
-                    <p className="commentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Comments:</p>
-                    <ul>
-                        <li><Link to="/admin/comments/indexcomments">Liste</Link></li>
-                        <li><Link to="/admin/comments/commentsadd">Ajouter</Link></li>
-                        <li><Link to="/admin/comments/commentsedit">Modifier</Link></li>
-                        <li><Link to="/admin/comments/commentsdel">Supprimer</Link></li>
-                    </ul>
-                </li>
+                        <li className=" text-red-700 text-center mb-2"><Link to="/admin/users/indexuser">- Liste des utilisateurs</Link></li>
+                        <li className=" text-red-700 text-center"><Link to="/admin/comments/indexcomments">- Liste des commentaires</Link></li>
+                        <li className=" text-center mb-2"><Link to="/">- Retour à l'<a href="/" className="linkClick">Accueil</a></Link></li>
                 {/* Partie pout la suite du projet:
                 <li>
                     <p className="appointmentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Appointment:</p>
@@ -37,7 +22,6 @@ const SideMenu = () => {
                         <li><Link to="/admin/appointments/appointmentsDel">Supprimer</Link></li>
                     </ul>
                 </li> */}
-                <li className=" mt-5"><Link to="/">Retour à l'<a href="/" className="linkClick">Accueil</a></Link></li>
             </ul>
         </div>
     );
