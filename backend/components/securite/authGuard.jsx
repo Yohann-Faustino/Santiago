@@ -8,7 +8,7 @@ import { accountService } from '../../../src/services/account.service';
 const AuthGuard = ({ children }) => { // Children renvoie l'enfant qu'il y a entre les balises <AuthGuard>...<AuthGuard/> dnas les routers.
 
   if (!accountService.isLogged()) {
-    return <Navigate to="/auth/signup" />;
+    return <Navigate to="/signup" />;
   }
 
   return children;
