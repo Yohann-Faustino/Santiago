@@ -11,6 +11,7 @@ import authMiddlewareToken from './middlewares/authMiddlewareToken.js';
 import profileRoute from './routes/profileRoute.js';
 import profileController from './controllers/profileControllers.js';
 import userController from './controllers/userControllers.js';
+import authIsAdmin from './controllers/authIsAdmin.js';
 
 const router = express.Router();
 
@@ -41,9 +42,9 @@ router.get('/logout', authController.logout);
 router.post('/comments', authMiddlewareToken, commentController.addComment)
 
 // Route qui permet de supprimer un commentaire:
-router.delete('/:id', commentController.deleteComment);
+router.delete('/comments/:id', authMiddlewareToken, authIsAdmin, commentController.deleteComment);
 
 // Route qui permet de supprimer un utilisateur:
-router.delete('/users/:id', userController.deleteUser);
+router.delete('/users/:id',authMiddlewareToken, authIsAdmin, userController.deleteUser);
 
 export default router;
