@@ -156,16 +156,16 @@ const AuthenticationPage = () => {
   };
 
   return (
-    <div className="signupBlock text-center w-full flex flex-col items-center mb-3">
-      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+    <div className="signupBlock m-auto text-center">
+      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
 
-      <h1 className="text-2xl font-bold mb-6">Connexion/Inscription</h1>
+      <h1 className="colorTitle mb-5">Connexion/Inscription</h1>
 
       {showForm ? (
-        <div className="connexionBlock flex w-11/12">
-          <div className="connexionLeft w-1/2 flex flex-col items-center justify-center bg-yellow-300 border-4 border-yellow-300 rounded-tl-lg rounded-bl-lg">
-            <p className="mt-5 mb-5 text-center">Heureux de vous revoir !</p>
-            <form onSubmit={handleLoginSubmit} className="flex flex-col w-2/3">
+        <div className="connexionBlock flex gap-x-4">
+          <div className="connexionLeft border border-red-500 rounded-lg p-2">
+            <p className="connexionText">Heureux de vous revoir !</p>
+            <form onSubmit={handleLoginSubmit} className="formBlock flex flex-col">
               <input
                 type="email"
                 name="email"
@@ -173,9 +173,9 @@ const AuthenticationPage = () => {
                 value={loginData.email}
                 onChange={handleLoginChange}
                 required
-                className="mb-4 p-1 rounded text-center"
+                className="inputField border rounded-lg p-2"
               />
-              <div className="relative">
+              <div className="inputPasswordWrapper">
                 <input
                   type={showLoginPassword ? "text" : "password"}
                   name="password"
@@ -183,30 +183,31 @@ const AuthenticationPage = () => {
                   value={loginData.password}
                   onChange={handleLoginChange}
                   required
-                  className=" mb-4 p-1 rounded text-center"
+                  className="inputField border rounded-lg p-2"
                 />
                 <span
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
-                  className="absolute right-3 top-3 cursor-pointer"
+                  className="togglePassword"
                 >
                   {showLoginPassword ? "🙈" : "👁️"}
                 </span>
               </div>
-
               <button type="submit" className="allButton">Se connecter</button>
             </form>
           </div>
-          <div className="connexionRight w-1/2 flex flex-col items-center justify-center bg-red-500 border-4 border-red-500 rounded-tr-lg rounded-br-lg">
-            <p className="mt-5 mb-5 text-center">Pas de compte chez nous ?</p>
+
+          <div className="connexionRight border border-blue-700 rounded-lg p-2">
+            <p className="connexionText mt-10">Pas de compte chez nous ?</p>
             <button type="button" onClick={() => setShowForm(false)} className="allButton">Inscription</button>
           </div>
         </div>
       ) : (
-        <div className="inscriptionBlock flex w-11/12">
-          <div className="inscriptionLeft w-1/2 flex flex-col items-center justify-center bg-yellow-300 border-4 border-yellow-300 rounded-tl-lg rounded-bl-lg">
-            <p className="mt-5 mb-5 text-center">Bienvenue, inscrivez-vous !</p>
-            <form onSubmit={handleSignUpSubmit} className="flex flex-col">
-              <div className="inputsForm flex flex-col items-center justify-center">
+        <div className="inscriptionBlock flex text-center gap-x-4">
+          <div className=" border border-blue-600 rounded-lg p-2">
+            <p className="inscriptionText">Bienvenue, inscrivez-vous !</p>
+            <form onSubmit={handleSignUpSubmit} className="formBlock">
+              <div className="inputsForm flex">
+                <div className=" flex flex-col">
                 <input
                   type="text"
                   name="firstname"
@@ -214,7 +215,7 @@ const AuthenticationPage = () => {
                   value={signUpData.firstname}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
                 <input
                   type="text"
@@ -223,7 +224,7 @@ const AuthenticationPage = () => {
                   value={signUpData.lastname}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
                 <input
                   type="text"
@@ -232,7 +233,7 @@ const AuthenticationPage = () => {
                   value={signUpData.address}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
                 <input
                   type="text"
@@ -241,7 +242,7 @@ const AuthenticationPage = () => {
                   value={signUpData.city}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
                 <input
                   type="text"
@@ -250,8 +251,10 @@ const AuthenticationPage = () => {
                   value={signUpData.postalcode}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
+                </div>
+                <div className=" flex flex-col">
                 <input
                   type="text"
                   name="phone"
@@ -260,7 +263,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   pattern="[0-9]{10}"
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
                 <input
                   type="email"
@@ -269,10 +272,9 @@ const AuthenticationPage = () => {
                   value={signUpData.email}
                   onChange={handleSignUpChange}
                   required
-                  className="inputHeight border p-2 mb-4 rounded"
+                  className="inputField border rounded-lg p-2"
                 />
 
-                <div className="relative">
                   <input
                     type={showPasswords ? "text" : "password"}
                     name="password"
@@ -280,9 +282,8 @@ const AuthenticationPage = () => {
                     value={signUpData.password}
                     onChange={handleSignUpChange}
                     required
-                    className="inputHeight border p-2 mb-4 rounded w-full pr-10"
+                    className="inputField border rounded-lg p-2"
                   />
-
                   <input
                     type={showPasswords ? "text" : "password"}
                     name="confirmPassword"
@@ -290,36 +291,37 @@ const AuthenticationPage = () => {
                     value={signUpData.confirmPassword}
                     onChange={handleSignUpChange}
                     required
-                    className="inputHeight border p-2 mb-4 rounded w-full pr-10"
+                    className="inputField border rounded-lg p-2"
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPasswords(!showPasswords)}
-                    className="absolute right-3 top-3 text-gray-500"
+                    className="togglePassword"
                     aria-label="Afficher ou masquer le mot de passe"
                   >
                     {showPasswords ? "🙈" : "👁️"}
                   </button>
-                </div>
-
+                  </div>
               </div>
-              <div className="mb-4">
+
+              <div className="consentBlock">
                 <input
                   type="checkbox"
                   name="consent"
                   checked={signUpData.consent}
                   onChange={handleSignUpChange}
                   required
-                  className="mr-2"
+                  className="consentCheckbox"
                 />
                 <label htmlFor="consent">J'accepte les conditions d'utilisation</label>
               </div>
+
               <button type="submit" className="allButton">S'inscrire</button>
             </form>
           </div>
-          <div className="inscriptionRight w-1/2 flex flex-col items-center justify-center bg-red-500 border-4 border-red-500 rounded-tr-lg rounded-br-lg">
-            <p className="mt-5 mb-5 text-center">Déjà un compte ?</p>
+
+          <div className="inscriptionRight border border-red-500 rounded-lg p-2">
+            <p className="inscriptionText mt-10">Déjà un compte ?</p>
             <button type="button" onClick={() => setShowForm(true)} className="allButton">Connexion</button>
           </div>
         </div>
@@ -327,5 +329,4 @@ const AuthenticationPage = () => {
     </div>
   );
 };
-
 export default AuthenticationPage;
