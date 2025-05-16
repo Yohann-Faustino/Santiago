@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 
 const SideMenu = () => {
     return (
-        <div className="sideMenu border border-gold rounded-lg p-1">
-            <ul>
-                        <li className=" text-red-700 text-center mb-2"><Link to="/admin/users/indexuser">- Liste des utilisateurs</Link></li>
-                        <li className=" text-red-700 text-center"><Link to="/admin/comments/indexcomments">- Liste des commentaires</Link></li>
-                        <li className=" text-center mb-2"><Link to="/">- Retour à l'<a href="/" className="linkClick">Accueil</a></Link></li>
+        <div className="sideMenu border border-red-700 rounded-lg p-2">
+            <ul className=" flex flex-row justify-around">
+                        <li className=" linkClick text-center"><Link to="/admin/users/indexuser">Liste des utilisateurs</Link></li>
+                        <li className=" linkClick text-center"><Link to="/admin/comments/indexcomments">Liste des commentaires</Link></li>
+                        <li className="linkClick text-center"><Link to="/">Retour à l'Accueil</Link></li>
                 {/* Partie pout la suite du projet:
                 <li>
                     <p className="appointmentSideMenuTitle bg-red-500 mb-3 mt-3 rounded-xl text-center">Appointment:</p>

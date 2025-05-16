@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { userService } from "../../../src/services/user.service";
+import SideMenu from "../admin/sideMenu";
 
 const UserEdit = () => {
     // État local pour stocker les données de l'user
@@ -17,7 +18,7 @@ const UserEdit = () => {
     const flag = useRef(false);
     // Récupération de l'ID du commentaire depuis les paramètres d'URL
 
-     // Gere le message de prise en compte de la modification sur l'user.
+    // Gere le message de prise en compte de la modification sur l'user.
     const [message, setMessage] = useState('');
 
     const { uid } = useParams();
@@ -74,12 +75,15 @@ const UserEdit = () => {
 
     return (
         <div className="userEdit p-4">
-            <h1 className="mb-3">UserEdit</h1>
-            <form onSubmit={onSubmit}>
+            <h1 className="mb-3">Modifier l'utilisateur:</h1>
+            <div className=" mb-5">
+                <SideMenu />
+            </div>
+            <form onSubmit={onSubmit} className=" text-center">
                 <div className="flex flex-col mb-3">
                     <label htmlFor="firstname">Modifier le Prénom:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="firstname"
                         value={user.firstname || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -89,7 +93,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="lastname">Modifier le Nom:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="lastname"
                         value={user.lastname || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -99,7 +103,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="email">Modifier l'Email:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="email"
                         value={user.email || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -109,7 +113,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="phone">Modifier le Téléphone:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="phone"
                         value={user.phone || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -119,7 +123,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="address">Modifier l'Adresse:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="address"
                         value={user.address || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -129,7 +133,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="city">Modifier la Ville:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="city"
                         value={user.city || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -139,7 +143,7 @@ const UserEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="postalcode">Modifier le Code Postal:</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="postalcode"
                         value={user.postalcode || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -149,10 +153,12 @@ const UserEdit = () => {
                 <div>
                     {/* Affiche un message de succès ou d'erreur */}
                     {message && (
-                        <p className="text-green-600 font-semibold mb-4">{message}</p>
+                        <p className={`font-semibold mb-4 ${message.startsWith('❌') ? 'text-red-600' : 'text-green-600'}`}>
+                            {message}
+                        </p>
                     )}
                 </div>
-                <div className="flex flex-col mb-3">
+                <div>
                     <button className="mt-4 p-2 bg-blue-900 text-white rounded">Enregistrer</button>
                 </div>
             </form>

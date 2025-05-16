@@ -28,24 +28,27 @@ const Comments = () => {
         return () => flag.current = true;
     }, []);
 
-    const delComment = (commentId) => {
-        console.log(commentId)
-        commentService.deleteComment(commentId)
-            .then(res => {
-                console.log(res)
-                setComments((current) => current.filter(comment => comment.id !== commentId))
-            }).catch(err => console.log(err))
-    }
+const delComment = (commentId) => {
+    const confirmDelete = window.confirm("Es-tu sûr de vouloir supprimer ce commentaire ?");
+    if (!confirmDelete) return;
+
+    commentService.deleteComment(commentId)
+        .then(res => {
+            console.log(res)
+            setComments((current) => current.filter(comment => comment.id !== commentId));
+        })
+        .catch(err => console.log(err));
+}
 
     return (
         <div className="comments flex-col p-4">
             <h1 className="mb-4">Liste des commentaires:</h1>
-            <div className="commentsSideMenu flex justify-around">
+            <div className="commentsSideMenu justify-around">
                 <div>
                     <SideMenu />
                 </div>
                 <div className=" commentsBoard">
-                    <table className="border-collapse border border-gray-300">
+                    <table className="border-collapse border border-gray-300 w-full">
                         <thead>
                             <tr className="bg-red-500">
                                 <th className="p-2 text-center border border-gray-300">🚮</th>

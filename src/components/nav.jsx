@@ -113,7 +113,7 @@ const Nav = () => {
             {isAdmin && (
               <li className={`${activeIndex === 7 ? 'whiteLink' : 'linkNav'}`}>
                 <Link
-                  to="/admin/dashboard"
+                  to="/admin"
                   onClick={() => handleClick(7)}
                   aria-current={activeIndex === 7 ? 'page' : undefined}
                   className="text-left"

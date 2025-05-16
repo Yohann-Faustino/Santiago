@@ -8,15 +8,15 @@ const LayoutAdmin = () => {
     return (
 
         <div className="layoutAdmin">
-            <div id="admin" className="admin flex-col border border-gold m-3 p-2 rounded-lg">
-                <div>
-                    <Header />
+            <main id="admin" className="admin flex-col border border-gold m-3 p-2 rounded-lg" aria-label="contenu principal administrateur">
+                <Header />
+                <div id="adminBody">
+                    {/* Composant spécial de React Router qui sert de point d’insertion pour afficher les composants enfants des routes imbriquées définies dans App.js */}
+                    <Outlet />
                 </div>
-                
-                {/* Outlet composant fourni par react-router-dom utilisé dans les layouts pour afficher les composants enfants qui correspondent à la route actuelle. */}
-                <div id="adminBody"><Outlet /></div>
-            </div>
+            </main>
         </div>
+
     );
 };
 

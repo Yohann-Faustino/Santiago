@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { commentService } from "../../../src/services/comment.service";
+import SideMenu from "../admin/sideMenu";
 
 const CommentsEdit = () => {
     // État local pour stocker les données du commentaire
@@ -78,12 +79,15 @@ const CommentsEdit = () => {
 
     return (
         <div className="commentsEdit p-4">
-            <h1 className="mb-3">Modifier le Commentaire</h1>
-            <form onSubmit={onSubmit}>
+            <h1 className="mb-3">Modifier le Commentaire:</h1>
+            <div className=" mb-5">
+                <SideMenu />
+            </div>
+            <form onSubmit={onSubmit} className=" flex flex-col text-center">
                 <div className="flex flex-col mb-3">
                     <label htmlFor="title">Titre</label>
                     <input
-                        className="modifiable"
+                        className="modifiable text-center"
                         type="text"
                         name="title"
                         value={comment.title || ''} // Affiche le titre actuel ou une chaîne vide
@@ -93,7 +97,7 @@ const CommentsEdit = () => {
                 <div className="flex flex-col mb-3">
                     <label htmlFor="content">Contenu</label>
                     <textarea
-                        className="modifiable"
+                        className="modifiable text-center"
                         name="content"
                         value={comment.content || ''} // Affiche le contenu actuel ou une chaîne vide
                         onChange={onChange} // Appelle onChange lors du changement
@@ -102,10 +106,14 @@ const CommentsEdit = () => {
                 <div>
                     {/* Affiche un message de succès ou d'erreur */}
                     {message && (
-                        <p className="text-green-600 font-semibold mb-4">{message}</p>
+                        <p className={`font-semibold mb-4 ${message.startsWith('❌') ? 'text-red-600' : 'text-green-600'}`}>
+                            {message}
+                        </p>
                     )}
                 </div>
-                <button className="mt-4 p-2 bg-blue-900 text-white rounded">Enregistrer</button>
+                <div>
+                <button className=" p-2 bg-blue-900 text-white rounded">Enregistrer</button>
+            </div>
             </form>
         </div>
     );

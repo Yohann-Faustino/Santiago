@@ -1,17 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { userService } from "../../../src/services/user.service";
 import { Link } from "react-router-dom";
 import SideMenu from "../admin/sideMenu";
 
 const User = () => {
-    // Permet de rediriger l'user vers la page souhaitée:
-    let navigate = useNavigate();
-
-    const userEdit = (userId) => {
-        console.log('modif User');
-        navigate("../useredit/" + userId);
-    };
 
     // Récupères l'utilisateur que l'on souhaite modifier: 
     const [users, setUsers] = useState([]);
@@ -46,9 +38,9 @@ const User = () => {
     }
 
     return (
-        <div className="users flex-col p-4">
+        <div className="users p-4">
             <h1 className="mb-4">Liste des utilisateurs:</h1>
-            <div className="usersSideMenu flex justify-around">                <div>
+            <div className="usersSideMenu w-full">                <div>
                 <SideMenu />
             </div>
                 <div className=" usersBoard">
@@ -71,13 +63,14 @@ const User = () => {
                             {
                                 users.map(user => (
                                     <tr key={user.id} className="hover:bg-gray-100">
-                                        <td
+                                        <button
                                             className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
                                             onClick={() => delUser(user.id)}
+                                            aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
                                             title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
                                         >
                                             🗑️
-                                        </td>
+                                        </button>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.firstname}</Link></td>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.lastname}</Link></td>
