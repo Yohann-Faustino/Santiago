@@ -11,12 +11,12 @@ const authMiddlewareToken = (req, res, next) => {
     return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });
   }
 
-// Vérifie que Le token soit au bon format Bearer sinon la requête est rejetée:
+  // Vérifie que Le token soit au bon format Bearer sinon la requête est rejetée:
   if (!authHeader.startsWith('Bearer ')) { // Vérifie si l'authorization commence par la chaîne "Bearer " sinon cela signifie que le format du token est invalide.
     return res.status(401).json({ message: 'Accès non autorisé. Format du token invalide.' });
   }
 
-// Vérifie la présence du token sinon la requête est rejetée:
+  // Vérifie la présence du token sinon la requête est rejetée:
   const token = authHeader.split(' ')[1]; // On séparer le mot baerer du token pour garder que ce dernier.
   if (!token) {
     return res.status(401).json({ message: 'Accès non autorisé. Token manquant.' });
@@ -29,8 +29,10 @@ const authMiddlewareToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; 
-    req.userRole = decoded.role;
+    req.user = {
+      id: decoded.id,
+      role: decoded.role,
+    };
     next();
   } catch (error) {
     console.error('Erreur lors de la validation du token JWT:', error);

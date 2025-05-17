@@ -1,11 +1,12 @@
 import express from 'express';
-import commentController from '../controllers/comentsController.js';
+import commentController from '../controllers/commentsController.js';
 import Comments from '../models/comments.js';
+import authMiddlewareToken from '../middlewares/authMiddlewareToken.js';
 
 const router = express.Router();
 
 // Route pour ajouter un commentaire
-router.post('/', commentController.addComment);
+router.post('/', authMiddlewareToken, commentController.addComment);
 
 // Route pour récupérer tous les commentaires
 router.get('/', commentController.getAllComments);

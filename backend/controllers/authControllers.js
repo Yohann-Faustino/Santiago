@@ -1,4 +1,4 @@
-// Ce service expose des méthodes pour s'authentifier.
+// Ce contrôleur contient les méthodes d'inscription, de connexion, de récupération de profil et de déconnexion.
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
 import Users from '../models/users.js';
 import validator from 'validator';
 
-// Fonction pour valider le mot de passe si le mot de passe respecte certains critères de sécurité:
+// Fonction pour valider le mot de passe si il respecte certains critères de sécurité définis:
 const validatePassword = (password) => {
     return validator.isStrongPassword(password, {
         minLength: 8, // Au moins 8 caractères
@@ -81,14 +81,16 @@ const authController = {
             }
 
             // Création du token JWT
-            // Penser a modifier aussi la durée du JWT a la ligne 126
-            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "10m" });
+            // Penser a modifier aussi la durée du JWT dans login
+            const token = jwt.sign({ id: newUser.id, role: newUser.role  }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
             // Structure de la réponse avec les informations de l'utilisateur et le token
             const userToReturn = {
                 id: newUser.id,
-                username: newUser.username,
+                firstname: newUser.firstname,
+                lastname: newUser.lastname,
                 email: newUser.email,
+                role: newUser.role,
             };
 
             // Réponse avec le message de succès et le token
@@ -123,7 +125,7 @@ const authController = {
             }
 
             // Crée un token JWT pour l'utilisateur au moment de l'authentification
-            // Penser a modifier aussi la durée du JWT a la ligne 85
+            // Penser a modifier aussi la durée du JWT dans newUser
             const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '10m' });
 
             // Réponse avec le token et le rôle de l'utilisateur

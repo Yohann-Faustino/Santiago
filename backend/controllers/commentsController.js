@@ -6,7 +6,10 @@ import { Op } from "sequelize";
 const commentController = {
     // Méthode pour ajouter un commentaire:
     addComment: async (req, res) => {
-        const { title, content, users_id } = req.body; // On récupère les données du commentaire depuis le corps de la requête.
+        // On récupère les données du commentaire depuis le token d’authentification.
+        console.log("Utilisateur connecté :", req.user);
+        const { title, content } = req.body;
+        const users_id = req.user.id;
 
         try {
             // On calcule la date limite entre deux posts de commentaires (ici 24h):
@@ -55,7 +58,7 @@ const commentController = {
     },
 
     // Fonction pour mettre à jour un commentaire par ID
-    updateComment: async (req, res) => { 
+    updateComment: async (req, res) => {
         try {
             const [updated] = await Comments.update(req.body, { where: { id: req.params.id } });
 

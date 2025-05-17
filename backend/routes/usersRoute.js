@@ -16,7 +16,10 @@ router.get('/', async (req, res) => {
 // Route pour récupérer un utilisateur par ID:
 router.get('/:id', async (req, res) => {
     try {
-        const user = await Users.findOne({ where: { id: req.params.id } });
+        const user = await Users.findOne({
+            where: { id: req.params.id },
+            attributes: { exclude: ['password'] }, // Question de sécurité on ne redemande jamais le password
+        });
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
@@ -31,11 +34,14 @@ router.get('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
     try {
         const [updated] = await Users.update(req.body, {
-            where: { id: req.params.id }
+            where: { id: req.params.id },
         });
 
         if (updated) {
-            const updatedUser = await Users.findOne({ where: { id: req.params.id } });
+            const updatedUser = await Users.findOne({
+                where: { id: req.params.id },
+                attributes: { exclude: ['password'] },  // Question de sécurité on ne redemande jamais le password
+            });
             return res.status(200).json(updatedUser);
         }
 

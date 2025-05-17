@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ecouteur d'évènement 
                 console.log('Réponse du serveur :', result);
                 // Affiche un message puis redirige vers une autre page:
                 alert(result.message);
+                form.reset(); // Permet de vider le form après son utilisation
                 window.location.href = '/'; // Redirection vers la page souhaitée, ici la page d'accueil.
             } else {
                 // Gère les erreurs qui pourraient venir du server:
