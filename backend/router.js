@@ -28,7 +28,7 @@ router.use('/appointments', authMiddlewareToken, appointmentsRoute);
 router.use('/profile', authMiddlewareToken, profileRoute);
 
 // Route pour mettre à jour le profil:
-router.put('/profile/update', profileController.updateProfile);
+router.put('/profile/update', authMiddlewareToken, profileController.updateProfile);
 
 // Route qui permet l'inscription:
 router.post('/signup', authController.signup);

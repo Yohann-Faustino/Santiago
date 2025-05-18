@@ -9,7 +9,7 @@ const commentController = {
         // On récupère les données du commentaire depuis le token d’authentification.
         console.log("Utilisateur connecté :", req.user);
         const { title, content } = req.body;
-        const users_id = req.user.id;
+        const users_id = req.userId;
 
         try {
             // On calcule la date limite entre deux posts de commentaires (ici 24h):

@@ -29,10 +29,12 @@ const authMiddlewareToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = {
-      id: decoded.id,
-      role: decoded.role,
-    };
+    req.userId = decoded.id;   // ici
+    req.userRole = decoded.role; // optionnel
+    /* req.user = {
+       id: decoded.id,
+       role: decoded.role,
+     };*/
     next();
   } catch (error) {
     console.error('Erreur lors de la validation du token JWT:', error);

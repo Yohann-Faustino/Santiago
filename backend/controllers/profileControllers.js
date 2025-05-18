@@ -7,13 +7,12 @@ const profileController = {
     updateProfile: async (req, res) => {
         try {
             // Contient les données envoyées dans la requête HTTP soit les valeurs du profil à mettre à jour:
-            const id = req.userId; 
             const { firstname, lastname, email, phone, address, city, postalcode } = req.body;
 
             // Méthode de Sequelize pour mettre à jour les enregistrements dans la base de données:
             const updatedProfile = await Profile.update(
                 { firstname, lastname, email, phone, address, city, postalcode },
-                { where: { id } }
+                { where: { id: req.userId } }
             );
 
             // Sequelize retourne un tableau où le nombre de lignes affectées par la mise à jour est compté et si c'est 0 cela signifie qu'aucune modifs:
