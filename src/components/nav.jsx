@@ -127,7 +127,7 @@ const Nav = () => {
             <li className={`${activeIndex === 10 ? 'whiteLink' : 'linkNav'}`}>
               <div
                 onClick={() => handleClick(10)}
-                className="text-left"
+                className="text-left cursor-pointer"
                 aria-label="Déconnexion"
               >
                 <LogoutButton />

@@ -83,36 +83,47 @@ const Comments = () => {
   }, []);
 
   return (
-    <div className="commentBlock flex flex-row-reverse m-auto">
-      <div className="commentInputBlock flex flex-col w-1/2 m-3 justify-center text-center">
+    <div className="commentBlock flex flex-row-reverse w-[95%] max-w-[1200px]">
+      <div className="commentInputBlock flex flex-col m-3 justify-center text-center">
         <h1 className="colorTitle mb-3">Laissez un commentaire:</h1>
-        <form onSubmit={onSubmit} className="flex flex-col">
-          <label htmlFor="title">Titre du commentaire:</label>
-          <input
-            className="inputGeneral"
-            type="text"
-            name="title"
-            value={commentData.title}
-            onChange={onChange}
-            required
-            aria-label="Titre du commentaire"
-          />
-          <label htmlFor="content">Écrivez votre commentaire:</label>
-          <textarea
-            className="inputGeneral"
-            name="content"
-            value={commentData.content}
-            onChange={onChange}
-            required
-            aria-label="Écrivez votre commentaire"
-          />
-          <button className="allButton mt-3" type="submit">Envoyer</button>
+
+        {/* Utilisation de fieldset et legend pour le regroupement logique */}
+        <form onSubmit={onSubmit}>
+          <fieldset className=" flex flex-col border p-2 rounded-lg border-blue-600">
+            <legend className="text-lg font-semibold mb-2">Formulaire de commentaire</legend>
+
+            {/* Ajout d'id pour améliorer l'association label/input */}
+            <label htmlFor="title">Titre du commentaire:</label>
+            <input
+              className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="text"
+              id="title"
+              name="title"
+              value={commentData.title}
+              onChange={onChange}
+              required
+            />
+
+            <label htmlFor="content">Écrivez votre commentaire:</label>
+            <textarea
+              className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="content"
+              name="content"
+              value={commentData.content}
+              onChange={onChange}
+              required
+            />
+
+            <button className="allButton mt-3" type="submit">Envoyer</button>
+          </fieldset>
         </form>
+
+        {/* Message d'erreur accessible pour lecteur d'écran */}
+        {error && <div role="alert" className="text-red-600 mt-3">{error}</div>}
       </div>
 
-      <div className="commentListBlock w-1/2">
+      <div className="commentListBlock">
         <h2 className="colorTitle mb-3 text-center">Liste des Commentaires:</h2>
-        {error && <div>{error}</div>}
         <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <ul>
             {comments.map(comment => (
