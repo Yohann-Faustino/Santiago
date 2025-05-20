@@ -157,7 +157,7 @@ const AuthenticationPage = () => {
 
   return (
     <div className="signupBlock m-auto text-center">
-      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+      {errorMessage && <div role="alert" aria-live="assertive" className="errorMessage">{errorMessage}</div>}
 
       <h1 className="colorTitle mb-5">Connexion/Inscription</h1>
 
@@ -174,6 +174,8 @@ const AuthenticationPage = () => {
                 onChange={handleLoginChange}
                 required
                 className="inputField border rounded-lg p-2"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                aria-label="Adresse email"
               />
               <div className="inputPasswordWrapper">
                 <input
@@ -184,6 +186,7 @@ const AuthenticationPage = () => {
                   onChange={handleLoginChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Mot de passe"
                 />
                 <span
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
@@ -192,13 +195,13 @@ const AuthenticationPage = () => {
                   {showLoginPassword ? "🙈" : "👁️"}
                 </span>
               </div>
-              <button type="submit" className="allButton">Se connecter</button>
+              <button type="submit" className="allButton" aria-label="Se connecter">Se connecter</button>
             </form>
           </div>
 
           <div className="connexionRight border border-blue-700 rounded-lg p-2">
             <p className="connexionText mt-10">Pas de compte chez nous ?</p>
-            <button type="button" onClick={() => setShowForm(false)} className="allButton">Inscription</button>
+            <button type="button" aria-label="Allez vers l'inscription" onClick={() => setShowForm(false)} className="allButton">Inscription</button>
           </div>
         </div>
       ) : (
@@ -216,6 +219,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Prénom"
                 />
                 <input
                   type="text"
@@ -225,6 +229,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Nom"
                 />
                 <input
                   type="text"
@@ -234,6 +239,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Adresse postale"
                 />
                 <input
                   type="text"
@@ -243,6 +249,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Ville"
                 />
                 <input
                   type="text"
@@ -252,6 +259,7 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Code postal"
                 />
                 </div>
                 <div className=" flex flex-col">
@@ -264,6 +272,7 @@ const AuthenticationPage = () => {
                   pattern="[0-9]{10}"
                   required
                   className="inputField border rounded-lg p-2"
+                  aria-label="Numéro de téléphone"
                 />
                 <input
                   type="email"
@@ -273,6 +282,8 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="inputField border rounded-lg p-2"
+                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                  aria-label="Adresse email"
                 />
 
                   <input
@@ -283,6 +294,7 @@ const AuthenticationPage = () => {
                     onChange={handleSignUpChange}
                     required
                     className="inputField border rounded-lg p-2"
+                    aria-label="Mot de passe"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
@@ -292,6 +304,7 @@ const AuthenticationPage = () => {
                     onChange={handleSignUpChange}
                     required
                     className="inputField border rounded-lg p-2"
+                    aria-label="Confirmation du mot de passe"
                   />
                   <button
                     type="button"
@@ -312,17 +325,18 @@ const AuthenticationPage = () => {
                   onChange={handleSignUpChange}
                   required
                   className="consentCheckbox"
+                  aria-label="Consentement à la collecte des données"
                 />
                 <label htmlFor="consent">J'accepte les conditions d'utilisation</label>
               </div>
 
-              <button type="submit" className="allButton">S'inscrire</button>
+              <button type="submit" className="allButton" aria-label="S'inscrire">S'inscrire</button>
             </form>
           </div>
 
           <div className="inscriptionRight border border-red-500 rounded-lg p-2">
             <p className="inscriptionText mt-10">Déjà un compte ?</p>
-            <button type="button" onClick={() => setShowForm(true)} className="allButton">Connexion</button>
+            <button type="button" onClick={() => setShowForm(true)} className="allButton" aria-label="Retour à la connexion">Connexion</button>
           </div>
         </div>
       )}

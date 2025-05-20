@@ -28,14 +28,22 @@ const User = () => {
         return () => flag.current = true;
     }, []);
 
-    const delUser = (userId) => {
-        console.log(userId)
+    const delUser = (userId, userRole, userFullName) => {
+        const isAdmin = userRole === "admin" || userRole === "administrateur";
+
+        const confirmationMessage = isAdmin
+            ? `⚠️ Attention : tu t'apprêtes à supprimer un administrateur (${userFullName}). Es-tu sûr(e) de vouloir continuer ?`
+            : `Es-tu sûr(e) de vouloir supprimer l'utilisateur ${userFullName} ?`;
+
+        if (!window.confirm(confirmationMessage)) return;
+
         userService.delUser(userId)
             .then(res => {
-                console.log(res)
-                setUsers((current) => current.filter(user => user.id !== userId))
-            }).catch(err => console.log(err))
-    }
+                console.log(res);
+                setUsers((current) => current.filter(user => user.id !== userId));
+            })
+            .catch(err => console.log(err));
+    };
 
     return (
         <div className="users p-4">
@@ -65,8 +73,9 @@ const User = () => {
                                     <tr key={user.id} className="hover:bg-gray-100">
                                         <button
                                             className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
-                                            onClick={() => delUser(user.id)}
-                                            aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
+                                            onClick={() =>
+                                                delUser(user.id, user.role, `${user.firstname} ${user.lastname}`)
+                                            } aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
                                             title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
                                         >
                                             🗑️
