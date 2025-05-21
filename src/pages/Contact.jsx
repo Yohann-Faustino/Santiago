@@ -36,7 +36,7 @@ const Contact = () => {
             </div>
 
             {/* Informations légales */}
-            <div className="text-sm text-red-700 mt-4">
+            <div className="text-sm colorTitle mt-4">
                 <p>SIRET : 752 567 859 00018</p>
                 <p>TVA : FR 71 752567859</p>
                 <p>Code APE : 4322A</p>

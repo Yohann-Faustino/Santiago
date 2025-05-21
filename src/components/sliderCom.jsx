@@ -37,7 +37,7 @@ const SliderCom = () => {
               <div className="carousel-slide object-contain w-auto" key={comment.id}>
                 <div className="carousel-content p-4 bg-white rounded-lg ">
                   <h3 className="text-xl font-bold text-red-700">{comment.title}</h3>
-                  <p>{comment.content}</p>
+                  <p className=" text-black">{comment.content}</p>
                 </div>
               </div>
             ))

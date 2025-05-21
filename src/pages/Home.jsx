@@ -54,7 +54,7 @@ const Home = () => {
           </div>
 
           {/* Informations légales */}
-          <div className="text-sm text-red-700">
+          <div className="text-sm colorTitle">
             <p>SIRET : 752 567 859 00018</p>
             <p>TVA : FR 71 752567859</p>
             <p>Code APE : 4322A</p>

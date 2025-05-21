@@ -12,7 +12,8 @@ const UserEdit = () => {
         phone: '',
         address: '',
         city: '',
-        postalCode: ''
+        postalCode: '',
+        role: ''
     });
     // Référence pour contrôler si le composant a été monté
     const flag = useRef(false);
@@ -159,6 +160,19 @@ const UserEdit = () => {
                         </p>
                     )}
                 </div>
+                <div className="flex flex-col mb-3">
+                    <label htmlFor="role">Modifier le Rôle :</label>
+                    <select
+                        name="role"
+                        value={user.role || 'utilisateur'}
+                        onChange={onChange}
+                        className="modifiable text-center p-2 border"
+                    >
+                        <option value="utilisateur">Utilisateur</option>
+                        <option value="admin">Administrateur</option>
+                    </select>
+                </div>
+
                 <div>
                     <button className="mt-4 p-2 bg-blue-900 text-white rounded">Enregistrer</button>
                 </div>

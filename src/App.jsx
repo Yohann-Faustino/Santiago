@@ -7,10 +7,14 @@ import PublicRouter from './publicRouter/publicRouter';
 import AdminRouter from '../backend/adminRouter/adminRouter';
 import AuthRouter from '../backend/authRouter/authRouter';
 import AuthGuard from '../backend/components/securite/authGuard';
+import ThemeToggle from './components/themeToggle';
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors">
+      <div className="fixed top-12 right-2 z-50">
+        <ThemeToggle />
+      </div>
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<PublicRouter />} />

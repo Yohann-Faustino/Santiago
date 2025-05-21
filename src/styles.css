@@ -50,6 +50,18 @@ h3 {
 
 /*_________________________________ Classes générales _________________________________________________*/
 
+.darkModeRed {
+
+  @apply
+    bg-red-500 
+}
+
+.darkModeBleu {
+
+  @apply
+    bg-blue-300 
+}
+
 .linkNav {
 
     @apply 
@@ -61,6 +73,7 @@ h3 {
     pr-1
     rounded-tr-xl 
     rounded-br-xl 
+    text-black
     text-center
     w-auto;
 }
@@ -92,26 +105,15 @@ h3 {
 }
 
 .colorTitle {
-
-    @apply  text-red-700;
+  @apply text-red-700 dark:text-red-400;
 }
 
 .colorh2 {
-
-    @apply  text-blue-900;
+  @apply text-blue-900 dark:text-blue-300;
 }
 
 .linkClick {
-
-    @apply  
-    text-blue-900 
-    underline 
-    rounded-tr-xl 
-    rounded-br-xl    
-    rounded-tl-xl 
-    rounded-bl-xl
-    pl-1
-    pr-1;
+  @apply text-blue-900 dark:text-blue-300 underline rounded-tr-xl rounded-br-xl rounded-tl-xl rounded-bl-xl pl-1 pr-1;
 }
 
 .linkClick:hover {
