@@ -42,12 +42,21 @@ const authController = {
 
         console.log("Requête d'inscription reçue :", req.body);
 
+        const count = await Users.count();
+console.log("Nombre d'utilisateurs dans la base :", count);
+
         try {
             // Vérification de l'existence de l'email
             const userExists = await Users.findOne({ where: { email } });
             if (userExists) {
                 return res.status(409).json({ message: "Cet email est déjà utilisé." });
             }
+
+            // Compter le nombre d'utilisateurs existants dans la bdd
+            const existingUsersCount = await Users.count();
+
+            // Définir le rôle: premier inscrit = admin, sinon user
+            const role = existingUsersCount === 0 ? 'admin' : 'user';
 
             // Vérifie si le mot de passe est suffisamment sécurisé
             if (!validatePassword(password)) {
@@ -68,7 +77,8 @@ const authController = {
                 postalcode,
                 phone,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                role
             });
 
             if (!newUser || !newUser.id) {
@@ -82,7 +92,7 @@ const authController = {
 
             // Création du token JWT
             // Penser a modifier aussi la durée du JWT dans login
-            const token = jwt.sign({ id: newUser.id, role: newUser.role  }, process.env.JWT_SECRET, { expiresIn: "10m" });
+            const token = jwt.sign({ id: newUser.id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
             // Structure de la réponse avec les informations de l'utilisateur et le token
             const userToReturn = {

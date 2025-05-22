@@ -1,5 +1,3 @@
-// Attention on a fait deux fonctions de soumissions de form car sinon il y aurait un message d'erreur lors de la soumission de l'un d'eux car l'autre n'est pas soumis avec des données.
-
 import React, { useState } from "react";
 import AxiosCall from "../services/axiosCall";
 import { useNavigate, Link } from "react-router-dom";
@@ -31,6 +29,9 @@ const AuthenticationPage = () => {
 
   // Centralisation des messages d'erreurs et évite qu'on recharge la page pour les afficher:
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Gère le message de la réussite à l'inscription ou connexion
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Permet de rediriger l'user vers la page choisie dans la suite du code:
   const navigate = useNavigate();
@@ -96,7 +97,6 @@ const AuthenticationPage = () => {
         // Sauvegarde du rôle de l'utilisateur dans le localStorage:
         localStorage.setItem('role', response.data.user.role); // Permet de stocker  le role.
 
-        alert('Inscription réussie !');
         setSignUpData({
           firstname: '',
           lastname: '',
@@ -109,8 +109,18 @@ const AuthenticationPage = () => {
           confirmPassword: '',
           consent: false
         });
+
+        // On met 2 secondes de latence pour que l'user vois que son inscription a bien fonctionné
+        setSuccessMessage('Inscription réussie !');
         setErrorMessage('');
-        navigate('/');
+
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 2000);
+        navigate('/signup');
+
+        // On peut basculer sur le formulaire de connexion automatiquement après inscription réussie
+        setShowForm(true);
       } else {
         setErrorMessage(response.data.message || 'Erreur lors de l\'inscription.');
       }
@@ -142,10 +152,16 @@ const AuthenticationPage = () => {
         }
 
         setLoginData({ email: '', password: '' });
-        alert('Connexion réussie !');
+
+        // On met 2 secondes de latence pour que l'user vois que sa connexion a bien fonctionné
+        setSuccessMessage('Connexion réussie !');
         setErrorMessage('');
-        navigate('/');
-        window.location.reload(); // Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur sinon il est considéré comme non connecté.
+
+        setTimeout(() => {
+          setSuccessMessage('');
+          navigate('/');
+          window.location.reload();// Rafraîchissement de la page pour mettre à jour l'état de l'utilisateur sinon il est considéré comme non connecté.
+        }, 2000);
       } else {
         setErrorMessage(response.data.message || 'Erreur lors de la connexion.');
       }
@@ -160,6 +176,8 @@ const AuthenticationPage = () => {
       {errorMessage && <div role="alert" aria-live="assertive" className="errorMessage">{errorMessage}</div>}
 
       <h1 className="colorTitle mb-5">Connexion/Inscription</h1>
+
+      {successMessage && <p className="text-green-600" role="alert" aria-live="polite">{successMessage}</p>}
 
       {showForm ? (
         <div className="connexionBlock flex gap-x-4">
@@ -201,7 +219,11 @@ const AuthenticationPage = () => {
 
           <div className="connexionRight border border-blue-700 rounded-lg p-2">
             <p className="connexionText mt-10">Pas de compte chez nous ?</p>
-            <button type="button" aria-label="Allez vers l'inscription" onClick={() => setShowForm(false)} className="allButton">Inscription</button>
+            <button type="button" aria-label="Allez vers l'inscription" onClick={() => {
+              setShowForm(false);
+              setErrorMessage('');
+              setSuccessMessage('');
+            }} className="allButton">Inscription</button>
           </div>
         </div>
       ) : (
@@ -211,80 +233,80 @@ const AuthenticationPage = () => {
             <form onSubmit={handleSignUpSubmit} className="formBlock">
               <div className="inputsForm flex">
                 <div className=" flex flex-col">
-                <input
-                  type="text"
-                  name="firstname"
-                  placeholder="Prénom"
-                  value={signUpData.firstname}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Prénom"
-                />
-                <input
-                  type="text"
-                  name="lastname"
-                  placeholder="Nom"
-                  value={signUpData.lastname}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Nom"
-                />
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Adresse"
-                  value={signUpData.address}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Adresse postale"
-                />
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="Ville"
-                  value={signUpData.city}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Ville"
-                />
-                <input
-                  type="text"
-                  name="postalcode"
-                  placeholder="Code Postal"
-                  value={signUpData.postalcode}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Code postal"
-                />
+                  <input
+                    type="text"
+                    name="firstname"
+                    placeholder="Prénom"
+                    value={signUpData.firstname}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Prénom"
+                  />
+                  <input
+                    type="text"
+                    name="lastname"
+                    placeholder="Nom"
+                    value={signUpData.lastname}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Nom"
+                  />
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Adresse"
+                    value={signUpData.address}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Adresse postale"
+                  />
+                  <input
+                    type="text"
+                    name="city"
+                    placeholder="Ville"
+                    value={signUpData.city}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Ville"
+                  />
+                  <input
+                    type="text"
+                    name="postalcode"
+                    placeholder="Code Postal"
+                    value={signUpData.postalcode}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Code postal"
+                  />
                 </div>
                 <div className=" flex flex-col">
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Téléphone"
-                  value={signUpData.phone}
-                  onChange={handleSignUpChange}
-                  pattern="[0-9]{10}"
-                  required
-                  className="inputField border rounded-lg p-2"
-                  aria-label="Numéro de téléphone"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={signUpData.email}
-                  onChange={handleSignUpChange}
-                  required
-                  className="inputField border rounded-lg p-2"
-                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                  aria-label="Adresse email"
-                />
+                  <input
+                    type="text"
+                    name="phone"
+                    placeholder="Téléphone"
+                    value={signUpData.phone}
+                    onChange={handleSignUpChange}
+                    pattern="[0-9]{10}"
+                    required
+                    className="inputField border rounded-lg p-2"
+                    aria-label="Numéro de téléphone"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={signUpData.email}
+                    onChange={handleSignUpChange}
+                    required
+                    className="inputField border rounded-lg p-2"
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    aria-label="Adresse email"
+                  />
 
                   <input
                     type={showPasswords ? "text" : "password"}
@@ -314,7 +336,7 @@ const AuthenticationPage = () => {
                   >
                     {showPasswords ? "🙈" : "👁️"}
                   </button>
-                  </div>
+                </div>
               </div>
 
               <div className="consentBlock">
@@ -336,7 +358,11 @@ const AuthenticationPage = () => {
 
           <div className="inscriptionRight border border-red-500 rounded-lg p-2">
             <p className="inscriptionText mt-10">Déjà un compte ?</p>
-            <button type="button" onClick={() => setShowForm(true)} className="allButton" aria-label="Retour à la connexion">Connexion</button>
+            <button type="button" onClick={() => {
+              setShowForm(true);
+              setErrorMessage('');
+              setSuccessMessage('');
+            }} className="allButton" aria-label="Retour à la connexion">Connexion</button>
           </div>
         </div>
       )}

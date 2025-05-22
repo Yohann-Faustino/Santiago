@@ -1,3 +1,5 @@
+// C'est le router dédié à l'authentification
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "../../src/pages/SignUp";

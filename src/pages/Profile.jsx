@@ -152,7 +152,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="firstname">Prénom</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="firstname"
                                 name="firstname"
@@ -163,7 +163,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="lastname">Nom</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="lastname"
                                 name="lastname"
@@ -174,7 +174,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="email">Email</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="email"
                                 id="email"
                                 name="email"
@@ -186,7 +186,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="phone">Téléphone</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="phone"
                                 name="phone"
@@ -197,7 +197,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="address">Adresse</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="address"
                                 name="address"
@@ -208,7 +208,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="city">Ville</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="city"
                                 name="city"
@@ -219,7 +219,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="postalcode">Code Postal</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="text"
                                 id="postalcode"
                                 name="postalcode"
@@ -235,7 +235,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="currentPassword">Password actuel</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="password"
                                 id="currentPassword"
                                 name="currentPassword"
@@ -246,7 +246,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="newPassword">Nouveau password</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="password"
                                 id="newPassword"
                                 name="newPassword"
@@ -257,7 +257,7 @@ const ProfilePage = () => {
                         <div className="input-group">
                             <label htmlFor="confirmNewPassword">Confirmer password</label>
                             <input
-                                className='inputGeneral'
+                                className='inputGeneral text-black'
                                 type="password"
                                 id="confirmNewPassword"
                                 name="confirmNewPassword"
