@@ -13,8 +13,20 @@ import profileController from './controllers/profileControllers.js';
 import userController from './controllers/userControllers.js';
 import authIsAdmin from './controllers/authIsAdmin.js';
 import adminControllers from './controllers/adminControllers.js';
+import rateLimit from 'express-rate-limit';
 
 const router = express.Router();
+
+// Middleware de limitation sur forgot-password
+const forgotPasswordLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 1,
+  message: {
+    message: 'Trop de tentatives de réinitialisation. Réessayez dans 5 minutes.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Route pour tester la communication:
 router.get('/', (req, res) => {
@@ -50,5 +62,11 @@ router.delete('/comments/:id', authMiddlewareToken, authIsAdmin, commentControll
 
 // Route qui permet de supprimer un utilisateur:
 router.delete('/users/:id',authMiddlewareToken, authIsAdmin, userController.deleteUser);
+
+// Route qui permet d'accéder au mdp oublié:
+router.post('/forgot-password', forgotPasswordLimiter, authController.forgotPassword);
+
+// Route qui permet de reset le mdp oublié:
+router.post('/reset-password', authController.resetPassword);
 
 export default router;

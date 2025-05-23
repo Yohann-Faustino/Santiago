@@ -191,7 +191,7 @@ const AuthenticationPage = () => {
                 value={loginData.email}
                 onChange={handleLoginChange}
                 required
-                className="inputField border rounded-lg p-2"
+                className="inputField border rounded-lg p-2 mb-1"
                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                 aria-label="Adresse email"
               />
@@ -203,7 +203,7 @@ const AuthenticationPage = () => {
                   value={loginData.password}
                   onChange={handleLoginChange}
                   required
-                  className="inputField border rounded-lg p-2"
+                  className="inputField border rounded-lg p-2 mb-1"
                   aria-label="Mot de passe"
                 />
                 <span
@@ -213,10 +213,14 @@ const AuthenticationPage = () => {
                   {showLoginPassword ? "🙈" : "👁️"}
                 </span>
               </div>
+              <p className=" mb-1">
+                <Link to="/forgot-password">
+                  Mot de passe oublié ?
+                </Link>
+              </p>
               <button type="submit" className="allButton" aria-label="Se connecter">Se connecter</button>
             </form>
           </div>
-
           <div className="connexionRight border border-blue-700 rounded-lg p-2">
             <p className="connexionText mt-10">Pas de compte chez nous ?</p>
             <button type="button" aria-label="Allez vers l'inscription" onClick={() => {

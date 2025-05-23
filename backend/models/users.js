@@ -59,6 +59,14 @@ Users.init({
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: 'user' // Valeur par défaut, par exemple, 'user' pour les utilisateurs normaux.
+    },
+        resettoken: { // Sert pour la fonction mdp oublié
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    resettokenexpiry: { // Sert pour la fonction mdp oublié
+        type: DataTypes.DATE,
+        allowNull: true
     }
 },
 

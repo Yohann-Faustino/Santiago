@@ -5,6 +5,9 @@ import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
 import Users from '../models/users.js';
 import validator from 'validator';
+import crypto from 'crypto';
+import sendEmail from '../../src/services/sendEmail.js';
+import rateLimit from 'express-rate-limit';
 
 // Fonction pour valider le mot de passe si il respecte certains critères de sécurité définis:
 const validatePassword = (password) => {
@@ -42,9 +45,6 @@ const authController = {
 
         console.log("Requête d'inscription reçue :", req.body);
 
-        const count = await Users.count();
-console.log("Nombre d'utilisateurs dans la base :", count);
-
         try {
             // Vérification de l'existence de l'email
             const userExists = await Users.findOne({ where: { email } });
@@ -54,6 +54,8 @@ console.log("Nombre d'utilisateurs dans la base :", count);
 
             // Compter le nombre d'utilisateurs existants dans la bdd
             const existingUsersCount = await Users.count();
+            console.log("Nombre d'utilisateurs dans la base :", existingUsersCount);
+
 
             // Définir le rôle: premier inscrit = admin, sinon user
             const role = existingUsersCount === 0 ? 'admin' : 'user';
@@ -171,6 +173,87 @@ console.log("Nombre d'utilisateurs dans la base :", count);
     async logout(req, res) {
         return res.status(200).json({ message: 'Déconnexion réussie.' });
     },
+
+    // Fonction de réinitialisation du mdp:
+    async forgotPassword(req, res) {
+        const { email } = req.body;
+
+        try {
+            const user = await Users.findOne({ where: { email } });
+            if (!user) {
+                return res.status(404).json({ message: 'Aucun utilisateur trouvé avec cet email.' });
+            }
+
+            // Génère un token de réinitialisation
+            const token = crypto.randomBytes(32).toString('hex');
+            const expiry = Date.now() + 3600000; // Token valable 1h
+
+            // Enregistre le token et sa date d'expiration
+            user.resettoken = token;
+            user.resettokenexpiry = expiry;
+            await user.save();
+
+
+            // Url a modifier une fois mis en ligne
+            // Construit le lien de réinitialisation
+            const resetLink = `http://localhost:5173/reset-password?token=${token}`;
+
+
+
+            // Envoie l’e-mail
+            await sendEmail({
+                to: user.email,
+                subject: 'Réinitialisation du mot de passe',
+                html: `
+    Bonjour ${user.firstname},
+    Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}
+    Ce lien est valable 1 heure.
+  `});
+
+            res.status(200).json({ message: 'Un email de réinitialisation a été envoyé.' });
+
+        } catch (err) {
+            console.error('Erreur forgotPassword :', err);
+            res.status(500).json({ message: 'Erreur lors de la demande de réinitialisation.' });
+        }
+    },
+
+    // Fonction de réinitialisation du mot de passe
+async resetPassword(req, res) {
+    const { token, newPassword } = req.body;
+
+    console.log("resetPassword - token reçu :", token);
+    console.log("resetPassword - newPassword reçu :", newPassword);
+
+    try {
+        const user = await Users.findOne({
+            where: {
+                resettoken: token,
+                resettokenexpiry: { [Op.gt]: Date.now() }
+            }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Token invalide ou expiré.' });
+        }
+
+        if (!validatePassword(newPassword)) {
+            return res.status(400).json({ message: 'Mot de passe trop faible.' });
+        }
+
+        user.password = await hashPassword(newPassword);
+        user.resettoken = null;
+        user.resettokenexpiry = null;
+        await user.save();
+
+        res.status(200).json({ message: 'Mot de passe mis à jour avec succès.' });
+
+    } catch (err) {
+        console.error('Erreur resetPassword :', err);
+        res.status(500).json({ message: 'Échec de la réinitialisation.' });
+    }
+}
+,
 
 };
 

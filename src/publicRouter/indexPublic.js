@@ -15,3 +15,5 @@ export { default as Services } from '../pages/Service';
 export { default as SignUp } from '../pages/SignUp';
 export { default as SiteMap } from '../pages/SiteMap';
 export { default as AuthGuard } from  '../../backend/components/securite/authGuard';
+export { default as ForgotPassword } from '../pages/ForgotPassword';
+export { default as ResetPassword} from '../pages/ResetPassword';

@@ -17,7 +17,9 @@ CREATE TABLE "Users" (
     phone TEXT,
     email TEXT UNIQUE,
     password TEXT,
-    role TEXT
+    role TEXT,
+    resettoken TEXT,
+    resettokenexpiry TIMESTAMPTZ 
 
 );
 
