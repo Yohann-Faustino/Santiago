@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AxiosCall from "../services/axiosCall";
 import { useNavigate, Link } from "react-router-dom";
 import { accountService } from "../services/account.service";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const AuthenticationPage = () => {
   // Surveille et met à jour le code qui proviens des éléments de l'inscription:
@@ -17,6 +18,9 @@ const AuthenticationPage = () => {
     confirmPassword: '',
     consent: false
   });
+
+  // Ajouter un état pour le token captcha
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   // Surveille et met à jour le code qui proviens des éléments de la connexion:
   const [loginData, setLoginData] = useState({
@@ -68,6 +72,12 @@ const AuthenticationPage = () => {
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
 
+    // Vérification du captcha
+    if (!captchaToken) {
+      setErrorMessage("Veuillez valider le CAPTCHA.");
+      return;
+    }
+
     // Vérification du consentement:
     if (!signUpData.consent) {
       setErrorMessage("Vous devez consentir à la collecte et au traitement de vos données personnelles.");
@@ -88,7 +98,7 @@ const AuthenticationPage = () => {
 
     try {
       // Envoi des données d'inscription:
-      const response = await AxiosCall.post('/signup', signUpData);
+      const response = await AxiosCall.post('/signup', signUpData, captchaToken);
 
       if (response.status === 201) {
         // Sauvegarde du token d'authentification:
@@ -170,6 +180,12 @@ const AuthenticationPage = () => {
       setErrorMessage('Erreur lors de la connexion. Veuillez réessayer plus tard.');
     }
   };
+
+  // Fonction pour gérer le changement du captcha:
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
 
   return (
     <div className="signupBlock m-auto text-center">
@@ -343,7 +359,7 @@ const AuthenticationPage = () => {
                 </div>
               </div>
 
-              <div className="consentBlock">
+              <div className="consentBlock m-2">
                 <input
                   type="checkbox"
                   name="consent"
@@ -355,7 +371,12 @@ const AuthenticationPage = () => {
                 />
                 <label htmlFor="consent">J'accepte les conditions d'utilisation</label>
               </div>
-
+              <div className="  flex justify-center">
+              <ReCAPTCHA
+                sitekey="6LdmFUorAAAAAMOQTxYzhxvzHowIFd6uox_1N7b7" // Clef récupérée sur Google ReCaptcha
+                onChange={handleCaptchaChange}
+              />
+              </div>
               <button type="submit" className="allButton" aria-label="S'inscrire">S'inscrire</button>
             </form>
           </div>

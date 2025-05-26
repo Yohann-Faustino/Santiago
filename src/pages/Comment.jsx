@@ -114,7 +114,7 @@ const Comments = () => {
               required
             />
 
-            <button className="allButton mt-3" type="submit">Envoyer</button>
+            <button className="allButton" type="submit">Envoyer</button>
           </fieldset>
         </form>
 

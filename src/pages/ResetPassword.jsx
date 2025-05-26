@@ -6,8 +6,9 @@ import validator from "validator";
 const ResetPassword = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');  const navigate = useNavigate();
+  const token = queryParams.get('token');  const navigate = useNavigate(); // On récupère le token de l'URL
 
+  // États locaux pour le formulaire
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Vérifie la robustesse du mot de passe avec validator
   const isPasswordStrong = validator.isStrongPassword(password, {
     minLength: 8,
     minLowercase: 1,
@@ -54,7 +56,7 @@ const ResetPassword = () => {
 
       if (response.status === 200) {
         setMessage("✅ Mot de passe réinitialisé avec succès !");
-        setTimeout(() => navigate("/signup"), 2000);
+        setTimeout(() => navigate("/signup"), 2000); // Redirection après 2s
       }
     } catch (err) {
       setError(
@@ -68,7 +70,7 @@ const ResetPassword = () => {
 
   return (
     <div className="resetPasswordContainer m-auto max-w-md p-4">
-      <h1 className="colorTitle mb-5 text-center text-2xl font-bold">
+      <h1 className="colorTitle mb-5 text-center">
         Réinitialisation du mot de passe
       </h1>
 
@@ -82,7 +84,7 @@ const ResetPassword = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="inputField border rounded-lg w-full p-2 mb-3"
+          className="inputField border rounded-lg w-full p-2 mb-3 text-center"
         />
 
         <input
@@ -91,13 +93,13 @@ const ResetPassword = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          className="inputField border rounded-lg w-full p-2 mb-3"
+          className="inputField border rounded-lg w-full p-2 mb-3 text-center"
         />
 
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="text-sm text-blue-600 mb-4 underline self-start"
+          className="text-sm text-blue-600 mb-4 underline"
         >
           {showPassword ? "🙈 Masquer les mots de passe" : "👁️ Afficher les mots de passe"}
         </button>

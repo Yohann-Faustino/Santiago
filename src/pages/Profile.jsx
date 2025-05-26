@@ -15,6 +15,9 @@ const ProfilePage = () => {
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas:
     const flag = useRef(false);
 
+    // État unique pour afficher/cacher tous les mots de passe en même temps
+    const [showPasswords, setShowPasswords] = useState(false);
+
     // Ce hook s'active en même temps qu'un événement particulier choisi par le dev, et s'il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
     // useEffect permet de charger progressivement les données car il demande de charger les données de la bdd après que la page soit chargée.
     // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
@@ -137,7 +140,7 @@ const ProfilePage = () => {
 
     // Si les données du profil sont chargées sans erreur alors on affiche les données:
     return (
-        <div className="profile-container mx-auto w-1/2">
+        <div className="profile-container mx-auto w-1/4">
             <h1 className="colorTitle text-center">Mon Profil</h1>
             <div className="cards">
                 <form
@@ -231,12 +234,22 @@ const ProfilePage = () => {
 
                     {/* Changement de mot de passe */}
                     <div>
-                        <h2 className=" colorh2">Changement password</h2>
+                        <div className=' flex'>
+                            <h2 className=" colorh2 w-1/2">Changement password</h2>
+                            <button
+                                type="button"
+                                className='w-1/2 items-center '
+                                onClick={() => setShowPasswords(!showPasswords)}
+                                aria-label={showPasswords ? 'Cacher les mots de passe' : 'Afficher les mots de passe'}
+                            >
+                                {showPasswords ? '🙈' : '👁️'}
+                            </button>
+                        </div>
                         <div className="input-group">
                             <label htmlFor="currentPassword">Password actuel</label>
                             <input
                                 className='inputGeneral text-black'
-                                type="password"
+                                type={showPasswords ? 'text' : 'password'}
                                 id="currentPassword"
                                 name="currentPassword"
                                 value={passwordData.currentPassword}
@@ -247,7 +260,7 @@ const ProfilePage = () => {
                             <label htmlFor="newPassword">Nouveau password</label>
                             <input
                                 className='inputGeneral text-black'
-                                type="password"
+                                type={showPasswords ? 'text' : 'password'}
                                 id="newPassword"
                                 name="newPassword"
                                 value={passwordData.newPassword}
@@ -258,7 +271,7 @@ const ProfilePage = () => {
                             <label htmlFor="confirmNewPassword">Confirmer password</label>
                             <input
                                 className='inputGeneral text-black'
-                                type="password"
+                                type={showPasswords ? 'text' : 'password'}
                                 id="confirmNewPassword"
                                 name="confirmNewPassword"
                                 value={passwordData.confirmNewPassword}
