@@ -7,11 +7,15 @@ import session from 'express-session';
 import router from './router.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import helmet from 'helmet';
 
 dotenv.config(); // Récupère les variables d'environnement depuis un fichier .env
 
 const app = express(); // Crées une session Express qui définis les routes, applique les middlewares et configure les comportements du serveur back.
 const port = process.env.PORT || 3000; // On décide que le port du serveur soit le 3000.
+
+// Helmet ajoute des headers de sécurité dans les réponses HTTP
+app.use(helmet());
 
 // Activer CORS pour toutes les requêtes
 app.use(cors());
@@ -34,7 +38,29 @@ app.use((req, res, next) => {
     next();
   });  
 
-// Permet de démmarer le serveur et affiche un message pour dire qu'il est fonctionnel.
-app.listen(port, () => {
-    console.log(`Le serveur démarré est à l'écoute sur http://localhost:${port}`);
+// Fonction asynchrone pour démarrer le serveur seulement si la BDD est accessible
+const startServer = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connexion à la base de données réussie.');
+
+        app.listen(port, () => {
+            console.log(`Le serveur est à l'écoute sur http://localhost:${port}`);
+        });
+    } catch (error) {
+        console.error('Impossible de se connecter à la base de données:', error);
+        process.exit(1); // Arrête le serveur en cas d'échec de connexion à la BDD
+    }
+};
+
+// Middleware de gestion d'erreurs global
+app.use((err, req, res, next) => {
+  console.error('Erreur détectée:', err); // Log complet dans la console
+
+  res.status(err.status || 500).json({
+    message: "Une erreur interne est survenue. Veuillez réessayer plus tard."
+    // Tu ne renvoies **jamais** err.message ou err.stack au client.
+  });
 });
+
+startServer();

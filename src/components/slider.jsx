@@ -39,7 +39,7 @@ const Slider = () => {
   ];
 
   return (
-    <div className="carousel-container m-auto">
+    <div className="carousel-container border border-blue-700 rounded-xl p-1 w-1/3 m-auto">
       <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} showArrows={true}>
         {datasImages.map(slide => (
           <div className='carousel-slide' key={slide.id}>

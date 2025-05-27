@@ -7,7 +7,7 @@ import Users from '../models/users.js';
 import validator from 'validator';
 import crypto from 'crypto';
 import sendEmail from '../../src/services/sendEmail.js';
-import rateLimit from 'express-rate-limit';
+import axios from 'axios';
 
 // Fonction pour valider le mot de passe si il respecte certains critères de sécurité définis:
 const validatePassword = (password) => {
@@ -29,6 +29,33 @@ const hashPassword = async (password) => {
     }
 };
 
+// Fonction qui gère le captcha:
+const verifyCaptcha = async (token) => {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+    try {
+        // Construction des paramètres en URL encodée
+        const params = new URLSearchParams();
+        params.append('secret', secretKey);
+        params.append('response', token);
+
+        const response = await axios.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            params.toString(),
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+
+        return response.data.success;
+    } catch (error) {
+        console.error('Erreur lors de la vérification reCAPTCHA :', error);
+        return false;
+    }
+};
+
 const authController = {
     // Fonction d'inscription
     async signup(req, res) {
@@ -40,9 +67,15 @@ const authController = {
             postalcode,
             phone,
             email,
-            password
+            password,
+            captchaToken
         } = req.body;
 
+        // Vérifie le captcha
+        const isCaptchaValid = await verifyCaptcha(captchaToken);
+        if (!isCaptchaValid) {
+            return res.status(400).json({ message: 'Échec de vérification reCAPTCHA.' });
+        }
         console.log("Requête d'inscription reçue :", req.body);
 
         try {
@@ -176,12 +209,23 @@ const authController = {
 
     // Fonction de réinitialisation du mdp:
     async forgotPassword(req, res) {
-        const { email } = req.body;
+        const { email, captchaToken } = req.body;
+
+        // Vérification du captcha
+        if (!captchaToken) {
+            return res.status(400).json({ message: 'Captcha manquant.' });
+        }
+
+        // Vérifie le captcha avec Google
+        const isCaptchaValid = await verifyCaptcha(captchaToken);
+        if (!isCaptchaValid) {
+            return res.status(400).json({ message: 'Échec de vérification reCAPTCHA.' });
+        }
 
         try {
             const user = await Users.findOne({ where: { email } });
             if (!user) {
-                return res.status(404).json({ message: 'Aucun utilisateur trouvé avec cet email.' });
+                return res.status(200).json({ message: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.' });
             }
 
             // Génère un token de réinitialisation
@@ -219,41 +263,41 @@ const authController = {
     },
 
     // Fonction de réinitialisation du mot de passe
-async resetPassword(req, res) {
-    const { token, newPassword } = req.body;
+    async resetPassword(req, res) {
+        const { token, newPassword } = req.body;
 
-    console.log("resetPassword - token reçu :", token);
-    console.log("resetPassword - newPassword reçu :", newPassword);
+        console.log("resetPassword - token reçu :", token);
+        console.log("resetPassword - newPassword reçu :", newPassword);
 
-    try {
-        const user = await Users.findOne({
-            where: {
-                resettoken: token,
-                resettokenexpiry: { [Op.gt]: Date.now() }
+        try {
+            const user = await Users.findOne({
+                where: {
+                    resettoken: token,
+                    resettokenexpiry: { [Op.gt]: Date.now() }
+                }
+            });
+
+            if (!user) {
+                return res.status(400).json({ message: 'Token invalide ou expiré.' });
             }
-        });
 
-        if (!user) {
-            return res.status(400).json({ message: 'Token invalide ou expiré.' });
+            if (!validatePassword(newPassword)) {
+                return res.status(400).json({ message: 'Mot de passe trop faible.' });
+            }
+
+            user.password = await hashPassword(newPassword);
+            user.resettoken = null;
+            user.resettokenexpiry = null;
+            await user.save();
+
+            res.status(200).json({ message: 'Mot de passe mis à jour avec succès.' });
+
+        } catch (err) {
+            console.error('Erreur resetPassword :', err);
+            res.status(500).json({ message: 'Échec de la réinitialisation.' });
         }
-
-        if (!validatePassword(newPassword)) {
-            return res.status(400).json({ message: 'Mot de passe trop faible.' });
-        }
-
-        user.password = await hashPassword(newPassword);
-        user.resettoken = null;
-        user.resettokenexpiry = null;
-        await user.save();
-
-        res.status(200).json({ message: 'Mot de passe mis à jour avec succès.' });
-
-    } catch (err) {
-        console.error('Erreur resetPassword :', err);
-        res.status(500).json({ message: 'Échec de la réinitialisation.' });
     }
-}
-,
+    ,
 
 };
 

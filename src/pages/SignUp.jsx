@@ -372,10 +372,10 @@ const AuthenticationPage = () => {
                 <label htmlFor="consent">J'accepte les conditions d'utilisation</label>
               </div>
               <div className="  flex justify-center">
-              <ReCAPTCHA
-                sitekey="6LdmFUorAAAAAMOQTxYzhxvzHowIFd6uox_1N7b7" // Clef récupérée sur Google ReCaptcha
-                onChange={handleCaptchaChange}
-              />
+                <ReCAPTCHA
+                  sitekey="6LdmFUorAAAAAMOQTxYzhxvzHowIFd6uox_1N7b7" // Clef récupérée sur Google ReCaptcha
+                  onChange={handleCaptchaChange}
+                />
               </div>
               <button type="submit" className="allButton" aria-label="S'inscrire">S'inscrire</button>
             </form>

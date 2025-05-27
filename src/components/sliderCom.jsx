@@ -26,7 +26,7 @@ const SliderCom = () => {
   }, []);
 
   return (
-    <div className="carousel-container border border-blue-700 rounded-xl p-1">
+    <div className="carousel-container border border-blue-700 rounded-xl p-1 w-1/2 m-auto">
       {error ? (
         <div>{error}</div>
       ) : (
