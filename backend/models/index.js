@@ -30,7 +30,7 @@ sequelize.sync()
 
     .catch(err => {
 
-        console.log('Modèles -> aucune synchronisation', err)
+        console.error('Modèles -> aucune synchronisation', err)
     });
 
 export { Users, Comments, Appointments };

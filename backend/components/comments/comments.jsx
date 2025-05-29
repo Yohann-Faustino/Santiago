@@ -8,6 +8,9 @@ const Comments = () => {
     // Ce hook prépare une place pour stocker les données des commentaires une fois qu'elles seront récupérées.
     const [comments, setComments] = useState([]);
 
+    // Ce hook pour affiche les messages utilisateur.
+    const [message, setMessage] = useState(''); // 
+
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas.
     const flag = useRef(false);
 
@@ -20,25 +23,31 @@ const Comments = () => {
         if (flag.current === false) {
             commentService.getAllComments()
                 .then(res => {
-                    console.log(res.data);
                     setComments(res.data);
                 })
-                .catch(err => console.log(err));
+                .catch(() => {
+                    setMessage("❌ Impossible de charger les commentaires.");
+                    setTimeout(() => setMessage(''), 3000);
+                });
         }
         return () => flag.current = true;
     }, []);
 
-const delComment = (commentId) => {
-    const confirmDelete = window.confirm("Es-tu sûr de vouloir supprimer ce commentaire ?");
-    if (!confirmDelete) return;
+    const delComment = (commentId) => {
+        const confirmDelete = window.confirm("Es-tu sûr de vouloir supprimer ce commentaire ?");
+        if (!confirmDelete) return;
 
-    commentService.deleteComment(commentId)
-        .then(res => {
-            console.log(res)
-            setComments((current) => current.filter(comment => comment.id !== commentId));
-        })
-        .catch(err => console.log(err));
-}
+        commentService.deleteComment(commentId)
+            .then(() => {
+                setComments((current) => current.filter(comment => comment.id !== commentId));
+                setMessage("✅ Commentaire supprimé avec succès.");
+                setTimeout(() => setMessage(''), 3000);
+            })
+            .catch(() => {
+                setMessage("❌ Échec de la suppression du commentaire.");
+                setTimeout(() => setMessage(''), 3000);
+            });
+    }
 
     return (
         <div className="comments flex-col p-4">

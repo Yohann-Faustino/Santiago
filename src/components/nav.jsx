@@ -19,7 +19,7 @@ const Nav = () => {
       accountService.logout();
       setIsLoggedIn(false);
       setIsAdmin(false);
-      console.log("Déconnexion automatique : token expiré.");
+      console.log("[Nav] Déconnexion automatique : token expiré.");
       return;
     }
 
@@ -28,6 +28,9 @@ const Nav = () => {
     if (loggedIn) {
       const role = accountService.getRole();
       setIsAdmin(role === 'admin');
+      console.log(`[Nav] Utilisateur connecté avec rôle : ${role}`);
+    } else {
+      console.log("[Nav] Aucun utilisateur connecté.");
     }
   }, []); // Tableau vide signifie que ce useEffect s'exécute uniquement au chargement initial du composant.
 

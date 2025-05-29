@@ -17,7 +17,6 @@ const CommentsEdit = () => {
     const [message, setMessage] = useState(''); // Gere le message de prise en compte de la modification sur l'user.
 
     const { cid } = useParams();
-    console.log("ID du commentaire récupéré :", cid);
 
     // Fonction de gestion du changement d'input
     const onChange = (e) => {
@@ -41,23 +40,14 @@ const CommentsEdit = () => {
             id: cid // Inclut l'ID du commentaire pour la mise à jour
         };
 
-        console.log(commentData); // Affiche les données envoyées pour vérification
-
         try {
             // Appelle le service pour mettre à jour le commentaire
-            const res = await commentService.updatedComment(commentData);
-            console.log(res); // Affiche la réponse de l'API en cas de succès
-
-            // Affiche un message de confirmation
+            await commentService.updatedComment(commentData);
             setMessage('✅ Commentaire mis à jour avec succès.');
-
-            // Efface le message après 3 secondes
             setTimeout(() => setMessage(''), 3000);
-        } catch (err) {
-            console.log(err); // Affiche une erreur en cas d'échec de la mise à jour
-
-            // Affiche un message d'erreur
+        } catch {
             setMessage('❌ Une erreur est survenue lors de la mise à jour.');
+            setTimeout(() => setMessage(''), 3000);
         }
     };
 
@@ -67,11 +57,12 @@ const CommentsEdit = () => {
             // Récupère les données du commentaire en utilisant l'ID
             commentService.getComment(cid)
                 .then((res) => {
-                    console.log("Données du commentaire récupérées :", res.data);
-                    // Met à jour l'état avec les données récupérées
                     setComment(res.data);
                 })
-                .catch((err) => console.error("Erreur lors de la récupération du commentaire :", err));
+                .catch(() => {
+                    setMessage('❌ Impossible de charger le commentaire.');
+                    setTimeout(() => setMessage(''), 3000);
+                });
         }
         // Change le flag pour éviter de récupérer les données plusieurs fois
         return () => { flag.current = true; };
@@ -112,8 +103,8 @@ const CommentsEdit = () => {
                     )}
                 </div>
                 <div>
-                <button className=" p-2 bg-blue-900 text-white rounded">Enregistrer</button>
-            </div>
+                    <button className=" p-2 bg-blue-900 text-white rounded">Enregistrer</button>
+                </div>
             </form>
         </div>
     );

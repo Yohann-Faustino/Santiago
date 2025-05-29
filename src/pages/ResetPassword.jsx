@@ -6,7 +6,12 @@ import validator from "validator";
 const ResetPassword = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');  const navigate = useNavigate(); // On récupère le token de l'URL
+
+  const token = queryParams.get('token'); 
+  const navigate = useNavigate(); // On récupère le token de l'URL
+  if (process.env.NODE_ENV === 'development') {
+    console.log("Token récupéré de l'URL :", token);
+  }
 
   // États locaux pour le formulaire
   const [password, setPassword] = useState("");
@@ -47,21 +52,37 @@ const ResetPassword = () => {
       return;
     }
 
+    if (process.env.NODE_ENV === "development") {
+      console.log("Soumission du formulaire avec : ", {
+        token,
+        password,
+        confirmPassword,
+        isPasswordStrong,
+      });
+    }
+
     try {
       setLoading(true);
-      const response = await AxiosCall.post(`/reset-password`, {token,
+      const response = await AxiosCall.post(`/reset-password`, {
+        token,
         newPassword: password,
       });
-      console.log("Réponse du backend :", response);
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("Réponse du backend :", response);
+      }
 
       if (response.status === 200) {
         setMessage("✅ Mot de passe réinitialisé avec succès !");
         setTimeout(() => navigate("/signup"), 2000); // Redirection après 2s
       }
     } catch (err) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Erreur attrapée côté client :", err);
+      }
       setError(
         err.response?.data?.message ||
-          "❌ Erreur lors de la réinitialisation du mot de passe."
+        "❌ Erreur lors de la réinitialisation du mot de passe."
       );
     } finally {
       setLoading(false);

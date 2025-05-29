@@ -28,7 +28,9 @@ const ProfilePage = () => {
                 try {
                     const response = await getProfile();  // Utilisation de getProfile pour récupérer les données.
                     setProfileData(response.data);
-                    console.log('Infos du profil:', response.data); // Affiche les données du profil dans la console pour débogage.
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log('Infos du profil:', response.data);
+                    }
                 } catch (error) {
                     console.error('Erreur lors de la récupération des infos du profil:', error);
                     setError('Erreur lors de la récupération des infos du profil.'); // Affiche un message d'erreur à l'utilisateur.
@@ -117,7 +119,9 @@ const ProfilePage = () => {
                 console.log('Mot de passe mis à jour.');
             }
 
-            console.log('Profil mis à jour:', response.data);
+            if (process.env.NODE_ENV === 'development') {
+                console.log('Profil mis à jour:', response.data);
+            }
             setMessage('✅ Modifications du profil enregistrées.');
             // Effacement du message après 3 secondes
             setTimeout(() => setMessage(''), 3000);

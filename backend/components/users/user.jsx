@@ -8,6 +8,9 @@ const User = () => {
     // Récupères l'utilisateur que l'on souhaite modifier: 
     const [users, setUsers] = useState([]);
 
+    // Ce hook gere les messages utilisateur
+    const [message, setMessage] = useState('');
+
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas.
     const flag = useRef(false);
 
@@ -20,10 +23,13 @@ const User = () => {
         if (flag.current === false) {
             userService.getAllUsers()
                 .then(res => {
-                    console.log(res.data);
                     setUsers(res.data);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.error(err);
+                    setMessage('❌ Erreur lors du chargement des utilisateurs.');
+                    setTimeout(() => setMessage(''), 3000);
+                });
         }
         return () => flag.current = true;
     }, []);
@@ -38,11 +44,16 @@ const User = () => {
         if (!window.confirm(confirmationMessage)) return;
 
         userService.delUser(userId)
-            .then(res => {
-                console.log(res);
+            .then(() => {
                 setUsers((current) => current.filter(user => user.id !== userId));
+                setMessage(`✅ Utilisateur ${userFullName} supprimé avec succès.`);
+                setTimeout(() => setMessage(''), 3000);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.error(err);
+                setMessage(`❌ Impossible de supprimer ${userFullName}.`);
+                setTimeout(() => setMessage(''), 3000);
+            });
     };
 
     return (
@@ -71,15 +82,17 @@ const User = () => {
                             {
                                 users.map(user => (
                                     <tr key={user.id} className="hover:bg-gray-100">
-                                        <button
-                                            className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
-                                            onClick={() =>
-                                                delUser(user.id, user.role, `${user.firstname} ${user.lastname}`)
-                                            } aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
-                                            title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
-                                        >
-                                            🗑️
-                                        </button>
+                                        <td>
+                                            <button
+                                                className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
+                                                onClick={() =>
+                                                    delUser(user.id, user.role, `${user.firstname} ${user.lastname}`)
+                                                } aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
+                                                title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
+                                            >
+                                                🗑️
+                                            </button>
+                                        </td>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.firstname}</Link></td>
                                         <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.lastname}</Link></td>

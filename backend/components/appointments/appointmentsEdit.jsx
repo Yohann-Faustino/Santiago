@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 const AppointmentsEdit = () => {
 
     let { aid } = useParams()
-    console.log(aid)
 
     return (
         <div className="commentsEdit">

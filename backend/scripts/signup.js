@@ -18,9 +18,6 @@ document.addEventListener('DOMContentLoaded', () => { // Ecouteur d'évènement 
             password: document.getElementById('passwordInscription').value,
         };
 
-        // Permet de voir les données reçues;
-        console.log('Données du formulaire :', formData);
-
         // Envoie des données au serveur grâce à fetch:
         try {
             const response = await fetch('/signup', {
@@ -33,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => { // Ecouteur d'évènement 
 
             if (response.ok) {
                 const result = await response.json();
-                console.log('Réponse du serveur :', result);
+                // Console.log en dev seulement
+                if (process.env.NODE_ENV !== 'production') {
+                    console.log('Données du formulaire :', formData);
+                    console.log('Réponse du serveur :', result);
+                }
                 // Affiche un message puis redirige vers une autre page:
                 alert(result.message);
                 form.reset(); // Permet de vider le form après son utilisation
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ecouteur d'évènement 
                 console.error('Erreur du serveur :', error);
                 alert('Erreur lors de l\'inscription : ' + error.message);
             }
-        // Gère les erreurs qui pourraient venir duréseau ou autres comme les routes:
+            // Gère les erreurs qui pourraient venir duréseau ou autres comme les routes:
         } catch (err) {
             console.error('Erreur réseau :', err);
             alert('Erreur réseau : ' + err.message);

@@ -4,6 +4,10 @@ import { userService } from "../../../src/services/user.service";
 import SideMenu from "../admin/sideMenu";
 
 const UserEdit = () => {
+
+    // Ce hook gere les messages utilisateur
+    const [message, setMessage] = useState('');
+
     // État local pour stocker les données de l'user
     const [user, setUser] = useState({
         firstname: '',
@@ -17,13 +21,9 @@ const UserEdit = () => {
     });
     // Référence pour contrôler si le composant a été monté
     const flag = useRef(false);
+
     // Récupération de l'ID du commentaire depuis les paramètres d'URL
-
-    // Gere le message de prise en compte de la modification sur l'user.
-    const [message, setMessage] = useState('');
-
     const { uid } = useParams();
-    console.log(uid);
 
     // Fonction de gestion du changement d'input
     const onChange = (e) => {
@@ -41,16 +41,11 @@ const UserEdit = () => {
 
         // Je récupère les valeurs dans user et j'ajoute l'id
         const userWithId = { ...user, id: uid };
-        console.log(userWithId); // Vérifie ce qu'on envoie
 
         try {
             // J'appelle mon service pour envoyer les modifications en BDD
-            const res = await userService.getUpdate(userWithId);
-            console.log(res); // Je vérifie la réponse du backend
-
-            // Message de validation
+            await userService.getUpdate(userWithId);
             setMessage('✅ Modifications du profil enregistrées.');
-            // Effacement du message après 3 secondes
             setTimeout(() => setMessage(''), 3000);
         } catch (err) {
             console.log(err); // J'affiche l’erreur si la requête échoue
@@ -63,12 +58,11 @@ const UserEdit = () => {
         if (flag.current === false) {
             // Récupère les données de l'user en utilisant l'ID
             userService.getUser(uid)
-                .then(res => {
-                    console.log(res.data);
-                    // Met à jour l'état avec les données récupérées
-                    setUser(res.data);
-                })
-                .catch(err => console.log(err));
+                .then(res => setUser(res.data))
+                .catch(err => {
+                    console.error(err);
+                    setMessage('❌ Impossible de récupérer les données.');
+                });
         }
         // Change le flag pour éviter de récupérer les données plusieurs fois
         return () => flag.current = true;
@@ -166,7 +160,7 @@ const UserEdit = () => {
                         name="role"
                         value={user.role || 'utilisateur'}
                         onChange={onChange}
-                        className="modifiable text-center p-2 border"
+                        className="modifiable text-center p-2 border border-gray-400 m-auto"
                     >
                         <option value="utilisateur">Utilisateur</option>
                         <option value="admin">Administrateur</option>

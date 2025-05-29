@@ -3,6 +3,11 @@ import * as dotenv from 'dotenv' // Importation du module dotenv, qui est utilis
 
 dotenv.config(); // Charge les variables d'environnement à partir d'un fichier .env et les ajoute au processus d'exécution de Node.js
 
+// Vérifie si process.env.PG_URL existe avant d'initialiser Sequelize
+if (!process.env.PG_URL) {
+  throw new Error('La variable d’environnement PG_URL est manquante.');
+}
+
 // Initialise sequelize avec le PG_URL du .env a la racine du projet
 const sequelize = new Sequelize(process.env.PG_URL, {
 
@@ -17,12 +22,12 @@ const sequelize = new Sequelize(process.env.PG_URL, {
 sequelize.authenticate()
 .then(() => {
 
-    console.log('Connection -> OK');
+    console.log('Connection entre le server et la BDD -> OK');
 })
 
 .catch(err => {
 
-    console.log('Connection -> failed', err);
+    console.error('Connection entre le server et la BDD -> failed', err);
 });
 
 

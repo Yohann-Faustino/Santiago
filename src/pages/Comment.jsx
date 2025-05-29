@@ -6,7 +6,8 @@ import { accountService } from "../services/account.service";
 const Comments = () => {
   // Récupérer l'ID utilisateur depuis accountService:
   const userId = accountService.getCurrentUserId();
-  console.log("userId:", userId); // On vérifie si l'ID utilisateur est correctement récupéré.
+
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [commentData, setCommentData] = useState({
     title: '',
@@ -41,25 +42,25 @@ const Comments = () => {
       ...commentData,
       users_id: userId
     };
-    console.log('Commentaire à envoyer:', commentWithUserId);
 
     commentService.addComment(commentWithUserId)
       .then(res => {
-        console.log(res);
         fetchComments(); // Rafraîchit les commentaires après l'ajout.
-
         // Réinitialise les champs du formulaire:
         setCommentData({
           title: '',
           content: '',
           users_id: userId
         });
+        setSuccessMessage('Commentaire ajouté avec succès !');
+        setTimeout(() => setSuccessMessage(''), 3000);
       })
       .catch(err => {
+        console.error('Erreur ajout commentaire:', err.response?.data || err.message);
         if (err.response && err.response.status === 400) {
           alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
         } else {
-          console.log('Erreur lors de l\'ajout du commentaire.');
+          alert('Erreur lors de l\'ajout du commentaire.');
         }
       });
   };
@@ -117,6 +118,12 @@ const Comments = () => {
             <button className="allButton" type="submit">Envoyer</button>
           </fieldset>
         </form>
+
+        {successMessage && (
+          <div role="status" className="text-green-600 mt-3">
+            {successMessage}
+          </div>
+        )}
 
         {/* Message d'erreur accessible pour lecteur d'écran */}
         {error && <div role="alert" className="text-red-600 mt-3">{error}</div>}

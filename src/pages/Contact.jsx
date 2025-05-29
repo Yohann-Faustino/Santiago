@@ -32,6 +32,7 @@ const Contact = () => {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title="Adresse de l'entreprise"
+                    className=" rounded-xl"
                 ></iframe>
             </div>
 

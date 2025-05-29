@@ -26,10 +26,14 @@ router.get('/:id', async (req, res) => {
 });
 
 // Route pour mettre à jour un commentaire par ID
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', authMiddlewareToken, async (req, res) => {
     const commentId = req.params.id; 
-    console.log('ID du commentaire à mettre à jour :', commentId);
-    console.log('Données de mise à jour :', req.body);
+
+   // Console.log en dev seulement
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('ID du commentaire à mettre à jour :', commentId);
+      console.log('Données de mise à jour :', req.body);
+    }
 
     // Extraire seulement les champs nécessaires
     const { title, content, users_id } = req.body;
@@ -53,19 +57,20 @@ router.patch('/:id', async (req, res) => {
 });
 
 // Route pour supprimer un commentaire par ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddlewareToken, async (req, res) => {
     try {
         const commentId = req.params.id;
         const deleted = await Comments.destroy({ where: { id: commentId } });
 
         if (deleted) {
+            console.log(`Commentaire ${commentId} supprimé.`);
             res.status(200).json({ message: "Commentaire supprimé" });
         } else {
-            res.status(404).json({ error: "Commentaire non trouvé." });
+            res.status(404).json({ message: "Commentaire non trouvé." });
         }
     } catch (error) {
         console.error("Erreur lors de la suppression du commentaire :", error);
-        res.status(500).json({ error: "Erreur lors de la suppression" });
+        res.status(500).json({ message: "Erreur lors de la suppression" });
     }
 });
 

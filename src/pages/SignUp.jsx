@@ -98,7 +98,10 @@ const AuthenticationPage = () => {
 
     try {
       // Envoi des données d'inscription:
-      const response = await AxiosCall.post('/signup', signUpData, captchaToken);
+      const response = await AxiosCall.post('/signup', {
+        ...signUpData,
+        captchaToken
+      });
 
       if (response.status === 201) {
         // Sauvegarde du token d'authentification:
@@ -373,7 +376,8 @@ const AuthenticationPage = () => {
               </div>
               <div className="  flex justify-center">
                 <ReCAPTCHA
-                  sitekey="6LdmFUorAAAAAMOQTxYzhxvzHowIFd6uox_1N7b7" // Clef récupérée sur Google ReCaptcha
+                  // Clef récupérée sur Google ReCaptcha
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                   onChange={handleCaptchaChange}
                 />
               </div>

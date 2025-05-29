@@ -11,13 +11,17 @@ let login = (loginConnexion) => {
 // Sauvegarde le token JWT dans le localStorage:
 let saveToken = (token) => { // token qui est la valeur du token qui est intercepté dans le AxiosCall.
     localStorage.setItem('token', token); // Utilise setItem pour stocker le token et on met la valeur du token dans la boite 'token' pour le réutiliser ultérieurement.
-    console.log('Token sauvegardé dans le localStorage:', token);
+    if (process.env.NODE_ENV === "development") {
+        console.log('Token sauvegardé dans le localStorage:', token);
+    }
 }
 
 // Déconnecte l'utilisateur en retirant le token du localStorage:
 let logout = () => {
     localStorage.removeItem('token');
-    console.log('Token retiré du localStorage.');
+    if (process.env.NODE_ENV === "development") {
+        console.log('Token retiré du localStorage.');
+    }
 }
 
 // Vérifie si l'utilisateur est connecté en testant la présence du token:
@@ -30,8 +34,9 @@ let isTokenExpired = () => {
         const now = Date.now() / 1000;
         return decoded.exp < now;
     } catch (error) {
-        console.error("Erreur de décodage du token:", error);
-        return true;
+        if (process.env.NODE_ENV === "development") {
+            console.error("Erreur de décodage du token:", error);
+        } return true;
     }
 }
 
@@ -40,8 +45,9 @@ let isLogged = () => {
     if (!token) return false;
 
     if (isTokenExpired()) {
-        console.log("Token expiré, déconnexion automatique.");
-        logout(); // supprime le token expiré
+        if (process.env.NODE_ENV === "development") {
+            console.log("Token expiré, déconnexion automatique.");
+        } logout(); // supprime le token expiré
         return false;
     }
 
@@ -54,11 +60,13 @@ let getRole = () => {
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
-            console.log('Contenu du token décodé:', decodedToken);
-            return decodedToken.role;
+            if (process.env.NODE_ENV === "development") {
+                console.log('Contenu du token décodé:', decodedToken);
+            } return decodedToken.role;
         } catch (error) {
-            console.error('Erreur lors du décodage du token:', error);
-            return null;
+            if (process.env.NODE_ENV === "development") {
+                console.error('Erreur lors du décodage du token:', error);
+            } return null;
         }
     }
     return null;
@@ -67,7 +75,9 @@ let getRole = () => {
 // Récupère le token du localStorage:
 let getToken = () => {
     const token = localStorage.getItem('token'); // Utilise getItem pour accéder au token.
-    console.log('Token récupéré du localStorage:', token);
+    if (process.env.NODE_ENV === "development") {
+        console.log('Token récupéré du localStorage:', token);
+    }
     return token;
 }
 
@@ -79,7 +89,9 @@ let getCurrentUserId = () => {
             const decodedToken = jwtDecode(token);
             return decodedToken.id; // On renvoie l'id de l'user pour l'utiliser ultérieurement.
         } catch (error) {
-            console.error('Erreur lors du décodage du token:', error);
+            if (process.env.NODE_ENV === "development") {
+                console.error('Erreur lors du décodage du token:', error);
+            }
             return null; // Dans le cas ou il y a une erreur en rapport avec le token comme corrompu on retourne null ce qui indique l'absence de rôle.
         }
     }

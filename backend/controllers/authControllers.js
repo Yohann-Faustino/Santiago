@@ -71,33 +71,33 @@ const authController = {
             captchaToken
         } = req.body;
 
+        console.log("[SIGNUP] Reçu :", { email, firstname, lastname });
+
         // Vérifie le captcha
         const isCaptchaValid = await verifyCaptcha(captchaToken);
         if (!isCaptchaValid) {
+            console.warn("[SIGNUP] Échec de vérification reCAPTCHA pour :", email);
             return res.status(400).json({ message: 'Échec de vérification reCAPTCHA.' });
         }
-        console.log("Requête d'inscription reçue :", req.body);
 
         try {
             // Vérification de l'existence de l'email
             const userExists = await Users.findOne({ where: { email } });
             if (userExists) {
+                console.warn("[SIGNUP] Email déjà utilisé :", email);
                 return res.status(409).json({ message: "Cet email est déjà utilisé." });
             }
 
             // Compter le nombre d'utilisateurs existants dans la bdd
             const existingUsersCount = await Users.count();
-            console.log("Nombre d'utilisateurs dans la base :", existingUsersCount);
-
 
             // Définir le rôle: premier inscrit = admin, sinon user
             const role = existingUsersCount === 0 ? 'admin' : 'user';
 
             // Vérifie si le mot de passe est suffisamment sécurisé
             if (!validatePassword(password)) {
-                return res.status(400).json({
-                    message: "Mot de passe trop faible. Il doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
-                });
+                console.warn("[SIGNUP] Mot de passe trop faible pour :", email);
+                return res.status(400).json({ message: "Mot de passe trop faible." });
             }
 
             // Hash du mot de passe avant enregistrement
@@ -266,8 +266,9 @@ const authController = {
     async resetPassword(req, res) {
         const { token, newPassword } = req.body;
 
-        console.log("resetPassword - token reçu :", token);
-        console.log("resetPassword - newPassword reçu :", newPassword);
+        if (process.env.NODE_ENV !== 'production') {
+            console.log("[RESET] Tentative avec token :", token.slice(0, 6) + '...');
+        }
 
         try {
             const user = await Users.findOne({

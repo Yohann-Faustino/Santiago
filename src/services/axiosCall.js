@@ -13,11 +13,15 @@ AxiosCall.interceptors.request.use(request => {
     if (accountService.isLogged()) {
         const token = accountService.getToken();
         // Montre que le token est présent ou non:
-        console.log('Token récupéré:', token); 
+        if (process.env.NODE_ENV === "development") {
+            console.log("Token récupéré :", token);
+        }
         if (token) {
             request.headers.Authorization = 'Bearer ' + token;
         } else {
-            console.error('Token JWT non défini ou vide.');
+            if (process.env.NODE_ENV === "development") {
+                console.error("❌ Token JWT non défini ou vide.");
+            }
         }
     }
     return request;

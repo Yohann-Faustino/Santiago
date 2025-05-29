@@ -32,6 +32,7 @@ const ForgotPassword = () => {
       const response = await AxiosCall.post('/forgot-password', { email, captchaToken });
       if (response.status === 200) {
         setMessage("Un email de réinitialisation a été envoyé si cet email est enregistré.");
+        setCaptchaToken(null);
       }
     } catch (err) {
       setError("Erreur lors de la demande de réinitialisation.");
@@ -51,7 +52,8 @@ const ForgotPassword = () => {
           className=" text-center mb-2 inputField border rounded-lg"
         />
         <ReCAPTCHA
-          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} // sécurise la clé via .env
+          // Clef récupérée sur Google ReCaptcha
+          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
           onChange={handleCaptchaChange}
         />
         <button type="submit" className="allButton m-auto">Envoyer</button>
