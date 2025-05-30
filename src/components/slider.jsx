@@ -7,7 +7,7 @@ import { Carousel } from 'react-responsive-carousel';
 const Slider = () => {
 
   // Définis le chemin pour accéder aux images stockées dans le dossier public:
-  const baseUrl = "/public/Photos/";
+  const baseUrl = "/Photos/";
 
   // Crée un tableau d'objets représentant les images à afficher dans le carousel:
   const datasImages = [

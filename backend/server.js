@@ -51,6 +51,9 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('✅ Connexion à la base de données réussie.');
 
+    await sequelize.sync({ alter: true });
+    console.log('✅ Base de données synchronisée.');
+
     app.listen(port, () => {
       console.log(`Le serveur est à l'écoute sur http://localhost:${port}`);
     });

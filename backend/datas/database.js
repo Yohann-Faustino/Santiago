@@ -1,3 +1,5 @@
+// Configuration de Sequelize:
+
 import Sequelize from 'sequelize'; //  Importation du module Sequelize, qui est utilisé pour interagir avec une base de données SQL
 import * as dotenv from 'dotenv' // Importation du module dotenv, qui est utilisé pour charger les variables d'environnement à partir d'un fichier .env.
 
