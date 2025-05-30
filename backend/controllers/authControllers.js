@@ -240,7 +240,7 @@ const authController = {
 
             // Url a modifier une fois mis en ligne
             // Construit le lien de réinitialisation
-            const resetLink = `http://localhost:5173/reset-password?token=${token}`;
+            const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
 
 
 

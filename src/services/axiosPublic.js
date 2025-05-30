@@ -4,7 +4,7 @@ import axios from "axios";
 
 // Crée une instance d'axios pour les requêtes publiques:
 const AxiosPublic = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
 export default AxiosPublic;

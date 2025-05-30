@@ -5,7 +5,7 @@ import { accountService } from "./account.service";
 
 // Crée une instance d'axios qui fait que toutes les requêtes utiliseront l'url de départ comme définis:
 const AxiosCall = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
 // Intercepteur pour récupérer le token:
