@@ -19,6 +19,9 @@ const AuthenticationPage = () => {
     consent: false
   });
 
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+  const [loading, setLoading] = useState(false);
+
   // Ajouter un état pour le token captcha
   const [captchaToken, setCaptchaToken] = useState(null);
 
@@ -71,28 +74,33 @@ const AuthenticationPage = () => {
   // Soumission du formulaire d'inscription:
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     // Vérification du captcha
     if (!captchaToken) {
       setErrorMessage("Veuillez valider le CAPTCHA.");
+      setLoading(false);
       return;
     }
 
     // Vérification du consentement:
     if (!signUpData.consent) {
       setErrorMessage("Vous devez consentir à la collecte et au traitement de vos données personnelles.");
+      setLoading(false);
       return;
     }
 
     // Vérification des mots de passe:
     if (signUpData.password !== signUpData.confirmPassword) {
       setErrorMessage("Les mots de passe ne correspondent pas.");
+      setLoading(false);
       return;
     }
 
     // Validation du mot de passe:
     if (!validatePassword(signUpData.password)) {
       setErrorMessage("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+      setLoading(false);
       return;
     }
 
@@ -140,12 +148,15 @@ const AuthenticationPage = () => {
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
       setErrorMessage('Erreur lors de l\'inscription. Veuillez réessayer plus tard.');
+    }finally {
+      setLoading(false);
     }
   };
 
   // Soumission du formulaire de connexion:
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
+setLoading(true);
 
     try {
       // Envoi des données de connexion:
@@ -181,6 +192,8 @@ const AuthenticationPage = () => {
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
       setErrorMessage('Erreur lors de la connexion. Veuillez réessayer plus tard.');
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -242,11 +255,18 @@ const AuthenticationPage = () => {
           </div>
           <div className="connexionRight border border-blue-700 rounded-lg p-2">
             <p className="connexionText mt-10">Pas de compte chez nous ?</p>
-            <button type="button" aria-label="Allez vers l'inscription" onClick={() => {
-              setShowForm(false);
-              setErrorMessage('');
-              setSuccessMessage('');
-            }} className="allButton">Inscription</button>
+            <button
+              type="button"
+              className="allButton"
+              aria-label="Allez vers l'inscription"
+              onClick={() => {
+                setShowForm(false);
+                setErrorMessage('');
+                setSuccessMessage('');
+              }}
+            >
+              {loading ? 'Connexion...' : 'Connecté'}
+            </button>
           </div>
         </div>
       ) : (
@@ -381,7 +401,14 @@ const AuthenticationPage = () => {
                   onChange={handleCaptchaChange}
                 />
               </div>
-              <button type="submit" className="allButton" aria-label="S'inscrire">S'inscrire</button>
+              <button
+                type="submit"
+                className="allButton"
+                aria-label="S'inscrire"
+                disabled={loading}
+              >
+                {loading ? 'Inscription en cour...' : 'Inscription réussite'}
+              </button>
             </form>
           </div>
 

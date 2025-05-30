@@ -230,7 +230,7 @@ const authController = {
 
             // Génère un token de réinitialisation
             const token = crypto.randomBytes(32).toString('hex');
-            const expiry = Date.now() + 3600000; // Token valable 1h
+            const expiry = Date.now() + 3600000; // Token de réinitialisation du mdp valable 1h
 
             // Enregistre le token et sa date d'expiration
             user.resettoken = token;

@@ -19,6 +19,7 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
   const [loading, setLoading] = useState(false);
 
   // Vérifie la robustesse du mot de passe avec validator
@@ -149,7 +150,7 @@ const ResetPassword = () => {
       </form>
 
       {message && <p className="successMessage mt-4 text-center">{message}</p>}
-      {error && <p className="errorMessage mt-4 text-center">{error}</p>}
+      {error && <p className="errorMessage mt-4 text-center text-red-400">{error}</p>}
     </div>
   );
 };

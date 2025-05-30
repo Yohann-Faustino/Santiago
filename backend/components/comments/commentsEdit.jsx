@@ -10,6 +10,10 @@ const CommentsEdit = () => {
         content: '',
         users_id: ''
     });
+
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    const [loading, setLoading] = useState(false);
+
     // Référence pour contrôler si le composant a été monté
     const flag = useRef(false);
     // Récupération de l'ID du commentaire depuis les paramètres d'URL
@@ -41,6 +45,7 @@ const CommentsEdit = () => {
         };
 
         try {
+            setLoading(true);
             // Appelle le service pour mettre à jour le commentaire
             await commentService.updatedComment(commentData);
             setMessage('✅ Commentaire mis à jour avec succès.');
@@ -48,6 +53,8 @@ const CommentsEdit = () => {
         } catch {
             setMessage('❌ Une erreur est survenue lors de la mise à jour.');
             setTimeout(() => setMessage(''), 3000);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -76,9 +83,10 @@ const CommentsEdit = () => {
             </div>
             <form onSubmit={onSubmit} className=" flex flex-col text-center">
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="title">Titre</label>
+                    <label htmlFor="editCommenttitle">Titre</label>
                     <input
                         className="modifiable text-center"
+                        id="editCommenttitle"
                         type="text"
                         name="title"
                         value={comment.title || ''} // Affiche le titre actuel ou une chaîne vide
@@ -86,9 +94,10 @@ const CommentsEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="content">Contenu</label>
+                    <label htmlFor="editCommentContent">Contenu</label>
                     <textarea
                         className="modifiable text-center"
+                        id="editCommentContent"
                         name="content"
                         value={comment.content || ''} // Affiche le contenu actuel ou une chaîne vide
                         onChange={onChange} // Appelle onChange lors du changement
@@ -103,7 +112,12 @@ const CommentsEdit = () => {
                     )}
                 </div>
                 <div>
-                    <button className=" p-2 bg-blue-900 text-white rounded">Enregistrer</button>
+                    <button
+                        className=" p-2 bg-blue-900 text-white rounded"
+                        disabled={loading}
+                    >
+                        {loading ? "Enregistrement en cours..." : "Enregistrer"}
+                    </button>
                 </div>
             </form>
         </div>

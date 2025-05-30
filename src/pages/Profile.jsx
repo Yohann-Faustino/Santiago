@@ -12,6 +12,9 @@ const ProfilePage = () => {
     // useState gère l'état des messages d'erreur de toute la page afin d'avoir un code simple et propre:
     const [error, setError] = useState(null);
 
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    const [loading, setLoading] = useState(false);
+
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas:
     const flag = useRef(false);
 
@@ -34,6 +37,8 @@ const ProfilePage = () => {
                 } catch (error) {
                     console.error('Erreur lors de la récupération des infos du profil:', error);
                     setError('Erreur lors de la récupération des infos du profil.'); // Affiche un message d'erreur à l'utilisateur.
+                } finally {
+                    setLoading(false);
                 }
             };
 
@@ -98,10 +103,14 @@ const ProfilePage = () => {
     // Gère la soumission du formulaire de mise à jour du profil:
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le comportement par défaut du formulaire.
+        setError(null);
+        setMessage('');
+        setLoading(true);
 
         // Vérifier si le nouveau mot de passe et la confirmation correspondent:
         if (passwordData.newPassword !== passwordData.confirmNewPassword) {
             setError('Les nouveaux mots de passe ne correspondent pas.');
+            setLoading(false);
             return;
         }
 
@@ -117,6 +126,12 @@ const ProfilePage = () => {
                     newPassword: passwordData.newPassword
                 });
                 console.log('Mot de passe mis à jour.');
+                // Réinitialise les champs password après succès
+                setPasswordData({
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmNewPassword: ''
+                });
             }
 
             if (process.env.NODE_ENV === 'development') {
@@ -138,8 +153,8 @@ const ProfilePage = () => {
     }
 
     // Si les données du profil ne sont pas encore chargées, on retourne un message indiquant que les données sont en cours de chargement:
-    if (!profileData) {
-        return <div>Chargement...</div>;
+    if (loading || !profileData) {
+        return <div>Chargement en cours...</div>;
     }
 
     // Si les données du profil sont chargées sans erreur alors on affiche les données:
@@ -157,33 +172,33 @@ const ProfilePage = () => {
                     <div className=' flex flex-col'>
                         <h2 className=" colorh2">Informations personnelles</h2>
                         <div className="input-group">
-                            <label htmlFor="firstname">Prénom</label>
+                            <label htmlFor="firstnameProfile">Prénom</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="firstname"
+                                id="firstnameProfile"
                                 name="firstname"
                                 value={editData.firstname}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="lastname">Nom</label>
+                            <label htmlFor="lastnameProfile">Nom</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="lastname"
+                                id="lastnameProfile"
                                 name="lastname"
                                 value={editData.lastname}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="emailProfile">Email</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="email"
-                                id="email"
+                                id="emailProfile"
                                 name="email"
                                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                                 value={editData.email}
@@ -191,44 +206,44 @@ const ProfilePage = () => {
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="phone">Téléphone</label>
+                            <label htmlFor="phoneProfile">Téléphone</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="phone"
+                                id="phoneProfile"
                                 name="phone"
                                 value={editData.phone}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="address">Adresse</label>
+                            <label htmlFor="addressProfile">Adresse</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="address"
+                                id="addressProfile"
                                 name="address"
                                 value={editData.address}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="city">Ville</label>
+                            <label htmlFor="cityProfile">Ville</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="city"
+                                id="cityProfile"
                                 name="city"
                                 value={editData.city}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="postalcode">Code Postal</label>
+                            <label htmlFor="postalcodeProfile">Code Postal</label>
                             <input
                                 className='inputGeneral text-black'
                                 type="text"
-                                id="postalcode"
+                                id="postalcodeProfile"
                                 name="postalcode"
                                 value={editData.postalcode}
                                 onChange={handleChange}
@@ -250,33 +265,33 @@ const ProfilePage = () => {
                             </button>
                         </div>
                         <div className="input-group">
-                            <label htmlFor="currentPassword">Password actuel</label>
+                            <label htmlFor="currentPasswordProfile">Password actuel</label>
                             <input
                                 className='inputGeneral text-black'
                                 type={showPasswords ? 'text' : 'password'}
-                                id="currentPassword"
+                                id="currentPasswordProfile"
                                 name="currentPassword"
                                 value={passwordData.currentPassword}
                                 onChange={handlePasswordChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="newPassword">Nouveau password</label>
+                            <label htmlFor="newPasswordProfile">Nouveau password</label>
                             <input
                                 className='inputGeneral text-black'
                                 type={showPasswords ? 'text' : 'password'}
-                                id="newPassword"
+                                id="newPasswordProfile"
                                 name="newPassword"
                                 value={passwordData.newPassword}
                                 onChange={handlePasswordChange}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="confirmNewPassword">Confirmer password</label>
+                            <label htmlFor="confirmNewPasswordProfile">Confirmer password</label>
                             <input
                                 className='inputGeneral text-black'
                                 type={showPasswords ? 'text' : 'password'}
-                                id="confirmNewPassword"
+                                id="confirmNewPasswordProfile"
                                 name="confirmNewPassword"
                                 value={passwordData.confirmNewPassword}
                                 onChange={handlePasswordChange}
@@ -290,9 +305,14 @@ const ProfilePage = () => {
                         )}
                     </div>
 
-                    <button type="submit" className="allButton mt-6 mx-auto">
-                        Mettre à jour le profil
+                    <button
+                        type="submit"
+                        className="allButton mt-6 mx-auto"
+                        disabled={loading}
+                    >
+                        {loading ? 'Mise à jour...' : 'Mettre à jour le profil'}
                     </button>
+
                 </form>
             </div>
         </div>

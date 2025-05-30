@@ -7,6 +7,10 @@ const Comments = () => {
   // Récupérer l'ID utilisateur depuis accountService:
   const userId = accountService.getCurrentUserId();
 
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+  const [loadingAdd, setLoadingAdd] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
+
   const [successMessage, setSuccessMessage] = useState('');
 
   const [commentData, setCommentData] = useState({
@@ -30,7 +34,7 @@ const Comments = () => {
   };
 
   // Gère la soumission du formulaire:
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (!accountService.isLogged()) {
@@ -43,36 +47,41 @@ const Comments = () => {
       users_id: userId
     };
 
-    commentService.addComment(commentWithUserId)
-      .then(res => {
-        fetchComments(); // Rafraîchit les commentaires après l'ajout.
-        // Réinitialise les champs du formulaire:
-        setCommentData({
-          title: '',
-          content: '',
-          users_id: userId
-        });
-        setSuccessMessage('Commentaire ajouté avec succès !');
-        setTimeout(() => setSuccessMessage(''), 3000);
-      })
-      .catch(err => {
-        console.error('Erreur ajout commentaire:', err.response?.data || err.message);
-        if (err.response && err.response.status === 400) {
-          alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
-        } else {
-          alert('Erreur lors de l\'ajout du commentaire.');
-        }
+    try {
+      setLoadingAdd(true);
+      await commentService.addComment(commentWithUserId);
+      await fetchComments(); // Rafraîchit les commentaires après l'ajout.
+      // Réinitialise les champs du formulaire:
+      setCommentData({
+        title: '',
+        content: '',
+        users_id: userId
       });
+      setSuccessMessage('Commentaire ajouté avec succès !');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error('Erreur ajout commentaire:', err.response?.data || err.message);
+      if (err.response && err.response.status === 400) {
+        alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
+      } else {
+        alert('Erreur lors de l\'ajout du commentaire.');
+      }
+    } finally {
+      setLoadingAdd(false);
+    }
   };
 
   // Récupère la liste des commentaires:
   const fetchComments = async () => {
     try {
+      setLoadingComments(true);
       const response = await commentService.getAllComments();
       setComments(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des commentaires:', error);
       setError('Erreur lors de la récupération des commentaires.');
+    } finally {
+      setLoadingComments(false);
     }
   };
 
@@ -94,28 +103,34 @@ const Comments = () => {
             <legend className="text-lg font-semibold mb-2">Formulaire de commentaire</legend>
 
             {/* Ajout d'id pour améliorer l'association label/input */}
-            <label htmlFor="title">Titre du commentaire:</label>
+            <label htmlFor="commentTitle">Titre du commentaire:</label>
             <input
               className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
-              id="title"
+              id="commentTitle"
               name="title"
               value={commentData.title}
               onChange={onChange}
               required
             />
 
-            <label htmlFor="content">Écrivez votre commentaire:</label>
+            <label htmlFor="contentComment">Écrivez votre commentaire:</label>
             <textarea
               className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
-              id="content"
+              id="contentComment"
               name="content"
               value={commentData.content}
               onChange={onChange}
               required
             />
 
-            <button className="allButton" type="submit">Envoyer</button>
+            <button
+              className="allButton"
+              type="submit"
+              disabled={loadingAdd}
+            >
+              {loadingAdd ? "Ajout du commentaire en cours..." : "commentaire ajouté"}
+            </button>
           </fieldset>
         </form>
 
@@ -126,7 +141,7 @@ const Comments = () => {
         )}
 
         {/* Message d'erreur accessible pour lecteur d'écran */}
-        {error && <div role="alert" className="text-red-600 mt-3">{error}</div>}
+        {error && <div role="alert" className="text-red-400 mt-3">{error}</div>}
       </div>
 
       <div className="commentListBlock">

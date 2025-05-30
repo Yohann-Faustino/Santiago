@@ -8,6 +8,9 @@ const UserEdit = () => {
     // Ce hook gere les messages utilisateur
     const [message, setMessage] = useState('');
 
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    const [loading, setLoading] = useState(false);
+
     // État local pour stocker les données de l'user
     const [user, setUser] = useState({
         firstname: '',
@@ -43,6 +46,7 @@ const UserEdit = () => {
         const userWithId = { ...user, id: uid };
 
         try {
+            setLoading(true);
             // J'appelle mon service pour envoyer les modifications en BDD
             await userService.getUpdate(userWithId);
             setMessage('✅ Modifications du profil enregistrées.');
@@ -50,6 +54,8 @@ const UserEdit = () => {
         } catch (err) {
             console.log(err); // J'affiche l’erreur si la requête échoue
             setMessage('❌ Une erreur est survenue.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -76,9 +82,10 @@ const UserEdit = () => {
             </div>
             <form onSubmit={onSubmit} className=" text-center">
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="firstname">Modifier le Prénom:</label>
+                    <label htmlFor="firstnameEdit">Modifier le Prénom:</label>
                     <input
                         className="modifiable text-center"
+                        id="firstnameEdit"
                         type="text"
                         name="firstname"
                         value={user.firstname || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -86,9 +93,10 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="lastname">Modifier le Nom:</label>
+                    <label htmlFor="lastnameEdit">Modifier le Nom:</label>
                     <input
                         className="modifiable text-center"
+                        id="lastnameEdit"
                         type="text"
                         name="lastname"
                         value={user.lastname || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -96,10 +104,11 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="email">Modifier l'Email:</label>
+                    <label htmlFor="emailEdit">Modifier l'Email:</label>
                     <input
                         className="modifiable text-center"
-                        type="text"
+                        id="emailEdit"
+                        type="email"
                         name="email"
                         value={user.email || ''} // Affiche le contenu actuel ou une chaîne vide
                         onChange={onChange} // Appelle onChange lors du changement
@@ -107,9 +116,10 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="phone">Modifier le Téléphone:</label>
+                    <label htmlFor="phoneEdit">Modifier le Téléphone:</label>
                     <input
                         className="modifiable text-center"
+                        id="phoneEdit"
                         type="text"
                         name="phone"
                         value={user.phone || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -117,9 +127,10 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="address">Modifier l'Adresse:</label>
+                    <label htmlFor="addressEdit">Modifier l'Adresse:</label>
                     <input
                         className="modifiable text-center"
+                        id="addressEdit"
                         type="text"
                         name="address"
                         value={user.address || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -127,9 +138,10 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="city">Modifier la Ville:</label>
+                    <label htmlFor="cityEdit">Modifier la Ville:</label>
                     <input
                         className="modifiable text-center"
+                        id="cityEdit"
                         type="text"
                         name="city"
                         value={user.city || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -137,9 +149,10 @@ const UserEdit = () => {
                     />
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="postalcode">Modifier le Code Postal:</label>
+                    <label htmlFor="postalcodeEdit">Modifier le Code Postal:</label>
                     <input
                         className="modifiable text-center"
+                        id="postalcodeEdit"
                         type="text"
                         name="postalcode"
                         value={user.postalcode || ''} // Affiche le contenu actuel ou une chaîne vide
@@ -155,9 +168,10 @@ const UserEdit = () => {
                     )}
                 </div>
                 <div className="flex flex-col mb-3">
-                    <label htmlFor="role">Modifier le Rôle :</label>
+                    <label htmlFor="roleEdit">Modifier le Rôle :</label>
                     <select
                         name="role"
+                        id="roleEdit"
                         value={user.role || 'utilisateur'}
                         onChange={onChange}
                         className="modifiable text-center p-2 border border-gray-400 m-auto"
@@ -168,7 +182,12 @@ const UserEdit = () => {
                 </div>
 
                 <div>
-                    <button className="mt-4 p-2 bg-blue-900 text-white rounded">Enregistrer</button>
+                    <button
+                        className="mt-4 p-2 bg-blue-900 text-white rounded"
+                        disabled={loading}
+                    >
+                        {loading ? "Enregistrement en cours..." : "Enregistrer"}
+                    </button>
                 </div>
             </form>
         </div>
