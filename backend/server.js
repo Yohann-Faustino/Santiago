@@ -14,8 +14,27 @@ const port = process.env.PORT || 3000;
 // Helmet ajoute des headers de sécurité dans les réponses HTTP
 app.use(helmet());
 
-// Active CORS pour toutes les requêtes
-app.use(cors());
+// Liste des origines autorisées pour CORS
+const allowedOrigins = [
+  'http://localhost:5173',  // URL front dev locale
+  'https://santiago-production.up.railway.app' 
+];
+
+// Active CORS pour toutes les requêtes, mais uniquement depuis les origines autorisées
+app.use(cors({
+  origin: function(origin, callback){
+    // autoriser les requêtes sans origine (ex: Postman, curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `CORS policy: Origine '${origin}' non autorisée.`;
+      return callback(new Error(msg), false);
+    }
+
+    return callback(null, true);
+  },
+  credentials: true // si tu utilises cookies ou autorisations avec credentials
+}));
 
 // Body parser pour traiter les données JSON et les formulaires
 app.use(bodyParser.json());
