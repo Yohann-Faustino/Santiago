@@ -224,7 +224,7 @@ setLoading(true);
                 onChange={handleLoginChange}
                 required
                 className="inputField border rounded-lg p-2 mb-1"
-                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                 aria-label="Adresse email"
               />
               <div className="inputPasswordWrapper">
@@ -347,7 +347,7 @@ setLoading(true);
                     onChange={handleSignUpChange}
                     required
                     className="inputField border rounded-lg p-2"
-                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     aria-label="Adresse email"
                   />
 

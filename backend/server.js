@@ -6,41 +6,46 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 
-dotenv.config(); // Récupère les variables d'environnement depuis un fichier .env
+dotenv.config();
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Helmet ajoute des headers de sécurité dans les réponses HTTP
+// Helmet pour sécuriser les headers HTTP
 app.use(helmet());
 
-// Liste des origines autorisées pour CORS
-const allowedOrigins = [
-  'http://localhost:5173',  // URL front dev locale
-  'https://santiago-production.up.railway.app' 
-];
+// Origines autorisées pour CORS
+const allowedOrigins = ['https://santiago-plum.vercel.app', 'http://localhost:3000'];
 
-// Active CORS pour toutes les requêtes, mais uniquement depuis les origines autorisées
+// Middleware CORS avec gestion personnalisée des origines
 app.use(cors({
-  origin: function(origin, callback){
-    // autoriser les requêtes sans origine (ex: Postman, curl)
+  origin: function(origin, callback) {
+    // Permet requêtes sans origine (ex: postman, curl)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `CORS policy: Origine '${origin}' non autorisée.`;
-      return callback(new Error(msg), false);
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`Requête bloquée CORS depuis origine non autorisée : ${origin}`);
+      }
+      // Ne pas renvoyer d'erreur mais refuser l'origine
+      return callback(null, false);
     }
-
+    // Origine autorisée
     return callback(null, true);
   },
-  credentials: true // si tu utilises cookies ou autorisations avec credentials
+  credentials: true, 
 }));
 
-// Body parser pour traiter les données JSON et les formulaires
+// Gérer explicitement la requête OPTIONS pour toutes les routes (preflight)
+app.options('*', cors());
+
+// Middleware JSON + bodyParser (attention, express.json() suffit normalement)
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Log des headers uniquement en développement
+// Logging des headers uniquement en dev
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
     console.log('Headers:', req.headers);
@@ -48,8 +53,22 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Utilisation du router principal
+// Routes principales
 app.use(router);
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Sert les fichiers statiques générés par Vite dans /dist
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Pour toute route non reconnue côté backend, renvoyer index.html (React gère la route)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 // Middleware global de gestion des erreurs
 app.use((err, req, res, next) => {
@@ -64,7 +83,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Démarre le serveur après vérification de la connexion à la BDD
+// Démarrage du serveur après connexion à la BDD
 const startServer = async () => {
   try {
     await sequelize.authenticate();

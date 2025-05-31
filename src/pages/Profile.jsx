@@ -200,7 +200,7 @@ const ProfilePage = () => {
                                 type="email"
                                 id="emailProfile"
                                 name="email"
-                                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                                 value={editData.email}
                                 onChange={handleChange}
                             />

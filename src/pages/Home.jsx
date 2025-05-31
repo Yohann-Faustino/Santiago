@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Decp from "../assets/decp.png";
+import Decp from "/assets/decp.png";
 import Slider from "../components/slider";
 import SliderCom from "../components/sliderCom";
 
