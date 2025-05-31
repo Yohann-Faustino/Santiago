@@ -3,6 +3,8 @@ import { Carousel } from "react-responsive-carousel";
 import { commentService } from "../services/comment.service";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+console.log("API base URL:", import.meta.env.VITE_API_BASE_URL);
+
 const SliderCom = () => {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);

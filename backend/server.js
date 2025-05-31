@@ -5,9 +5,14 @@ import router from './router.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
-console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+console.log('URL PG_URL:', process.env.PG_URL);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,37 +20,30 @@ const port = process.env.PORT || 3000;
 // Helmet pour sécuriser les headers HTTP
 app.use(helmet());
 
-// Origines autorisées pour CORS
+// CORS
 const allowedOrigins = ['https://santiago-plum.vercel.app', 'http://localhost:3000'];
 
-// Middleware CORS avec gestion personnalisée des origines
 app.use(cors({
   origin: function(origin, callback) {
-    // Permet requêtes sans origine (ex: postman, curl)
     if (!origin) return callback(null, true);
-
     if (allowedOrigins.indexOf(origin) === -1) {
       if (process.env.NODE_ENV !== 'production') {
         console.warn(`Requête bloquée CORS depuis origine non autorisée : ${origin}`);
       }
-      // Ne pas renvoyer d'erreur mais refuser l'origine
       return callback(null, false);
     }
-    // Origine autorisée
     return callback(null, true);
   },
-  credentials: true, 
+  credentials: true,
 }));
-
-// Gérer explicitement la requête OPTIONS pour toutes les routes (preflight)
 app.options('*', cors());
 
-// Middleware JSON + bodyParser (attention, express.json() suffit normalement)
+// Middleware JSON et URL-encoded
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Logging des headers uniquement en dev
+// Logging headers (dev)
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
     console.log('Headers:', req.headers);
@@ -53,24 +51,22 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Routes principales
-app.use(router);
+// ✅ D'abord les routes API
+app.use('/api', router);
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Sert les fichiers statiques générés par Vite dans /dist
+// ✅ Ensuite les fichiers statiques du frontend
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Pour toute route non reconnue côté backend, renvoyer index.html (React gère la route)
-app.get('*', (req, res) => {
+// ✅ Enfin, redirection vers React pour toutes les routes frontend
+app.get('*', (req, res, next) => {
+  // Si l'URL commence par /api, ce n’est PAS du frontend
+  if (req.originalUrl.startsWith('/api')) {
+    return next(); // Laisse Express renvoyer une 404 si la route API n'existe pas
+  }
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-// Middleware global de gestion des erreurs
+// Gestion des erreurs
 app.use((err, req, res, next) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error('Erreur détectée (détails complets) :', err);
@@ -83,7 +79,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Démarrage du serveur après connexion à la BDD
+// Connexion BDD + lancement
 const startServer = async () => {
   try {
     await sequelize.authenticate();
