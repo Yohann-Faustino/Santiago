@@ -51,18 +51,14 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// ✅ D'abord les routes API
-app.use('/api', router);
+// ✅ D'abord les routes
+app.use(router);
 
 // ✅ Ensuite les fichiers statiques du frontend
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // ✅ Enfin, redirection vers React pour toutes les routes frontend
-app.get('*', (req, res, next) => {
-  // Si l'URL commence par /api, ce n’est PAS du frontend
-  if (req.originalUrl.startsWith('/api')) {
-    return next(); // Laisse Express renvoyer une 404 si la route API n'existe pas
-  }
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
