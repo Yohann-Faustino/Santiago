@@ -55,7 +55,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api', router);
 
 // ✅ Ensuite les fichiers statiques du frontend
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // ✅ Enfin, redirection vers React pour toutes les routes frontend
 app.get('*', (req, res, next) => {
@@ -63,7 +63,7 @@ app.get('*', (req, res, next) => {
   if (req.originalUrl.startsWith('/api')) {
     return next(); // Laisse Express renvoyer une 404 si la route API n'existe pas
   }
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // Gestion des erreurs
