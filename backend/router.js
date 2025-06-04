@@ -28,10 +28,10 @@ const forgotPasswordLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Route pour tester la communication:
-router.get('/', (req, res) => {
-    res.send('Bonjour, le serveur Express est en fonction !')
-});
+// Route pour tester la communication: (interfere avec le deploiement mais si besoin on remet pour etre sur que le server est en route)
+// router.get('/', (req, res) => {
+//     res.send('Bonjour, le serveur Express est en fonction !')
+// });
 
 // Routes pour l'API RESTful qui permet de récupérer tous les rendez-vous, les clients, les commentaires et le profil stockés dans la base de données:
 router.use('/users', authMiddlewareToken, usersRoute);
