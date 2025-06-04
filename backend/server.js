@@ -74,20 +74,27 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+
 // Lancement serveur + BDD
 const startServer = async () => {
   try {
+    console.log('⏳ Tentative de connexion à la BDD...');
     await sequelize.authenticate();
     console.log('✅ Connexion à la base de données réussie.');
 
+    console.log('⏳ Synchronisation de la BDD...');
     await sequelize.sync({ alter: true });
     console.log('✅ Base de données synchronisée.');
 
-app.listen(port, '0.0.0.0', () => {
+    app.listen(port, '0.0.0.0', () => {
       console.log(`✅ Serveur à l'écoute sur http://localhost:${port}`);
     });
   } catch (error) {
-    console.error('❌ Échec de connexion à la base de données.');
+    console.error('❌ Échec de connexion à la base de données ou sync.');
     if (process.env.NODE_ENV !== 'production') {
       console.error(error);
     }
