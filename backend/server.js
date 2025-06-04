@@ -74,11 +74,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-
 // Lancement serveur + BDD
 const startServer = async () => {
   try {
@@ -90,6 +85,8 @@ const startServer = async () => {
     await sequelize.sync({ alter: true });
     console.log('✅ Base de données synchronisée.');
 
+    console.log('PORT used:', port);
+    
     app.listen(port, '0.0.0.0', () => {
       console.log(`✅ Serveur à l'écoute sur http://localhost:${port}`);
     });
