@@ -54,11 +54,11 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(router);
 
 // ✅ Ensuite, les fichiers statiques React (dossier dist)
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '/dist')));
 
 // ✅ Enfin, toutes les autres routes envoient index.html (client SPA)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
 
 // Gestion des erreurs
