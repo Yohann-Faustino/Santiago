@@ -112,7 +112,6 @@ const UserEdit = () => {
                         name="email"
                         value={user.email || ''} // Affiche le contenu actuel ou une chaîne vide
                         onChange={onChange} // Appelle onChange lors du changement
-                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                     />
                 </div>
                 <div className="flex flex-col mb-3">
