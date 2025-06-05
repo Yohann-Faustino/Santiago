@@ -21,15 +21,19 @@ const port = process.env.PORT || 3000;
 app.use(helmet());
 
 // CORS
-const allowedOrigins = ['https://santiago-plum.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://santiago-plum.vercel.app',
+  'http://localhost:3000',
+  'https://santiago-ifui8r4q1-faustinos-projects-77ec85f7.vercel.app'];
+
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
       if (process.env.NODE_ENV !== 'production') {
         console.warn(`Requête bloquée CORS depuis origine non autorisée : ${origin}`);
       }
-      return callback(null, false);
+      return callback(new Error('CORS policy violation'), false);
     }
     return callback(null, true);
   },
@@ -86,7 +90,7 @@ const startServer = async () => {
     console.log('✅ Base de données synchronisée.');
 
     console.log('PORT used:', port);
-    
+
     app.listen(port, '0.0.0.0', () => {
       console.log(`✅ Serveur à l'écoute sur http://localhost:${port}`);
     });
