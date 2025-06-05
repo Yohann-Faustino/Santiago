@@ -22,7 +22,7 @@ app.use(helmet());
 
 // CORS
 const allowedOrigins = [
-  'https://santiago-plum.vercel.app',
+  'https://santiago-production.up.railway.app',
   'http://localhost:3000',
   'http://santiago-plum.vercel.app'];
 
