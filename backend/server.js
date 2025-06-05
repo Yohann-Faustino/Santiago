@@ -24,7 +24,7 @@ app.use(helmet());
 const allowedOrigins = [
   'https://santiago-plum.vercel.app',
   'http://localhost:3000',
-  'https://santiago-ifui8r4q1-faustinos-projects-77ec85f7.vercel.app'];
+  'http://santiago-plum.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
