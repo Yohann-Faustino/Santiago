@@ -50,6 +50,20 @@ const LegalDisclaimer = () => {
                 </p>
             </section>
 
+            <p className="mt-2">
+                L’API (backend) et la base de données sont hébergées par la société{" "}
+                <a
+                    href="https://railway.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="linkClick"
+                    title="Visiter le site de l'hébergeur Railway"
+                >
+                    Railway
+                </a>, située Railway Inc., 2261 Market Street #4081, San Francisco, CA 94114, USA.
+            </p>
+
+
             <section className="mt-4" aria-labelledby="authentification-et-securite">
                 <h2 className="mb-1 mt-3 colorTitle">Authentification et sécurité</h2>
                 <p>
