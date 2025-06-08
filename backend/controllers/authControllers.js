@@ -8,6 +8,7 @@ import validator from 'validator';
 import crypto from 'crypto';
 import sendEmail from '../../src/services/sendEmail.js';
 import axios from 'axios';
+import verifyCaptcha from '../utils/verifyCaptcha.js';
 
 // Fonction pour valider le mot de passe si il respecte certains critères de sécurité définis:
 const validatePassword = (password) => {
@@ -26,33 +27,6 @@ const hashPassword = async (password) => {
         return await bcrypt.hash(password, 10); // Le '10' est le nombre de rounds de salage
     } catch (error) {
         throw new Error('Erreur lors du hashage du mot de passe');
-    }
-};
-
-// Fonction qui gère le captcha:
-const verifyCaptcha = async (token) => {
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-    try {
-        // Construction des paramètres en URL encodée
-        const params = new URLSearchParams();
-        params.append('secret', secretKey);
-        params.append('response', token);
-
-        const response = await axios.post(
-            'https://www.google.com/recaptcha/api/siteverify',
-            params.toString(),
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            }
-        );
-
-        return response.data.success;
-    } catch (error) {
-        console.error('Erreur lors de la vérification reCAPTCHA :', error);
-        return false;
     }
 };
 

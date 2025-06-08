@@ -32,7 +32,7 @@ app.use(helmet({
 const allowedOrigins = [
   'https://santiago-production.up.railway.app',
   'http://localhost:3000',
-  'http://santiago-plum.vercel.app'];
+  'https://santiago-plum.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
