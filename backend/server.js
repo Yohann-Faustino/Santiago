@@ -18,7 +18,15 @@ const app = express(); // ✅ Déclaré AVANT tout le reste
 const port = process.env.PORT || 3000;
 
 // Helmet pour sécuriser les headers HTTP
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://www.google.com", "https://www.gstatic.com"],
+      frameSrc: ["'self'", "https://www.google.com"],
+    }
+  }
+}));
 
 // CORS
 const allowedOrigins = [
