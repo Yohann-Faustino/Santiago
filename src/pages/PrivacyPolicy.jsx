@@ -8,16 +8,16 @@ const PrivacyPolicy = () => {
             <section aria-label="Introduction politique de confidentialité">
                 <h1 className="colorTitle">POLITIQUE DE CONFIDENTIALITÉ</h1>
 
-                <h2 className=" mt-5 mb-5 colorTitle">Dernière mise à jour le 23 juillet 2024</h2>
+                <h2 className=" mt-5 mb-5 colorTitle">Dernière mise à jour le 08/06/25</h2>
 
                 <p>Cet avis de confidentialité pour DECP, SASU Société par actions simplifiée à associé unique (« nous », « notre » ou « notre »), décrit comment et pourquoi nous pouvons collecter, stocker, utiliser et/ou partager (« traiter ») vos informations lorsque vous utilisez nos services, par exemple lorsque vous:</p>
 
                 <ul>
-                    <li>Visitez notre site Web à l'adresse http://www.decp.fr, ou l'un de nos sites Web qui renvoie à cet avis de confidentialité.</li>
+                    <li>Visitez notre site Web à l'adresse https://santiago-plum.vercel.apps, ou l'un de nos sites Web qui renvoie à cet avis de confidentialité.</li>
                     <li>Interagissez avec nous par d'autres moyens connexes, y compris par des ventes, du marketing ou des événements.</li>
                 </ul>
 
-                <p>Questions ou préoccupations? La lecture de cet avis de confidentialité vous aidera à comprendre vos droits et vos choix en matière de confidentialité. Si vous n'êtes pas d'accord avec nos politiques et pratiques, veuillez ne pas utiliser nos services. Si vous avez encore des questions ou des préoccupations, veuillez nous contacter à <a className="linkClick" href="mailto:decp@decp.fr"> decp@decp.fr.</a></p>
+                <p>Questions ou préoccupations? La lecture de cet avis de confidentialité vous aidera à comprendre vos droits et vos choix en matière de confidentialité. Si vous n'êtes pas d'accord avec nos politiques et pratiques, veuillez ne pas utiliser nos services. Si vous avez encore des questions ou des préoccupations, veuillez nous contacter à <a className="linkClick" href="mailto:decp@decp.fr"> decp@decp.fr.</a> ou <a className="linkClick" href="mailto:yohannfaustino@gmail.com"> yohannfaustino@gmail.com</a> qui a développé et conçu ce site.</p>
 
                 <h2 className=" mt-5 mb-5 colorTitle">RÉSUMÉ DES POINTS CLÉS:</h2>
 
@@ -142,7 +142,8 @@ const PrivacyPolicy = () => {
 
                 <h3 id="section12" className=" mt-5 mb-5 colorTitle">12. COMMENT POUVEZ-VOUS NOUS CONTACTER AU SUJET DE CET AVIS?</h3>
 
-                <p>Si vous avez des questions ou des commentaires sur cet avis, vous pouvez nous envoyer un email à <a className="linkClick" href="mailto:decp@decp.fr">decp@decp.fr</a> ou nous contacter par courrier à :</p>
+                <p>Nous n’avons pas désigné de Délégué à la Protection des Données (DPO). Pour toute question relative à la protection de vos données personnelles ou pour exercer vos droits (accès, rectification, suppression, opposition, etc.), veuillez nous contacter par email à <a href="mailto:decp@decp.fr">decp@decp.fr</a>.
+                    Nous nous engageons à répondre à votre demande dans un délai légal de un mois conformément au RGPD.</p>
 
                 <ul>
                     <li>DECP, SASU Société par actions simplifiée à associé unique</li>

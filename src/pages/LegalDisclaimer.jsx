@@ -16,7 +16,8 @@ const LegalDisclaimer = () => {
 
             <section className="mt-4" aria-labelledby="edition">
                 <h2 className="mb-1 mt-3 colorTitle">Édition du site</h2>
-                <p>Le présent site, accessible à l’URL <strong>www.decp.fr</strong> (le « Site »), est édité par :</p>
+                <p>Le présent site, accessible à l’URL <strong>https://santiago-plum.vercel.app
+                </strong> (le « Site »), est édité par :</p>
                 <p>
                     DECP, société au capital de 3000 euros, inscrite au R.C.S. de CRETEIL sous le numéro
                     B 919 945 568, dont le siège social est situé au 8, Rue Estienne d'Orves 94000
@@ -49,6 +50,17 @@ const LegalDisclaimer = () => {
                 </p>
             </section>
 
+            <section className="mt-4" aria-labelledby="authentification-et-securite">
+                <h2 className="mb-1 mt-3 colorTitle">Authentification et sécurité</h2>
+                <p>
+                    Lors de l'inscription ou de la connexion, les données d'identification (comme l'adresse email et le mot de passe) sont traitées de manière sécurisée.
+                    Les mots de passe sont strictement confidentiels et stockés sous forme chiffrée (hachée). Un jeton d’authentification (JWT) est généré à la connexion pour maintenir la session de l’utilisateur active ;
+                    ce jeton, stocké localement, ne contient que les informations nécessaires à l’identification et n’est transmis à aucun tiers.
+                    En cas de demande de réinitialisation de mot de passe, un lien sécurisé temporaire est envoyé par email à l’utilisateur.
+                    Toutes ces données ne sont utilisées qu’à des fins d’authentification et de sécurité, conformément au RGPD.
+                </p>
+            </section>
+
             <section className="mt-4" aria-labelledby="directeur">
                 <h2 className="mb-1 mt-3 colorTitle">Directeur de publication</h2>
                 <p>Le Directeur de la publication du Site est François Santiago.</p>
@@ -61,6 +73,11 @@ const LegalDisclaimer = () => {
                         <a href="tel:+33695451933" className="linkClick" title="Appeler DECP">
                             <span role="img" aria-label="téléphone" className="emoji">📞</span> 06.95.45.19.33
                         </a>
+                        <p>
+                            Le site ne dispose pas de formulaire de contact. Pour toute demande, vous pouvez nous contacter directement par email à l'adresse indiquée.
+                            Les messages envoyés sont traités uniquement dans le cadre de votre demande et ne sont conservés que le temps nécessaire à son traitement.
+                            Aucun enregistrement automatique n’est effectué sur le site.
+                        </p>
                     </li>
                     <li>
                         <a href="mailto:decp@decp.fr" className="linkClick" title="Envoyer un mail à DECP">
@@ -73,6 +90,13 @@ const LegalDisclaimer = () => {
                         </a>
                     </li>
                 </ul>
+            </section>
+
+            <section className="mt-4" aria-labelledby="propriété-intellectuelle">
+                <h2 className="mb-1 mt-3 colorTitle">Propriété intellectuelle</h2>
+                <p>
+                    L’ensemble du contenu du site https://santiago-plum.vercel.app (textes, images, illustrations, logos, icônes, etc.) est protégé par les lois en vigueur sur la propriété intellectuelle. Toute reproduction ou représentation, intégrale ou partielle, est interdite sans autorisation écrite préalable.
+                </p>
             </section>
 
             <section className="mt-4" aria-labelledby="données personnelles">
@@ -90,7 +114,29 @@ const LegalDisclaimer = () => {
                     Règlement Général sur la Protection des Données 2016/679 du 27 avril 2016 (« RGPD »).
                 </p>
             </section>
-        </div>
+
+            <section className="mt-4" aria-labelledby="disclaimer-stagiaire">
+                <h2 className="mb-1 mt-3 colorTitle">Avertissement</h2>
+                <p>
+                    Ce site a été réalisé dans le cadre d’un stage de formation. Bien que tous les efforts aient été faits pour fournir un service fiable,
+                    il se peut que certaines erreurs ou imprécisions subsistent. Si vous constatez un problème ou une incohérence, n’hésitez pas à nous
+                    contacter. Nous vous remercions de faire preuve de compréhension.
+                    <ul>
+                        <li>
+                            <a href="mailto:decp@decp.fr" className="linkClick" title="Envoyer un mail à DECP">
+                                <span role="img" aria-label="email" className="emoji">📧</span> decp@decp.fr
+                            </a>
+                        </li>
+                        <li>
+                            <a className="linkClick" href="mailto:yohannfaustino@gmail.com" title="Envoyer un mail au développeur du site">
+                                <span role="img" aria-label="email" className="emoji">📧</span>yohannfaustino@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </p>
+            </section>
+
+        </div >
     );
 };
 
