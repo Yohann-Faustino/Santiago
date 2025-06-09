@@ -32,6 +32,7 @@ const ProfilePage = () => {
         // On utilise flag.current pour éviter de rappeler getProfile plus d'une fois lors du rendu du composant:
         if (flag.current === false) {
             const fetchProfileData = async () => {
+                setLoading(true); 
                 try {
                     const response = await getProfile();  // Utilisation de getProfile pour récupérer les données.
                     setProfileData(response.data);
@@ -49,9 +50,6 @@ const ProfilePage = () => {
             // Appel de la fonction pour récupérer les données du profil:
             fetchProfileData();
         }
-
-        // On utilise flag.current pour éviter de rappeler getProfile plus d'une fois lors du rendu du composant:
-        return () => flag.current = true;
     }, []);
 
     // useState pour gérer les données modifiables du profil avant soumission:
