@@ -75,7 +75,7 @@ const ResetPassword = () => {
 
       if (response.status === 200) {
         setMessage("✅ Mot de passe réinitialisé avec succès !");
-        setTimeout(() => navigate("/signup"), 2000); // Redirection après 2s
+        setTimeout(() => navigate("/signup"), 3000); // Redirection après 3s
       }
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
@@ -96,6 +96,9 @@ const ResetPassword = () => {
         Réinitialisation du mot de passe
       </h1>
 
+      {message && <p className="successMessage mt-4 text-center">{message}</p>}
+      {error && <p className="errorMessage mt-4 text-center text-red-400">{error}</p>}
+      
       <form
         onSubmit={handleSubmit}
         className="flex flex-col border border-blue-700 rounded-lg p-4"
@@ -149,8 +152,6 @@ const ResetPassword = () => {
         </button>
       </form>
 
-      {message && <p className="successMessage mt-4 text-center">{message}</p>}
-      {error && <p className="errorMessage mt-4 text-center text-red-400">{error}</p>}
     </div>
   );
 };

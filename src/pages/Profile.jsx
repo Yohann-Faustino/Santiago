@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getProfile, updateProfile, updatePassword } from '../services/profile.service'; // Import des services pour récupérer et mettre à jour les données du profil.
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
 
@@ -20,6 +21,9 @@ const ProfilePage = () => {
 
     // État unique pour afficher/cacher tous les mots de passe en même temps
     const [showPasswords, setShowPasswords] = useState(false);
+
+    // Permet de redirigé l'user après la MAJ de son profle:
+    const navigate = useNavigate();
 
     // Ce hook s'active en même temps qu'un événement particulier choisi par le dev, et s'il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
     // useEffect permet de charger progressivement les données car il demande de charger les données de la bdd après que la page soit chargée.
@@ -138,12 +142,17 @@ const ProfilePage = () => {
                 console.log('Profil mis à jour:', response.data);
             }
             setMessage('✅ Modifications du profil enregistrées.');
-            // Effacement du message après 3 secondes
-            setTimeout(() => setMessage(''), 3000);
+            // Redirection vers profile après 3 secondes
+            setTimeout(() => {
+                setMessage('');
+                navigate('/profile');
+            }, 3000);
         } catch (error) {
             console.error('Erreur lors de la mise à jour du profil:', error);
             setMessage('❌ Une erreur est survenue.');
             setError('Erreur lors de la mise à jour du profil.');
+        } finally {
+            setLoading(false);
         }
     };
 
