@@ -32,7 +32,7 @@ const ProfilePage = () => {
         // On utilise flag.current pour éviter de rappeler getProfile plus d'une fois lors du rendu du composant:
         if (flag.current === false) {
             const fetchProfileData = async () => {
-                setLoading(true); 
+                setLoading(true);
                 try {
                     const response = await getProfile();  // Utilisation de getProfile pour récupérer les données.
                     setProfileData(response.data);
@@ -154,20 +154,16 @@ const ProfilePage = () => {
         }
     };
 
-    // Si une erreur s'est produite, on retourne un message d'erreur:
-    if (error) {
-        return <div>{error}</div>;
-    }
-
-    // Si les données du profil ne sont pas encore chargées, on retourne un message indiquant que les données sont en cours de chargement:
-    if (loading || !profileData) {
-        return <div>Chargement en cours...</div>;
-    }
-
     // Si les données du profil sont chargées sans erreur alors on affiche les données:
     return (
-        <div className="profile-container mx-auto w-1/4">
-            <h1 className="colorTitle text-center">Mon Profil</h1>
+        <div className={`profile-container mx-auto w-1/4 relative ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
+
+            {/* Overlay de chargement (affiché par-dessus) */}
+            {loading && (
+                <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-10">
+                    <p className="text-xl font-semibold">Chargement...</p>
+                </div>
+            )}            <h1 className="colorTitle text-center">Mon Profil</h1>
             <div className="cards">
                 <form
                     className="flex flex-col"
