@@ -19,7 +19,7 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
   const [loading, setLoading] = useState(false);
 
   // Vérifie la robustesse du mot de passe avec validator

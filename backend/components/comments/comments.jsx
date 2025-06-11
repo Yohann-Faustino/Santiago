@@ -8,11 +8,11 @@ const Comments = () => {
     // Ce hook prépare une place pour stocker les données des commentaires une fois qu'elles seront récupérées.
     const [comments, setComments] = useState([]);
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
     const [loading, setLoading] = useState(true);
 
     // Ce hook pour affiche les messages utilisateur.
-    const [message, setMessage] = useState(''); // 
+    const [message, setMessage] = useState('');
 
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas.
     const flag = useRef(false);

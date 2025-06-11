@@ -11,7 +11,7 @@ const CommentsEdit = () => {
         users_id: ''
     });
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
     const [loading, setLoading] = useState(false);
 
     // Référence pour contrôler si le composant a été monté

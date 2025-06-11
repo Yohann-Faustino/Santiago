@@ -7,22 +7,27 @@ const Comments = () => {
   // Récupérer l'ID utilisateur depuis accountService:
   const userId = accountService.getCurrentUserId();
 
-  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
 
+  // Gère l'état des message de succes
   const [successMessage, setSuccessMessage] = useState('');
 
+  // Surveille l’état des champs du formulaire
   const [commentData, setCommentData] = useState({
     title: '',
     content: '',
     users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
   });
 
-  // État pour gérer les commentaires et les erreurs:
+  // Contient la liste des commentaires déja existants:
   const [comments, setComments] = useState([]);
+
+// Message d'erreur en cas de non récupération de la liste des commentaires existants
   const [error, setError] = useState(null);
 
+  // Permet de rediriger l'utilisateur après une action spécifique
   const navigate = useNavigate();
 
   // Met à jour commentData lors des modifications du formulaire:
@@ -103,7 +108,7 @@ const Comments = () => {
             <legend className="text-lg font-semibold mb-2">Formulaire de commentaire</legend>
 
             {/* Ajout d'id pour améliorer l'association label/input */}
-            <label htmlFor="commentTitle">Titre du commentaire:</label>
+            <label htmlFor="commentTitle">Nom et Prénom:</label>
             <input
               className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
@@ -129,7 +134,7 @@ const Comments = () => {
               type="submit"
               disabled={loadingAdd}
             >
-              {loadingAdd ? "Ajout du commentaire en cours..." : "commentaire ajouté"}
+              {loadingAdd ? "Ajout du commentaire en cours..." : "Ajouter un commentaire"}
             </button>
           </fieldset>
         </form>
@@ -146,16 +151,21 @@ const Comments = () => {
 
       <div className="commentListBlock">
         <h2 className="colorTitle mb-3 text-center">Liste des Commentaires:</h2>
-        <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
-          <ul>
-            {comments.map(comment => (
-              <li key={comment.id}>
-                <h3 className="text-red-700">{comment.title}</h3>
-                <p className="mb-3">{comment.content}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+
+        {loadingComments ? (
+          <p className="text-center text-blue-500">Chargement des commentaires...</p>
+        ) : (
+          <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+            <ul>
+              {comments.map(comment => (
+                <li key={comment.id}>
+                  <h3 className="text-red-700">{comment.title}</h3>
+                  <p className="mb-3">{comment.content}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

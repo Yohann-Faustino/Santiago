@@ -8,7 +8,7 @@ const User = () => {
     // Récupères l'utilisateur que l'on souhaite modifier: 
     const [users, setUsers] = useState([]);
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
     const [loading, setLoading] = useState(true);
 
     // Ce hook gere les messages utilisateur

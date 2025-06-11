@@ -3,11 +3,9 @@ import React from "react";
 const Contact = () => {
     return (
         <div className="flex flex-col text-center w-full mb-3">
-            {/* Titre principal */}
-            <h1 className="colorTitle">Contact</h1>
-            <h2 className="colorh2 mb-5">24 HEURES SUR 24 / 7 JOURS SUR 7</h2>
 
-            {/* Liens téléphone et mail */}
+            <h1 className="colorTitle">Contact</h1>
+
             <ul>
                 <li className="colorh2">
                     <a href="tel:+33695451933" className="linkClick">
@@ -36,7 +34,6 @@ const Contact = () => {
                 ></iframe>
             </div>
 
-            {/* Informations légales */}
             <div className="text-sm colorTitle mt-4">
                 <p>SIRET : 752 567 859 00018</p>
                 <p>TVA : FR 71 752567859</p>

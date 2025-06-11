@@ -6,15 +6,18 @@ const ForgotPassword = () => {
 
   // États locaux pour le formulaire
   const [email, setEmail] = useState("");
-  const [successMessage, setSuccesMessage] = useState("");
+
+  // Gère les messages d'erreur ou de succès
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
 
   // Ajouter un état pour le token captcha
   const [captchaToken, setCaptchaToken] = useState(null);
 
-  // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
   const [loading, setLoading] = useState(false);
 
+  // Ajoute le token au captcha a la demande du reset de MDP
   const handleCaptchaChange = (token) => {
     setCaptchaToken(token);
   };
@@ -22,7 +25,7 @@ const ForgotPassword = () => {
   // Gestion de la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
-    setSuccesMessage("");
+    setSuccessMessage("");
     setError("");
 
     if (!captchaToken) {
@@ -35,7 +38,7 @@ const ForgotPassword = () => {
       // Envoi des données pour l'envoi de mail:
       const response = await AxiosCall.post('/forgot-password', { email, captchaToken });
       if (response.status === 200) {
-        setSuccesMessage("Un email de réinitialisation a été envoyé si cet email est enregistré.");
+        setSuccessMessage("Un email de réinitialisation a été envoyé si cet email est enregistré.");
         setCaptchaToken(null);
       }
     } catch (err) {
@@ -53,7 +56,9 @@ const ForgotPassword = () => {
       {error && <p className="errorMessage text-red-400">{error}</p>}
 
       <form onSubmit={handleSubmit} className=" flex flex-col border border-blue-700 rounded-lg p-2">
+        <label htmlFor="emailInputForgotPassword" className="sr-only">Adresse email</label> {/*Visible uniquement pour l'accessibilité sinon le label fait doublon avec le placeholder dans l'input*/}
         <input
+          id="emailInputForgotPassword"
           type="email"
           placeholder="Votre adresse email"
           value={email}

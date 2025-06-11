@@ -8,12 +8,10 @@ const Home = () => {
   return (
     <div className="homeBlock flex flex-col lg:flex-row justify-around">
       {/* Section gauche de la page */}
-      <div className="homeLeftBlock flex-1 p-4 w-1/2">
+      <section className="homeLeftBlock flex-1 p-4 w-1/2">
         <h1 className="colorTitle flex items-center">
           La société
-          <Link to="/legaldisclaimer">
-            <img className="h-4 ml-3 inline-block" src={Decp} alt="Decp" />
-          </Link>
+            <img className="h-4 ml-3 inline-block" src={Decp} alt="Logo de l'entreprise Decp" />
         </h1>
         <p className="mb-5 colorh2">
           Dégorgement, Entretien, Chauffage, Plomberie.
@@ -33,7 +31,7 @@ const Home = () => {
         <h2 className="colorTitle mt-5 mb-3">Contact:</h2>
 
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
-          <div>
+          <address>
             <ul>
               <li className="colorh2">
                 <a href="tel:+33695451933" className="linkClick">
@@ -51,7 +49,7 @@ const Home = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </address>
 
           {/* Informations légales */}
           <div className="text-sm colorTitle">
@@ -65,15 +63,14 @@ const Home = () => {
           <h2 className="colorh2 text-center">Commentaires des clients :</h2>
           <SliderCom />
         </div>
-      </div>
+      </section>
 
       {/* Section droite de la page */}
-      <div className="homeRightBlock flex-1 p-4 w-1/2">
+      <section className="homeRightBlock flex-1 p-4 w-1/2">
         <h2 className="mt-2 mb-1 colorTitle">
           Recommandé par le célèbre site d'artisans : aude-location.
         </h2>
 
-        {/* Texte descriptif complet sans bouton */}
         <div>
           <p>
             DECP est une entreprise de plomberie située à Créteil depuis plus de
@@ -100,7 +97,7 @@ const Home = () => {
           <h2 className="colorh2 text-center mb-3">DECP en images :</h2>
           <Slider />
         </div>
-      </div>
+      </section>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const UserEdit = () => {
     // Ce hook gere les messages utilisateur
     const [message, setMessage] = useState('');
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
     const [loading, setLoading] = useState(false);
 
     // État local pour stocker les données de l'user

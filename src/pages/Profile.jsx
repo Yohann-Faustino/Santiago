@@ -13,7 +13,7 @@ const ProfilePage = () => {
     // useState gère l'état des messages d'erreur de toute la page afin d'avoir un code simple et propre:
     const [error, setError] = useState(null);
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cour...):
+    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
     const [loading, setLoading] = useState(false);
 
     // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas:

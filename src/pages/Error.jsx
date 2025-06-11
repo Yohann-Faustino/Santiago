@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Error = () => {
     return (
         <div className="flex flex-col items-center m-auto text-center">
-            <h1 className="text-5xl font-bold text-red-600 mb-4" role="heading">
+            <h1 className="text-5xl font-bold text-red-600 mb-4">
                 Erreur 404
             </h1>
             <p className="text-lg text-blue-400 mb-6">
