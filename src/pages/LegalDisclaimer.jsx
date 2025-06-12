@@ -7,6 +7,7 @@ const LegalDisclaimer = () => {
             <h1 className="mb-3 colorTitle">MENTIONS LÉGALES</h1>
 
             <section aria-labelledby="intro">
+                                <h2 id="intro" className="mb-1 mt-3 colorTitle">Introduction</h2>
                 <p>
                     Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la
                     confiance en l'économie numérique, il est précisé aux utilisateurs du site DECP
@@ -15,9 +16,8 @@ const LegalDisclaimer = () => {
             </section>
 
             <section className="mt-4" aria-labelledby="edition">
-                <h2 className="mb-1 mt-3 colorTitle">Édition du site</h2>
-                <p>Le présent site, accessible à l’URL <strong>https://santiago-plum.vercel.app
-                </strong> (le « Site »), est édité par :</p>
+                <h2 id="edition" className="mb-1 mt-3 colorTitle">Édition du site</h2>
+                <p>Le présent site, accessible à l’URL <strong>https://santiago-plum.vercel.app</strong> (le « Site »), est édité par :</p>
                 <p>
                     DECP, société au capital de 3000 euros, inscrite au R.C.S. de CRETEIL sous le numéro
                     B 919 945 568, dont le siège social est situé au 8, Rue Estienne d'Orves 94000
@@ -33,8 +33,8 @@ const LegalDisclaimer = () => {
                 <p>Le numéro individuel TVA de l’éditeur est : FR 71 752567859.</p>
             </section>
 
-            <section className="mt-4" aria-labelledby="hébergement">
-                <h2 className="mb-1 mt-3 colorTitle">Hébergement</h2>
+            <section className="mt-4" aria-labelledby="hébergement-du-front">
+                <h2 id="hébergement-du-front" className="mb-1 mt-3 colorTitle">Hébergement du site</h2>
                 <p>
                     Le Site est hébergé par la société{" "}
                     <a
@@ -50,6 +50,8 @@ const LegalDisclaimer = () => {
                 </p>
             </section>
 
+<section aria-labelledby="hébergement-du-back">
+                    <h2 id="hébergement-du-back" className="mb-1 mt-3 colorTitle">Hébergement du site</h2>
             <p className="mt-2">
                 L’API (backend) et la base de données sont hébergées par la société{" "}
                 <a
@@ -62,10 +64,10 @@ const LegalDisclaimer = () => {
                     Railway
                 </a>, située Railway Inc., 2261 Market Street #4081, San Francisco, CA 94114, USA.
             </p>
-
+</section>
 
             <section className="mt-4" aria-labelledby="authentification-et-securite">
-                <h2 className="mb-1 mt-3 colorTitle">Authentification et sécurité</h2>
+                <h2 id="authentification-et-securite" className="mb-1 mt-3 colorTitle">Authentification et sécurité</h2>
                 <p>
                     Lors de l'inscription ou de la connexion, les données d'identification (comme l'adresse email et le mot de passe) sont traitées de manière sécurisée.
                     Les mots de passe sont strictement confidentiels et stockés sous forme chiffrée (hachée). Un jeton d’authentification (JWT) est généré à la connexion pour maintenir la session de l’utilisateur active ;
@@ -76,12 +78,12 @@ const LegalDisclaimer = () => {
             </section>
 
             <section className="mt-4" aria-labelledby="directeur">
-                <h2 className="mb-1 mt-3 colorTitle">Directeur de publication</h2>
+                <h2 id="directeur" className="mb-1 mt-3 colorTitle">Directeur de publication</h2>
                 <p>Le Directeur de la publication du Site est François Santiago.</p>
             </section>
 
             <section className="mt-4" aria-labelledby="contact">
-                <h2 className="mb-1 mt-3 colorTitle">Nous contacter</h2>
+                <h2 id="contact" className="mb-1 mt-3 colorTitle">Nous contacter</h2>
                 <ul className="list-disc list-inside pl-2">
                     <li>
                         <a href="tel:+33695451933" className="linkClick" title="Appeler DECP">
@@ -107,14 +109,14 @@ const LegalDisclaimer = () => {
             </section>
 
             <section className="mt-4" aria-labelledby="propriété-intellectuelle">
-                <h2 className="mb-1 mt-3 colorTitle">Propriété intellectuelle</h2>
+                <h2 id="propriété-intellectuelle" className="mb-1 mt-3 colorTitle">Propriété intellectuelle</h2>
                 <p>
                     L’ensemble du contenu du site https://santiago-plum.vercel.app (textes, images, illustrations, logos, icônes, etc.) est protégé par les lois en vigueur sur la propriété intellectuelle. Toute reproduction ou représentation, intégrale ou partielle, est interdite sans autorisation écrite préalable.
                 </p>
             </section>
 
-            <section className="mt-4" aria-labelledby="données personnelles">
-                <h2 className="mb-1 mt-3 colorTitle">Données personnelles</h2>
+            <section className="mt-4" aria-labelledby="données-personnelles">
+                <h2 id="données-personnelles" className="mb-1 mt-3 colorTitle">Données personnelles</h2>
                 <p>
                     Le traitement de vos données à caractère personnel est régi par notre Charte du
                     respect de la vie privée, disponible depuis la section{" "}
@@ -130,24 +132,25 @@ const LegalDisclaimer = () => {
             </section>
 
             <section className="mt-4" aria-labelledby="disclaimer-stagiaire">
-                <h2 className="mb-1 mt-3 colorTitle">Avertissement</h2>
+                <h2 id="disclaimer-stagiaire" className="mb-1 mt-3 colorTitle">Avertissement</h2>
                 <p>
                     Ce site a été réalisé dans le cadre d’un stage de formation. Bien que tous les efforts aient été faits pour fournir un service fiable,
                     il se peut que certaines erreurs ou imprécisions subsistent. Si vous constatez un problème ou une incohérence, n’hésitez pas à nous
                     contacter. Nous vous remercions de faire preuve de compréhension.
-                    <ul>
-                        <li>
-                            <a href="mailto:decp@decp.fr" className="linkClick" title="Envoyer un mail à DECP">
-                                <span role="img" aria-label="email" className="emoji">📧</span> decp@decp.fr
-                            </a>
-                        </li>
-                        <li>
-                            <a className="linkClick" href="mailto:yohannfaustino@gmail.com" title="Envoyer un mail au développeur du site">
-                                <span role="img" aria-label="email" className="emoji">📧</span>yohannfaustino@gmail.com
-                            </a>
-                        </li>
-                    </ul>
                 </p>
+
+                <ul>
+                    <li>
+                        <a href="mailto:decp@decp.fr" className="linkClick" title="Envoyer un mail à DECP">
+                            <span role="img" aria-label="email" className="emoji">📧</span> decp@decp.fr
+                        </a>
+                    </li>
+                    <li>
+                        <a className="linkClick" href="mailto:yohannfaustino@gmail.com" title="Envoyer un mail au développeur du site">
+                            <span role="img" aria-label="email" className="emoji">📧</span>yohannfaustino@gmail.com
+                        </a>
+                    </li>
+                </ul>
             </section>
 
         </div >
