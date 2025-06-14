@@ -7,7 +7,7 @@ const ResetPassword = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const token = queryParams.get('token'); 
+  const token = queryParams.get('token');
   const navigate = useNavigate(); // On récupère le token de l'URL
   if (process.env.NODE_ENV === 'development') {
     console.log("Token récupéré de l'URL :", token);
@@ -96,14 +96,16 @@ const ResetPassword = () => {
         Réinitialisation du mot de passe
       </h1>
 
-      {message && <p className="successMessage mt-4 text-center">{message}</p>}
-      {error && <p className="errorMessage mt-4 text-center text-red-400">{error}</p>}
-      
+      {message && <p className="successMessage mt-4 text-center" role="status" aria-live="polite">{message}</p>}
+      {error && <p className="errorMessage mt-4 text-center text-red-400" role="alert">{error}</p>}
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col border border-blue-700 rounded-lg p-4"
       >
+        <label htmlFor="newPasswordReseted">Nouveau mot de passe</label>
         <input
+          id="newPasswordReseted"
           type={showPassword ? "text" : "password"}
           placeholder="Nouveau mot de passe"
           value={password}
@@ -112,7 +114,9 @@ const ResetPassword = () => {
           className="inputField border rounded-lg w-full p-2 mb-3 text-center"
         />
 
+        <label htmlFor="newPasswordResetedConfirmed">Confirmez le nouveau mot de passe</label>
         <input
+          id="newPasswordResetedConfirmed"
           type={showPassword ? "text" : "password"}
           placeholder="Confirmez le mot de passe"
           value={confirmPassword}
@@ -125,18 +129,19 @@ const ResetPassword = () => {
           type="button"
           onClick={() => setShowPassword(!showPassword)}
           className="text-sm text-blue-600 mb-4 underline"
+          aria-label={showPassword ? 'Cacher les mots de passe' : 'Afficher les mots de passe'}
+          title={showPassword ? 'Cacher les mots de passe' : 'Afficher les mots de passe'}
         >
           {showPassword ? "🙈 Masquer les mots de passe" : "👁️ Afficher les mots de passe"}
         </button>
 
-        {/* Feedbacks */}
         {password && (
-          <p className={isPasswordStrong ? "text-green-600" : "text-red-600"}>
+          <p aria-live="polite" className={isPasswordStrong ? "text-green-600" : "text-red-600"}>
             {isPasswordStrong ? "✅ Mot de passe fort" : "❌ Mot de passe faible"}
           </p>
         )}
         {confirmPassword && (
-          <p className={password === confirmPassword ? "text-green-600" : "text-red-600"}>
+          <p aria-live="polite" className={password === confirmPassword ? "text-green-600" : "text-red-600"}>
             {password === confirmPassword
               ? "✅ Les mots de passe correspondent"
               : "❌ Les mots de passe ne correspondent pas"}

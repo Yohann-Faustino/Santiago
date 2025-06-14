@@ -13,9 +13,12 @@ function App() {
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors">
       <div className="fixed top-12 right-2 z-50">
+        {/* Mode jour/nuit */}
         <ThemeToggle />
       </div>
+      {/* Gère l’historique de navigation dans le navigateur */}
       <BrowserRouter>
+      <main>
         <Routes>
           <Route path="/*" element={<PublicRouter />} />
           <Route path="/admin/*" element={
@@ -27,6 +30,7 @@ function App() {
           {/* Router spécifique aux personnes identifiées: */}
           <Route path="/auth/*" element={<AuthRouter />} />
         </Routes>
+        </main>
       </BrowserRouter>
     </div>
   );

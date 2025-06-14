@@ -306,6 +306,9 @@ const ProfilePage = () => {
                         {message && (
                             <p className="text-green-600 font-semibold mb-4">{message}</p>
                         )}
+                        {error && (
+                            <p className="text-red-600 font-semibold mb-4">{error}</p>
+                        )}
                     </div>
 
                     <button

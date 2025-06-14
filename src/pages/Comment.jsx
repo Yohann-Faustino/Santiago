@@ -140,7 +140,7 @@ const Comments = () => {
         </form>
 
         {successMessage && (
-          <div role="status" className="text-green-600 mt-3">
+          <div role="status" className="text-green-600 mt-3" aria-live="polite">
             {successMessage}
           </div>
         )}

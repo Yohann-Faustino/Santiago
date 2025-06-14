@@ -3,22 +3,24 @@ import { Link } from "react-router-dom";
 
 const SiteMap = () => {
     return (
-        <div className="flex flex-col m-auto mb-3">
-            <h1 className="colorTitle">Plan du site</h1>
-            <h2 className="colorh2 mb-3">Hiérarchie des pages:</h2>
-            <ol className="site-map-list" aria-label="Plan du site">
-                <li><Link to="/" className="linkClick" aria-label="Accueil de la page principale">Accueil</Link></li>
-                <li><Link to="/contact" className="linkClick" aria-label="Page de contact">Contact</Link></li>
-                <li><Link to="/comments" className="linkClick" aria-label="Liste/ajout de commentaires">Liste/ajout de Commentaires</Link></li>
-                <li><p>Page profile (accessible après connexion)</p></li>
-                <li><p>Page administrateur (accessible après connexion)</p></li>
-                <li><Link to="/prestations" className="linkClick" aria-label="Page des prestations">Prestations</Link></li>
-                <li><Link to="/signup" className="linkClick" aria-label="Page d'inscription">Page de connexion/inscription</Link></li>
-                <li><Link to="/legaldisclaimer" className="linkClick" aria-label="Mentions légales de la page">Mentions Légales</Link></li>
-                <li><Link to="/sitemap" className="linkClick" aria-label="Plan du site">Plan du site</Link></li>
-                <li><Link to="/privacypolicy" className="linkClick" aria-label="Politique de confidentialité">Politique de Confidentialité</Link></li>
-            </ol>
-        </div >
+        <nav aria-labelledby="sitemap-title">
+            <div className="flex flex-col m-auto mb-3">
+                <h1 id="sitemap-title" className="colorTitle">Plan du site</h1>
+                <h2 className="colorh2 mb-3">Hiérarchie des pages:</h2>
+                <ol className="site-map-list">
+                    <li><Link to="/" className="linkClick">Accueil</Link></li>
+                    <li><Link to="/contact" className="linkClick">Contact</Link></li>
+                    <li><Link to="/comments" className="linkClick">Liste/ajout de Commentaires</Link></li>
+                    <li><p>Page profile (accessible après connexion)</p></li>
+                    <li><p>Page administrateur (accessible après connexion)</p></li>
+                    <li><Link to="/prestations" className="linkClick">Prestations</Link></li>
+                    <li><Link to="/signup" className="linkClick">Page de connexion/inscription</Link></li>
+                    <li><Link to="/legaldisclaimer" className="linkClick">Mentions Légales</Link></li>
+                    <li><Link to="/sitemap" className="linkClick">Plan du site</Link></li>
+                    <li><Link to="/privacypolicy" className="linkClick">Politique de Confidentialité</Link></li>
+                </ol>
+            </div >
+        </nav>
     );
 };
 
