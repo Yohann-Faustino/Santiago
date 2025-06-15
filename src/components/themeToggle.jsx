@@ -7,7 +7,7 @@ const ThemeToggle = () => {
     return savedTheme ? savedTheme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
-  // Appliquer le thème au body (ou à html)
+  // Appliquer le thème jour/nuit
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");

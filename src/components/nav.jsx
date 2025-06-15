@@ -40,7 +40,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="mr-4" aria-label="Navigation principale">
+    <nav className="mr-4" aria-label="Navigation principale" role="navigation">
       <ul className="flex md:flex-row sm:flex-row lg:flex-col">
         {/* Routes accessibles par tous */}
         <li className={`${activeIndex === 0 ? 'whiteLink' : 'linkNav'} sm:linkNavSm`}>
