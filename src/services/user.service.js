@@ -18,13 +18,7 @@ let getUpdate = (user) => {
     return AxiosCall.patch('/users/' + user.id, user)
 }
 
-// // Méthode qui supprime les données d'un user:
-// let delUser = (userId) => {
-//     return AxiosCall.delete('/users/' + userId);
-// };
-
-
-
+// Méthode qui supprime les données d'un user:
 let delUser = (uid) => {
     const token = accountService.getToken();
     
@@ -34,8 +28,6 @@ let delUser = (uid) => {
         }
     });
 };
-
-
 
 // On exporte les méthodes pour pouvoir s'en servir ailleur:
 export const userService = {

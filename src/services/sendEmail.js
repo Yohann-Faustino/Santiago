@@ -10,6 +10,7 @@ const sendEmail = async ({ to, subject, html }) => {
       throw new Error("❌ Paramètres SMTP manquants dans les variables d'environnement.");
     }
 
+    // Configure le canal d'envoi des emails
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
@@ -19,6 +20,7 @@ const sendEmail = async ({ to, subject, html }) => {
       },
     });
 
+    // Configure le contenu et les informations de l’email à envoyer
     const mailOptions = {
       from: `"DECP Support" <${process.env.SMTP_USER}>`,
       to: to, // To est definis dans le authControllers dans sendEmail       

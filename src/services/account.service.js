@@ -9,8 +9,8 @@ let login = (loginConnexion) => {
 }
 
 // Sauvegarde le token JWT dans le localStorage:
-let saveToken = (token) => { // token qui est la valeur du token qui est intercepté dans le AxiosCall.
-    localStorage.setItem('token', token); // Utilise setItem pour stocker le token et on met la valeur du token dans la boite 'token' pour le réutiliser ultérieurement.
+let saveToken = (token) => { // Enregistre le token JWT intercepté dans le localStorage
+    localStorage.setItem('token', token); // Utilise setItem pour stocker le token et on met la valeur du token dans la boite 'token'
     if (process.env.NODE_ENV === "development") {
         console.log('Token sauvegardé dans le localStorage:', token);
     }
@@ -40,6 +40,7 @@ let isTokenExpired = () => {
     }
 }
 
+// Vérifie si l'utilisateur est connecté
 let isLogged = () => {
     const token = getToken();
     if (!token) return false;

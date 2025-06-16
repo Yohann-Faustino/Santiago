@@ -41,6 +41,7 @@ let updatedComment = (comment) => {
     });
 };
 
+// Méthode qui supprime un commentaire:
 let deleteComment = (cid) => {
     const token = accountService.getToken();
     

@@ -1,4 +1,4 @@
-// Ce service expose une méthodes pour récupérer/modifier le profil de l'utilisateur depuis le backend. 
+// Ce service expose une méthode pour récupérer/modifier le profil de l'utilisateur depuis le backend. 
 
 import AxiosCall from './axiosCall';
 
@@ -7,7 +7,7 @@ let getProfile = () => {
     return AxiosCall.get('/profile');
 };
 
-// Fonction pour mettre à jour le profil utilisateur:
+// Fonction pour mettre à jour le profil de l'utilisateur:
 let updateProfile = (profileData) => {
     return AxiosCall.put('/profile/update', profileData);  // Requête PUT pour mettre à jour les données du profil.
 };
