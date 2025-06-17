@@ -18,6 +18,7 @@ import AppointmentsEdit from "../components/appointments/appointmentsEdit";
 import AppointmentsDel from "../components/appointments/appointmentsDel";
 import Error from "../../src/pages/Error";
 
+// Fonction qui retourne la configuration des routes pour l’interface admin
 const AdminRouter = () => {
     return (
 

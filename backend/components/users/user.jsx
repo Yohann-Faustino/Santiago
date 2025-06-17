@@ -64,8 +64,11 @@ const User = () => {
     return (
         <div className="users p-4">
             <h1 className="mb-4">Liste des utilisateurs:</h1>
-            {message && <div>{message}</div>}
-            {loading ? (
+            {message && (
+                <div aria-live="polite" className="mt-2 font-semibold mb-4 text-center">
+                    {message}
+                </div>
+            )}            {loading ? (
                 <p>Chargement des utilisateurs...</p>
             ) : (
                 <div className="usersSideMenu w-full"><div>

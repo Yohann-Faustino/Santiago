@@ -57,7 +57,7 @@ const Comments = () => {
     return (
         <div className="comments flex-col p-4">
             <h1 className="mb-4">Liste des commentaires:</h1>
-            {message && <div>{message}</div>}
+            {message && <div role="alert" aria-live="assertive">{message}</div>}
             {loading ? (
                 <p>Chargement des commentaires...</p>
             ) : (
@@ -69,10 +69,10 @@ const Comments = () => {
                         <table className="border-collapse border border-gray-300 w-full">
                             <thead>
                                 <tr className="bg-red-500">
-                                    <th className="p-2 text-center border border-gray-300">🚮</th>
-                                    <th className="p-2 text-center border border-gray-300">#</th>
-                                    <th className="p-2 text-center border border-gray-300">Titre</th>
-                                    <th className="p-2 text-center border border-gray-300">Contenu</th>
+                                    <th scope="col" className="p-2 text-center border border-gray-300">🚮</th>
+                                    <th scope="col" className="p-2 text-center border border-gray-300">#</th>
+                                    <th scope="col" className="p-2 text-center border border-gray-300">Titre</th>
+                                    <th scope="col" className="p-2 text-center border border-gray-300">Contenu</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,6 +85,10 @@ const Comments = () => {
                                                 className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
                                                 onClick={() => delComment(comment.id)}
                                                 title="Supprimer le commentaire" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer le commentaire
+                                                aria-label={`Supprimer le commentaire ${comment.title}`}
+                                                role="button"
+                                                tabIndex={0}
+                                                onKeyDown={(e) => { if (e.key === "Enter") delComment(comment.id); }}
                                             >
                                                 🗑️
                                             </td>

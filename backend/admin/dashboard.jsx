@@ -1,6 +1,7 @@
 import React from "react";
 import SideMenu from "../components/admin/sideMenu";
 
+// Composant principal du tableau de bord admin
 const Dashboard = () => {
     return (
 

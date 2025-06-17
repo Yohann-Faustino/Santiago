@@ -161,7 +161,9 @@ const UserEdit = () => {
                 <div>
                     {/* Affiche un message de succès ou d'erreur */}
                     {message && (
-                        <p className={`font-semibold mb-4 ${message.startsWith('❌') ? 'text-red-600' : 'text-green-600'}`}>
+                        <p
+                        aria-live="polite" 
+                        className={`font-semibold mb-4 ${message.startsWith('❌') ? 'text-red-600' : 'text-green-600'}`}>
                             {message}
                         </p>
                     )}

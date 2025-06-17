@@ -8,12 +8,14 @@ import helmet from 'helmet';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Chargement des variables d’environnement (.env)
 dotenv.config();
 console.log('URL PG_URL:', process.env.PG_URL);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Création de l’application Express
 const app = express(); // ✅ Déclaré AVANT tout le reste
 const port = process.env.PORT || 3000;
 
@@ -28,7 +30,7 @@ app.use(helmet({
   }
 }));
 
-// CORS
+// CORS contrôle les origines autorisées à accéder à l’API
 const allowedOrigins = [
   'https://santiago-production.up.railway.app',
   'http://localhost:3000',
@@ -49,7 +51,7 @@ app.use(cors({
 }));
 app.options('*', cors());
 
-// Middleware JSON et URL-encoded
+// Middleware pour parser les requêtes JSON et URL-encoded
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -68,7 +70,7 @@ app.use(router);
 // ✅ Ensuite, les fichiers statiques React (dossier dist)
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// ✅ Enfin, toutes les autres routes envoient index.html (client SPA)
+// ✅ Enfin, toutes les autres routes envoient index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
@@ -86,7 +88,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Lancement serveur + BDD
+// Lancement serveur et le connecte à la BDD
 const startServer = async () => {
   try {
     console.log('⏳ Tentative de connexion à la BDD...');
