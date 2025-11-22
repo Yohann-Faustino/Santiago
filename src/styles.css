@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles généraux des polices définis dans tailwind.config par mes soins */
+
+body {
+
+  @apply text-base;
+}
+
+h1 {
+
+  @apply text-h1;
+}
+
+h2 {
+
+  @apply text-h2;
+}
+
+h3 {
+
+  @apply text-h3;
+}
+
+/*___________________________________ Styles pour la taille d'écran sm _______________________*/
+
+@media (max-width: 768px) {
+  body {
+
+    @apply text-lg;
+  }
+
+  h1 {
+
+    @apply text-2xl;
+  }
+  h2 {
+
+    @apply text-2xl;
+  }
+
+  h3 {
+
+    @apply text-xl;
+  }
+} 
+
+
+/*_________________________________ Classes générales _________________________________________________*/
+
+.darkModeRed {
+
+  @apply
+    bg-red-500 
+}
+
+.darkModeBleu {
+
+  @apply
+    bg-blue-300 
+}
+
+.linkNav {
+
+    @apply 
+    bg-red-500 
+    border 
+    border-gold 
+    border-solid
+    pl-1 
+    pr-1
+    rounded-tr-xl 
+    rounded-br-xl 
+    text-black
+    text-center
+    w-auto;
+}
+
+.linkNavSm {
+
+    @apply 
+    rounded-tl-xl 
+    rounded-bl-xl 
+}
+
+.linkNav:hover {
+
+    @apply scale-110;
+}
+
+.whiteLink {
+
+    @apply 
+    bg-gold 
+    border 
+    border-solid 
+    pl-1 
+    pr-1 
+    rounded-tr-xl 
+    rounded-br-xl 
+    lg:ml-3
+    text-black
+    scale-110;
+}
+
+.colorTitle {
+  @apply text-red-700 dark:text-red-400;
+}
+
+.colorh2 {
+  @apply text-blue-900 dark:text-blue-300;
+}
+
+.linkClick {
+  @apply text-blue-900 dark:text-blue-300 underline rounded-tr-xl rounded-br-xl rounded-tl-xl rounded-bl-xl pl-1 pr-1;
+}
+
+.linkClick:hover {
+
+    @apply
+    text-black 
+    bg-blue-500;
+}
+
+.allButton {
+
+    @apply 
+    bg-blue-500 
+    rounded-tr-xl 
+    rounded-br-xl
+    rounded-tl-xl 
+    rounded-bl-xl
+    mt-2
+    mb-2
+    p-1
+    m-auto;
+}
+
+.allButton:hover {
+
+    @apply scale-110;
+}
+
+.inputHeight {
+
+    @apply
+    h-6
+    w-60
+}
+
+.inputGeneral {
+
+  @apply
+  border
+  border-gray-600
+  rounded-xl
+  text-center
+  pl-1
+  pr-1
+}
+/* _____________________________ CARDS ___________________________________________________ */
+
+
+.cards {
+
+  @apply
+  border
+  border-blue-500
+  rounded-2xl
+  p-2
+  space-y-4
+}
+
+/* _____________________________ PROFILE ___________________________________________________ */
+
+.profile {
+  @apply 
+  border 
+  border-blue-500 
+  rounded-2xl 
+  p-4 
+  space-y-4;
+}
+
+.input-group {
+  @apply 
+  flex
+  justify-between
+  ml-5
+  mr-5
+}
+
+/* _____________________________ PLAN DU SITE ___________________________________________________ */
+
+.site-map-list {
+  list-style-type: decimal; /* Numérotation par défaut pour les listes */
+  padding-left: 20px; /* Pour ajouter un espace à gauche */
+}
+
+.sub-list {
+  list-style-type: lower-alpha; /* Utilise des lettres minuscules pour les sous-catégories */
+  padding-left: 20px; /* Pour indenter les sous-catégories */
+}
+
+/*______________________________ Carousel __________________________________________________*/
+
+/* Retire les ronds en bas du carousel pour changer d'images */
+.control-dots {
+
+    display: none;
+}
+
+/* Retire les images miniatures sous le carousel */
+.thumbs-wrapper {
+
+    display: none;
+}
+
+/* Retire la position de l'images dans le file en haut a droite (3/10) */
+.carousel-status {
+
+    display: none;
+}
+
+.control-arrow.control-prev::before{
+
+    background-color: black;
+}
+
+.control-arrow.control-next::before{
+
+    background-color: black;
+}
+
+/*______________________________ UserEdit __________________________________________________*/
+
+.modifiable{
+
+  color: blue
+}
+
+.modifiable:hover{
+
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
