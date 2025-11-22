@@ -14,10 +14,10 @@ INSERT INTO "Users" ("firstname","lastname","address","city","postalcode","phone
 INSERT INTO "Appointments" ("date", "hour", "details" ) VALUES 
 ('','','');
 
-INSERT INTO "Comments" ("title", "content", "created", "updated", "users_id") VALUES 
-('Beau boulot', 'Rien à en redire, super service !', NOW(), NOW(), 1),
-('Nipon, ni mauvais', 'Personne super agréable.', NOW(), NOW(), 1),
-('Génial', 'Prens le temps d''expliquer le problème.', NOW(), NOW(), 1),
-('Super expérience', 'Je recommande.', NOW(), NOW(), 1);
+INSERT INTO "Comments" ("title","content","created","updated","users_id") VALUES 
+('Manuel Dafonte','Une fuite? On appel DECP, sa coule de source !', NOW(), NOW(), 1),
+('Rob Hinet','Quand il touche un robinet, l''eau est en sécurité et le client est ravi.', NOW(), NOW(), 1),
+('Maria Carré','Grâce à lui, chaque canalisation chante juste et chaque fuite devient une légende du passé.', NOW(), NOW(), 1),
+('Robin des Bains','Grâce à eux, ma salle de bain est devenue un vrai château d''eau', NOW(), NOW(), 1);
 
 COMMIT;
