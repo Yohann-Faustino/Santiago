@@ -1,111 +1,101 @@
-// Ce service expose des méthodes pour gérer la connexion/déconnexion et le token. 
+// src/services/account.service.js
+import { supabase } from "./supabaseClient";
 
-import AxiosCall from "./axiosCall";
-import { jwtDecode } from "jwt-decode";
+let signUp = async (formData) => {
+  // création de l'utilisateur dans Supabase Auth
+  const { data: authData, error: authError } = await supabase.auth.signUp(
+    {
+      email: formData.email,
+      password: formData.password,
+    },
+    { redirectTo: import.meta.env.VITE_APP_URL + "/login" } // redirection après confirmation email
+  );
+  if (authError) throw authError;
 
-// Fonction envoie une requête POST à l'API d'authentification avec les données de connexion fournies:
-let login = (loginConnexion) => {
-    return AxiosCall.post('auth/login', loginConnexion);
-}
+  const user = authData.user;
 
-// Sauvegarde le token JWT dans le localStorage:
-let saveToken = (token) => { // Enregistre le token JWT intercepté dans le localStorage
-    localStorage.setItem('token', token); // Utilise setItem pour stocker le token et on met la valeur du token dans la boite 'token'
-    if (process.env.NODE_ENV === "development") {
-        console.log('Token sauvegardé dans le localStorage:', token);
-    }
-}
+  // création de l'utilisateur dans la table users
+  const { data: userData, error: dbError } = await supabase
+    .from("users")
+    .insert([
+      {
+        auth_id: user.id,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        postalcode: formData.postalcode,
+        role: "user", // rôle par défaut
+      },
+    ])
+    .select()
+    .single();
+  if (dbError) throw dbError;
 
-// Déconnecte l'utilisateur en retirant le token du localStorage:
-let logout = () => {
-    localStorage.removeItem('token');
-    if (process.env.NODE_ENV === "development") {
-        console.log('Token retiré du localStorage.');
-    }
-}
+  return { auth: user, user: userData };
+};
 
-// Vérifie si l'utilisateur est connecté en testant la présence du token:
-let isTokenExpired = () => {
-    const token = getToken();
-    if (!token) return true;
+let login = async (credentials) => {
+  // connexion avec Supabase Auth
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: credentials.email,
+    password: credentials.password,
+  });
+  if (error) throw error;
 
-    try {
-        const decoded = jwtDecode(token);
-        const now = Date.now() / 1000;
-        return decoded.exp < now;
-    } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-            console.error("Erreur de décodage du token:", error);
-        } return true;
-    }
-}
+  // stockage de la session et de l'utilisateur dans localStorage
+  localStorage.setItem("supabaseSession", JSON.stringify(data.session));
+  localStorage.setItem("user", JSON.stringify(data.user));
 
-// Vérifie si l'utilisateur est connecté
-let isLogged = () => {
-    const token = getToken();
-    if (!token) return false;
+  return data;
+};
 
-    if (isTokenExpired()) {
-        if (process.env.NODE_ENV === "development") {
-            console.log("Token expiré, déconnexion automatique.");
-        } logout(); // supprime le token expiré
-        return false;
-    }
+let logout = async () => {
+  // déconnexion Supabase et nettoyage localStorage
+  await supabase.auth.signOut();
+  localStorage.removeItem("supabaseSession");
+  localStorage.removeItem("user");
 
-    return true;
-}
+  // notifie autres onglets
+  window.dispatchEvent(new Event("storage"));
+};
 
-// Vérifie le role de l'user:
-let getRole = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        try {
-            const decodedToken = jwtDecode(token);
-            if (process.env.NODE_ENV === "development") {
-                console.log('Contenu du token décodé:', decodedToken);
-            } return decodedToken.role;
-        } catch (error) {
-            if (process.env.NODE_ENV === "development") {
-                console.error('Erreur lors du décodage du token:', error);
-            } return null;
-        }
-    }
+let isLogged = () => !!localStorage.getItem("user"); // vérifie si connecté
+
+let getToken = () =>
+  JSON.parse(localStorage.getItem("supabaseSession"))?.access_token || null; // récupère token
+
+let getUser = () => {
+  // récupère l'utilisateur complet depuis localStorage
+  try {
+    return JSON.parse(localStorage.getItem("user"));
+  } catch {
     return null;
-}
+  }
+};
 
-// Récupère le token du localStorage:
-let getToken = () => {
-    const token = localStorage.getItem('token'); // Utilise getItem pour accéder au token.
-    if (process.env.NODE_ENV === "development") {
-        console.log('Token récupéré du localStorage:', token);
-    }
-    return token;
-}
+let getRole = async () => {
+  // récupère rôle depuis la table users
+  const user = getUser();
+  if (!user) return null;
 
-// Décode le token JWT pour obtenir l'id de l'utilisateur afin de pouvoir ensuite limiter le post de com par une limite de temps:
-let getCurrentUserId = () => {
-    const token = getToken();
-    if (token) {
-        try {
-            const decodedToken = jwtDecode(token);
-            return decodedToken.id; // On renvoie l'id de l'user pour l'utiliser ultérieurement.
-        } catch (error) {
-            if (process.env.NODE_ENV === "development") {
-                console.error('Erreur lors du décodage du token:', error);
-            }
-            return null; // Dans le cas ou il y a une erreur en rapport avec le token comme corrompu on retourne null ce qui indique l'absence de rôle.
-        }
-    }
-    return null; // Dans le cas ou il n'y a pas de rôle on retourne null ce qui indique l'absence de rôle.
-}
+  const { data } = await supabase
+    .from("users")
+    .select("role")
+    .eq("auth_id", user.id)
+    .single();
+
+  return data?.role || null;
+};
 
 export const accountService = {
-    login,
-    saveToken,
-    isTokenExpired,
-    isLogged,
-    getRole,
-    logout,
-    getToken,
-    getCurrentUserId
+  signUp,
+  login,
+  logout,
+  isLogged,
+  getToken,
+  getUser,
+  getRole,
 };

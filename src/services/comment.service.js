@@ -1,58 +1,114 @@
-// Ce service expose des méthodes pour récupérer des commentaires depuis le backend. 
+import { createClient } from "@supabase/supabase-js";
 
-import AxiosCall from "./axiosCall.js";
-import AxiosPublic from "./axiosPublic.js";
-import { accountService } from "./account.service.js";
+// IMPORTANT : les variables doivent commencer par VITE_ pour fonctionner dans React (Vite)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Méthode qui récupère la liste des commentaires:
-// On met pas de token pour que tous le monde puisse voir les com sinons ils sont innacessible dans sliderCom.
-let getAllComments = () => {
-    return AxiosPublic.get('/comments');
+if (!supabaseUrl || !supabaseKey) {
+  console.error(
+    "❌ ERROR: Supabase URL or Key is missing. Vérifie ton fichier .env !"
+  );
 }
 
-// Méthode qui récupère un commentaire selon son ID:
-let getComment = (cid) => { // cid (comments id) définis dans commentsEdit.jsx
-    const token = accountService.getToken();
-    return AxiosCall.get('/comments/' + cid, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-}
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Méthode qui ajoute un commentaire:
-let addComment = (commentData) => {
-    const token = accountService.getToken();
-    return AxiosCall.post('/comments', commentData, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-}
-
-// Méthode qui met à jour un commentaire:
-let updatedComment = (comment) => { 
-    const token = accountService.getToken();
-    
-    return AxiosCall.patch('/comments/' + comment.id, comment, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-};
-
-// Méthode qui supprime un commentaire:
-let deleteComment = (cid) => {
-    const token = accountService.getToken();
-    
-    return AxiosCall.delete('/comments/' + cid, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-};
-
-// On exporte les méthodes pour pouvoir s'en servir ailleur:
 export const commentService = {
-    getAllComments, getComment, addComment, updatedComment, deleteComment
+  // Récupère tous les commentaires
+  getAllComments: async () => {
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .order("created", { ascending: false });
+
+      if (error) {
+        console.error("❌ Supabase getAllComments error:", error);
+        return { data: [] };
+      }
+
+      return { data };
+    } catch (err) {
+      console.error("❌ Erreur réseau getAllComments:", err);
+      return { data: [] };
+    }
+  },
+
+  // Récupère un commentaire via son ID
+  getComment: async (id) => {
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("❌ Supabase getComment error:", error);
+        return null;
+      }
+
+      return data;
+    } catch (err) {
+      console.error("❌ Erreur réseau getComment:", err);
+      return null;
+    }
+  },
+
+  // Ajoute un commentaire
+  addComment: async (commentData) => {
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .insert(commentData)
+        .select();
+
+      if (error) {
+        console.error("❌ Supabase addComment error:", error);
+        return null;
+      }
+
+      return data;
+    } catch (err) {
+      console.error("❌ Erreur réseau addComment:", err);
+      return null;
+    }
+  },
+
+  // Met à jour un commentaire
+  updatedComment: async (comment) => {
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .update(comment)
+        .eq("id", comment.id)
+        .select();
+
+      if (error) {
+        console.error("❌ Supabase updatedComment error:", error);
+        return null;
+      }
+
+      return data;
+    } catch (err) {
+      console.error("❌ Erreur réseau updatedComment:", err);
+      return null;
+    }
+  },
+
+  // Supprime un commentaire
+  deleteComment: async (id) => {
+    try {
+      const { error } = await supabase.from("comments").delete().eq("id", id);
+
+      if (error) {
+        console.error("❌ Supabase deleteComment error:", error);
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error("❌ Erreur réseau deleteComment:", err);
+      return false;
+    }
+  },
 };
