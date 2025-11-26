@@ -7,30 +7,28 @@ import { UserContext } from "../contexts/UserContext";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
-  const { refreshUser } = useContext(UserContext); // pour mettre à jour le contexte après login
+  const { refreshUser } = useContext(UserContext); // met à jour le contexte après login
 
-  const [isSignUp, setIsSignUp] = useState(false); // toggle formulaire inscription / connexion
-  const [loading, setLoading] = useState(false); // état de chargement
-  const [error, setError] = useState(""); // message d'erreur
-  const [message, setMessage] = useState(""); // message succès
+  // États principaux
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
-  // état du formulaire de connexion
+  // Formulaire connexion
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
-
-  // soumission du formulaire connexion
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
-
     try {
-      await accountService.login(loginData); // connexion
-      await refreshUser(); // met à jour la Nav
+      await accountService.login(loginData);
+      await refreshUser();
       setMessage("✅ Connexion réussie !");
-      setTimeout(() => navigate("/"), 1500); // redirection accueil
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       setError(err.message || "Erreur lors de la connexion.");
     } finally {
@@ -38,24 +36,21 @@ const AuthenticationPage = () => {
     }
   };
 
-  // état du formulaire d'inscription
+  // Formulaire inscription
   const [signUpData, setSignUpData] = useState({
-    firstname: "",
-    lastname: "",
+    prenom: "",
+    nom: "",
     email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-    address: "",
-    city: "",
-    postalcode: "",
+    motDePasse: "",
+    confirmerMotDePasse: "",
+    telephone: "",
+    adresse: "",
+    ville: "",
+    codePostal: "",
   });
   const [captchaValue, setCaptchaValue] = useState(null);
-
   const handleSignUpChange = (e) =>
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
-
-  // soumission du formulaire inscription
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -68,7 +63,7 @@ const AuthenticationPage = () => {
       return;
     }
 
-    if (signUpData.password !== signUpData.confirmPassword) {
+    if (signUpData.motDePasse !== signUpData.confirmerMotDePasse) {
       setError("Les mots de passe ne correspondent pas.");
       setLoading(false);
       return;
@@ -76,9 +71,9 @@ const AuthenticationPage = () => {
 
     try {
       await accountService.signUp(signUpData);
-      await refreshUser(); // met à jour la Nav pour les boutons profil et déconnexion
+      await refreshUser();
       setMessage("✅ Inscription réussie !");
-      setTimeout(() => navigate("/"), 2000); // redirection accueil
+      setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       setError(err.message || "Erreur lors de l'inscription.");
     } finally {
@@ -87,83 +82,100 @@ const AuthenticationPage = () => {
   };
 
   return (
-    <div className="auth-container flex justify-center gap-8 mt-10">
-      {/* Formulaire connexion */}
-      <div className="login-form w-1/2 p-4 border rounded shadow">
-        <h2 className="text-xl font-bold mb-4 text-center">Connexion</h2>
-        <form onSubmit={handleLoginSubmit} className="flex flex-col gap-3">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={loginData.email}
-            onChange={handleLoginChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={loginData.password}
-            onChange={handleLoginChange}
-            required
-          />
-          {message && <p className="text-green-600">{message}</p>}
-          {error && <p className="text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-blue-500 text-white p-2 mt-2"
-          >
-            {loading ? "Connexion..." : "Se connecter"}
-          </button>
-        </form>
-        <p className="text-sm mt-2 text-center">
-          Pas de compte ?{" "}
-          <button
-            className="text-blue-500 underline"
-            onClick={() => setIsSignUp(true)}
-          >
-            Inscrivez-vous
-          </button>
-        </p>
-      </div>
+    <div className="w-full flex justify-center relative bg-white dark:bg-black text-black dark:text-white transition-colors">
+      <div className="w-[420px] relative h-[600px]">
+        {/* Formulaire Connexion */}
+        <div
+          className={`absolute top-0 left-0 w-full transition-all duration-500 ease-in-out ${
+            isSignUp
+              ? "opacity-0 -translate-x-full pointer-events-none"
+              : "opacity-100 translate-x-0"
+          }`}
+        >
+          <h2 className="text-xl font-bold mb-4 text-center colorTitle">
+            Connexion
+          </h2>
+          <form onSubmit={handleLoginSubmit} className="flex flex-col gap-3">
+            <input
+              type="email"
+              name="email"
+              placeholder="Adresse email"
+              value={loginData.email}
+              onChange={handleLoginChange}
+              required
+              className="inputGeneral text-black"
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Mot de passe"
+              value={loginData.password}
+              onChange={handleLoginChange}
+              required
+              className="inputGeneral text-black"
+            />
+            {message && <p className="text-green-600">{message}</p>}
+            {error && <p className="text-red-600">{error}</p>}
+            <button type="submit" disabled={loading} className="allButton">
+              {loading ? "Connexion..." : "Se connecter"}
+            </button>
+          </form>
+          <p className="text-sm mt-2 text-center">
+            Pas de compte ?{" "}
+            <button
+              className="text-blue-500 underline"
+              onClick={() => setIsSignUp(true)}
+            >
+              Inscrivez-vous
+            </button>
+          </p>
+        </div>
 
-      {/* Formulaire inscription */}
-      {isSignUp && (
-        <div className="signup-form w-1/2 p-4 border rounded shadow">
-          <h2 className="text-xl font-bold mb-4 text-center">Inscription</h2>
+        {/* Formulaire Inscription */}
+        <div
+          className={`absolute top-0 left-0 w-full transition-all duration-500 ease-in-out ${
+            isSignUp
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 translate-x-full pointer-events-none"
+          }`}
+        >
+          <h2 className="text-xl font-bold mb-4 text-center colorTitle">
+            Inscription
+          </h2>
           <form onSubmit={handleSignUpSubmit} className="flex flex-col gap-3">
-            {/* génération des inputs */}
             {[
-              "firstname",
-              "lastname",
-              "email",
-              "password",
-              "confirmPassword",
-              "phone",
-              "address",
-              "city",
-              "postalcode",
+              { name: "prenom", placeholder: "Prénom" },
+              { name: "nom", placeholder: "Nom" },
+              { name: "email", placeholder: "Adresse email" },
+              { name: "motDePasse", placeholder: "Mot de passe" },
+              {
+                name: "confirmerMotDePasse",
+                placeholder: "Confirmer mot de passe",
+              },
+              { name: "telephone", placeholder: "Téléphone" },
+              { name: "adresse", placeholder: "Adresse" },
+              { name: "ville", placeholder: "Ville" },
+              { name: "codePostal", placeholder: "Code postal" },
             ].map((field) => (
               <input
-                key={field}
-                type={field.includes("password") ? "password" : "text"}
-                name={field}
-                placeholder={field}
-                value={signUpData[field]}
+                key={field.name}
+                type={field.name.includes("motDePasse") ? "password" : "text"}
+                name={field.name}
+                placeholder={field.placeholder}
+                value={signUpData[field.name]}
                 onChange={handleSignUpChange}
                 required={
-                  field !== "phone" &&
-                  field !== "address" &&
-                  field !== "city" &&
-                  field !== "postalcode"
+                  field.name !== "telephone" &&
+                  field.name !== "adresse" &&
+                  field.name !== "ville" &&
+                  field.name !== "codePostal"
                 }
+                className="inputGeneral text-black"
               />
             ))}
 
-            {/* reCAPTCHA */}
             <ReCAPTCHA
+              className="flex justify-center"
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
               onChange={(value) => setCaptchaValue(value)}
             />
@@ -171,26 +183,21 @@ const AuthenticationPage = () => {
             {message && <p className="text-green-600">{message}</p>}
             {error && <p className="text-red-600">{error}</p>}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-green-500 text-white p-2 mt-2"
-            >
+            <button type="submit" disabled={loading} className="allButton">
               {loading ? "Inscription..." : "S'inscrire"}
             </button>
-
-            <p className="text-sm mt-2 text-center">
-              Déjà un compte ?{" "}
-              <button
-                className="text-blue-500 underline"
-                onClick={() => setIsSignUp(false)}
-              >
-                Connectez-vous
-              </button>
-            </p>
           </form>
+          <p className="text-sm mt-2 text-center">
+            Déjà un compte ?{" "}
+            <button
+              className="text-blue-500 underline"
+              onClick={() => setIsSignUp(false)}
+            >
+              Connectez-vous
+            </button>
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 };

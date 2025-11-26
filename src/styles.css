@@ -5,22 +5,18 @@
 /* Styles généraux des polices définis dans tailwind.config par mes soins */
 
 body {
-
   @apply text-base;
 }
 
 h1 {
-
   @apply text-h1;
 }
 
 h2 {
-
   @apply text-h2;
 }
 
 h3 {
-
   @apply text-h3;
 }
 
@@ -28,44 +24,33 @@ h3 {
 
 @media (max-width: 768px) {
   body {
-
     @apply text-lg;
   }
 
   h1 {
-
     @apply text-2xl;
   }
   h2 {
-
     @apply text-2xl;
   }
 
   h3 {
-
     @apply text-xl;
   }
-} 
-
+}
 
 /*_________________________________ Classes générales _________________________________________________*/
 
 .darkModeRed {
-
-  @apply
-    bg-red-500 
+  @apply bg-red-500;
 }
 
 .darkModeBleu {
-
-  @apply
-    bg-blue-300 
+  @apply bg-blue-300;
 }
 
 .linkNav {
-
-    @apply 
-    bg-red-500 
+  @apply bg-red-500 
     border 
     border-gold 
     border-solid
@@ -79,21 +64,16 @@ h3 {
 }
 
 .linkNavSm {
-
-    @apply 
-    rounded-tl-xl 
-    rounded-bl-xl 
+  @apply rounded-tl-xl 
+    rounded-bl-xl;
 }
 
 .linkNav:hover {
-
-    @apply scale-110;
+  @apply scale-110;
 }
 
 .whiteLink {
-
-    @apply 
-    bg-gold 
+  @apply bg-gold 
     border 
     border-solid 
     pl-1 
@@ -118,16 +98,12 @@ h3 {
 }
 
 .linkClick:hover {
-
-    @apply
-    text-black 
+  @apply text-black 
     bg-blue-500;
 }
 
 .allButton {
-
-    @apply 
-    bg-blue-500 
+  @apply bg-blue-500 
     rounded-tr-xl 
     rounded-br-xl
     rounded-tl-xl 
@@ -139,45 +115,36 @@ h3 {
 }
 
 .allButton:hover {
-
-    @apply scale-110;
+  @apply scale-110;
 }
 
 .inputHeight {
-
-    @apply
-    h-6
-    w-60
+  @apply h-6
+    w-60;
 }
 
 .inputGeneral {
-
-  @apply
-  border
+  @apply border
   border-gray-600
   rounded-xl
   text-center
   pl-1
-  pr-1
+  pr-1;
 }
 /* _____________________________ CARDS ___________________________________________________ */
 
-
 .cards {
-
-  @apply
-  border
+  @apply border
   border-blue-500
   rounded-2xl
   p-2
-  space-y-4
+  space-y-4;
 }
 
 /* _____________________________ PROFILE ___________________________________________________ */
 
 .profile {
-  @apply 
-  border 
+  @apply border 
   border-blue-500 
   rounded-2xl 
   p-4 
@@ -185,11 +152,10 @@ h3 {
 }
 
 .input-group {
-  @apply 
-  flex
+  @apply flex
   justify-between
   ml-5
-  mr-5
+  mr-5;
 }
 
 /* _____________________________ PLAN DU SITE ___________________________________________________ */
@@ -208,41 +174,34 @@ h3 {
 
 /* Retire les ronds en bas du carousel pour changer d'images */
 .control-dots {
-
-    display: none;
+  display: none;
 }
 
 /* Retire les images miniatures sous le carousel */
 .thumbs-wrapper {
-
-    display: none;
+  display: none;
 }
 
 /* Retire la position de l'images dans le file en haut a droite (3/10) */
 .carousel-status {
-
-    display: none;
+  display: none;
 }
 
-.control-arrow.control-prev::before{
-
-    background-color: black;
+.control-arrow.control-prev::before {
+  background-color: black;
 }
 
-.control-arrow.control-next::before{
-
-    background-color: black;
+.control-arrow.control-next::before {
+  background-color: black;
 }
 
 /*______________________________ UserEdit __________________________________________________*/
 
-.modifiable{
-
-  color: blue
+.modifiable {
+  color: blue;
 }
 
-.modifiable:hover{
-
+.modifiable:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }
