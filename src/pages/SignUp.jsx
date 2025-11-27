@@ -7,7 +7,7 @@ import { UserContext } from "../contexts/UserContext";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
-  const { refreshUser } = useContext(UserContext); // met à jour le contexte après login
+  const { refreshUser } = useContext(UserContext);
 
   // États principaux
   const [isSignUp, setIsSignUp] = useState(false);
@@ -17,8 +17,11 @@ const AuthenticationPage = () => {
 
   // Formulaire connexion
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,19 +41,23 @@ const AuthenticationPage = () => {
 
   // Formulaire inscription
   const [signUpData, setSignUpData] = useState({
-    prenom: "",
-    nom: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    motDePasse: "",
-    confirmerMotDePasse: "",
-    telephone: "",
-    adresse: "",
-    ville: "",
-    codePostal: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalcode: "",
   });
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaValue, setCaptchaValue] = useState(null);
+
   const handleSignUpChange = (e) =>
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
+
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -63,7 +70,7 @@ const AuthenticationPage = () => {
       return;
     }
 
-    if (signUpData.motDePasse !== signUpData.confirmerMotDePasse) {
+    if (signUpData.password !== signUpData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
       setLoading(false);
       return;
@@ -81,9 +88,65 @@ const AuthenticationPage = () => {
     }
   };
 
+  // Composant Input avec toggle mot de passe
+  const PasswordInput = ({
+    value,
+    onChange,
+    placeholder,
+    show,
+    toggleShow,
+  }) => (
+    <div className="relative">
+      <input
+        type={show ? "text" : "password"}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required
+        className="inputGeneral text-black w-full pr-10"
+      />
+      <button
+        type="button"
+        className="absolute right-2 top-1/2 transform -translate-y-1/2"
+        onClick={toggleShow}
+        tabIndex={-1}
+      >
+        {show ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-gray-600"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M1 1l22 22" />
+            <path d="M17.94 17.94A10.46 10.46 0 0112 19c-5 0-9-3-11-7 1.11-2.06 2.79-3.89 4.78-5.24" />
+            <path d="M9.53 9.53a3.5 3.5 0 014.94 4.94" />
+            <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M1.05 12C2.84 7.94 7 5 12 5s9.16 2.94 10.95 7c-1.79 4.06-6 7-10.95 7S2.84 16.06 1.05 12z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        )}
+      </button>
+    </div>
+  );
+
   return (
     <div className="w-full flex justify-center relative bg-white dark:bg-black text-black dark:text-white transition-colors">
-      <div className="w-[420px] relative h-[600px]">
+      <div className="w-[420px] relative h-[600px] flex flex-col justify-center">
         {/* Formulaire Connexion */}
         <div
           className={`absolute top-0 left-0 w-full transition-all duration-500 ease-in-out ${
@@ -99,20 +162,20 @@ const AuthenticationPage = () => {
             <input
               type="email"
               name="email"
-              placeholder="Adresse email"
+              placeholder="Email"
               value={loginData.email}
               onChange={handleLoginChange}
               required
               className="inputGeneral text-black"
             />
-            <input
-              type="password"
-              name="password"
-              placeholder="Mot de passe"
+            <PasswordInput
               value={loginData.password}
-              onChange={handleLoginChange}
-              required
-              className="inputGeneral text-black"
+              onChange={(e) =>
+                setLoginData({ ...loginData, password: e.target.value })
+              }
+              placeholder="Mot de passe"
+              show={showLoginPassword}
+              toggleShow={() => setShowLoginPassword(!showLoginPassword)}
             />
             {message && <p className="text-green-600">{message}</p>}
             {error && <p className="text-red-600">{error}</p>}
@@ -144,32 +207,57 @@ const AuthenticationPage = () => {
           </h2>
           <form onSubmit={handleSignUpSubmit} className="flex flex-col gap-3">
             {[
-              { name: "prenom", placeholder: "Prénom" },
-              { name: "nom", placeholder: "Nom" },
-              { name: "email", placeholder: "Adresse email" },
-              { name: "motDePasse", placeholder: "Mot de passe" },
-              {
-                name: "confirmerMotDePasse",
-                placeholder: "Confirmer mot de passe",
-              },
-              { name: "telephone", placeholder: "Téléphone" },
-              { name: "adresse", placeholder: "Adresse" },
-              { name: "ville", placeholder: "Ville" },
-              { name: "codePostal", placeholder: "Code postal" },
+              { name: "firstname", placeholder: "Prénom" },
+              { name: "lastname", placeholder: "Nom" },
+              { name: "email", placeholder: "Email" },
             ].map((field) => (
               <input
                 key={field.name}
-                type={field.name.includes("motDePasse") ? "password" : "text"}
+                type="text"
                 name={field.name}
                 placeholder={field.placeholder}
                 value={signUpData[field.name]}
                 onChange={handleSignUpChange}
-                required={
-                  field.name !== "telephone" &&
-                  field.name !== "adresse" &&
-                  field.name !== "ville" &&
-                  field.name !== "codePostal"
-                }
+                required
+                className="inputGeneral text-black"
+              />
+            ))}
+
+            <PasswordInput
+              value={signUpData.password}
+              onChange={(e) =>
+                setSignUpData({ ...signUpData, password: e.target.value })
+              }
+              placeholder="Mot de passe"
+              show={showSignUpPassword}
+              toggleShow={() => setShowSignUpPassword(!showSignUpPassword)}
+            />
+            <PasswordInput
+              value={signUpData.confirmPassword}
+              onChange={(e) =>
+                setSignUpData({
+                  ...signUpData,
+                  confirmPassword: e.target.value,
+                })
+              }
+              placeholder="Confirmer le mot de passe"
+              show={showConfirmPassword}
+              toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
+
+            {[
+              { name: "phone", placeholder: "Téléphone" },
+              { name: "address", placeholder: "Adresse" },
+              { name: "city", placeholder: "Ville" },
+              { name: "postalcode", placeholder: "Code postal" },
+            ].map((field) => (
+              <input
+                key={field.name}
+                type="text"
+                name={field.name}
+                placeholder={field.placeholder}
+                value={signUpData[field.name]}
+                onChange={handleSignUpChange}
                 className="inputGeneral text-black"
               />
             ))}

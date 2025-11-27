@@ -1,8 +1,9 @@
 // src/services/account.service.js
 import { supabase } from "./supabaseClient";
 
+// Fonction pour créer un nouvel utilisateur
 let signUp = async (formData) => {
-  // création de l'utilisateur dans Supabase Auth
+  // Création de l'utilisateur dans Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp(
     {
       email: formData.email,
@@ -14,7 +15,7 @@ let signUp = async (formData) => {
 
   const user = authData.user;
 
-  // création de l'utilisateur dans la table users
+  // Création de l'utilisateur dans la table "users"
   const { data: userData, error: dbError } = await supabase
     .from("users")
     .insert([
@@ -32,43 +33,62 @@ let signUp = async (formData) => {
     ])
     .select()
     .single();
+
   if (dbError) throw dbError;
 
   return { auth: user, user: userData };
 };
 
+// Fonction pour se connecter
 let login = async (credentials) => {
-  // connexion avec Supabase Auth
+  // Connexion via Supabase Auth
   const { data, error } = await supabase.auth.signInWithPassword({
     email: credentials.email,
     password: credentials.password,
   });
   if (error) throw error;
 
-  // stockage de la session et de l'utilisateur dans localStorage
+  // Récupération du user depuis la session
+  const user = data.user;
+
+  // On récupère le rôle depuis la table "users"
+  const { data: userData, error: roleError } = await supabase
+    .from("users")
+    .select("role")
+    .eq("auth_id", user.id)
+    .single();
+
+  if (roleError) throw roleError;
+
+  // Stockage de la session et du rôle utilisateur dans le localStorage
   localStorage.setItem("supabaseSession", JSON.stringify(data.session));
-  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem(
+    "user",
+    JSON.stringify({ ...user, role: userData.role })
+  );
 
   return data;
 };
 
+// Déconnexion
 let logout = async () => {
-  // déconnexion Supabase et nettoyage localStorage
   await supabase.auth.signOut();
   localStorage.removeItem("supabaseSession");
   localStorage.removeItem("user");
 
-  // notifie autres onglets
+  // Notifie les autres onglets que l'utilisateur s'est déconnecté
   window.dispatchEvent(new Event("storage"));
 };
 
-let isLogged = () => !!localStorage.getItem("user"); // vérifie si connecté
+// Vérifie si un utilisateur est connecté
+let isLogged = () => !!localStorage.getItem("user");
 
+// Récupère le token de l'utilisateur
 let getToken = () =>
-  JSON.parse(localStorage.getItem("supabaseSession"))?.access_token || null; // récupère token
+  JSON.parse(localStorage.getItem("supabaseSession"))?.access_token || null;
 
+// Récupère l'utilisateur complet depuis le localStorage
 let getUser = () => {
-  // récupère l'utilisateur complet depuis localStorage
   try {
     return JSON.parse(localStorage.getItem("user"));
   } catch {
@@ -76,20 +96,13 @@ let getUser = () => {
   }
 };
 
-let getRole = async () => {
-  // récupère rôle depuis la table users
+// Récupère le rôle actuel de l'utilisateur
+let getRole = () => {
   const user = getUser();
-  if (!user) return null;
-
-  const { data } = await supabase
-    .from("users")
-    .select("role")
-    .eq("auth_id", user.id)
-    .single();
-
-  return data?.role || null;
+  return user?.role || null;
 };
 
+// Export des fonctions du service
 export const accountService = {
   signUp,
   login,
