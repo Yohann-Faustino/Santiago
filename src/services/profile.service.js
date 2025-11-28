@@ -3,27 +3,30 @@ import { supabase } from "./supabaseClient";
 
 // Récupère le profil de l'utilisateur connecté
 let getProfile = async () => {
-  // Récupère l'utilisateur depuis la session locale
-  const user = JSON.parse(localStorage.getItem("supabaseSession"))?.user;
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user;
   if (!user) throw new Error("Utilisateur non connecté.");
 
-  // Requête pour récupérer les infos dans la table 'users'
   const { data, error } = await supabase
     .from("users")
     .select("*")
     .eq("auth_id", user.id)
     .single();
 
-  if (error) throw error; // Erreur Supabase
+  if (error) throw error;
   return data;
 };
 
 // Met à jour le profil utilisateur
 let updateProfile = async (profileData) => {
-  const user = JSON.parse(localStorage.getItem("supabaseSession"))?.user;
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user;
   if (!user) throw new Error("Utilisateur non connecté.");
 
-  // Requête de mise à jour dans la table 'users'
   const { data, error } = await supabase
     .from("users")
     .update(profileData)
@@ -35,12 +38,13 @@ let updateProfile = async (profileData) => {
   return data;
 };
 
-// Met à jour le mot de passe de l'utilisateur
+// Met à jour le mot de passe
 let updatePassword = async (passwordData) => {
-  const session = JSON.parse(localStorage.getItem("supabaseSession"))?.session;
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) throw new Error("Utilisateur non connecté.");
 
-  // Mise à jour via Supabase Auth
   const { error } = await supabase.auth.updateUser({
     password: passwordData.newPassword,
   });

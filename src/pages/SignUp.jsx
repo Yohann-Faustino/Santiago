@@ -112,6 +112,7 @@ const AuthenticationPage = () => {
         tabIndex={-1}
       >
         {show ? (
+          // Oeil fermé
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-600"
@@ -128,6 +129,7 @@ const AuthenticationPage = () => {
             <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
           </svg>
         ) : (
+          // Oeil ouvert
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-600"

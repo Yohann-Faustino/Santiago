@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   getProfile,
   updateProfile,
   updatePassword,
-} from "../services/profile.service"; // Service Supabase pour le profil
+} from "../services/profile.service";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
-
-  // États pour stocker les données du profil et gérer le formulaire
   const [profileData, setProfileData] = useState(null);
   const [editData, setEditData] = useState({
     firstname: "",
@@ -21,97 +17,103 @@ const ProfilePage = () => {
     postalcode: "",
   });
 
-  // États pour le formulaire de changement de mot de passe
   const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
 
-  const [loading, setLoading] = useState(false); // Indique si une action est en cours
-  const [message, setMessage] = useState(""); // Message de succès
-  const [error, setError] = useState(""); // Message d'erreur
-  const [showPasswords, setShowPasswords] = useState(false); // Toggle visibilité mot de passe
+  // Un état pour chaque œil
+  const [showPassword, setShowPassword] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmNewPassword: false,
+  });
 
-  const flag = useRef(false); // Permet de ne charger le profil qu'une seule fois
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  // Récupère les infos du profil au montage du composant
+  const flag = useRef(false);
+
   useEffect(() => {
     if (!flag.current) {
       flag.current = true;
-
       const fetchProfileData = async () => {
-        setLoading(true); // Affiche le chargement
+        setLoading(true);
         try {
-          const user = await getProfile(); // Récupération du profil depuis Supabase
+          const user = await getProfile();
           setProfileData(user);
-
-          // Pré-remplissage du formulaire avec les données existantes
           setEditData({
-            firstname: user.user_metadata?.firstname || "",
-            lastname: user.user_metadata?.lastname || "",
+            firstname: user.firstname || "",
+            lastname: user.lastname || "",
             email: user.email || "",
-            phone: user.user_metadata?.phone || "",
-            address: user.user_metadata?.address || "",
-            city: user.user_metadata?.city || "",
-            postalcode: user.user_metadata?.postalcode || "",
+            phone: user.phone || "",
+            address: user.address || "",
+            city: user.city || "",
+            postalcode: user.postalcode || "",
           });
-
-          console.log("Profil récupéré :", user);
-        } catch (err) {
-          console.error("Erreur récupération profil :", err);
+        } catch {
           setError("Erreur lors de la récupération du profil.");
         } finally {
-          setLoading(false); // Fin du chargement
+          setLoading(false);
         }
       };
-
       fetchProfileData();
     }
   }, []);
 
-  // Gère les changements dans le formulaire d'informations personnelles
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setEditData({ ...editData, [e.target.name]: e.target.value });
-  };
-
-  // Gère les changements dans le formulaire de mot de passe
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) =>
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
-  };
 
-  // Soumission du formulaire complet (profil + mot de passe)
+  const togglePassword = (field) =>
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
-    // Vérifie que les nouveaux mots de passe correspondent
     if (
       passwordData.newPassword &&
       passwordData.newPassword !== passwordData.confirmNewPassword
     ) {
-      setError("Les mots de passe ne correspondent pas.");
+      setError("Les nouveaux mots de passe ne correspondent pas.");
+      setLoading(false);
+      return;
+    }
+
+    if (!passwordData.currentPassword) {
+      setError(
+        "Veuillez confirmer votre mot de passe actuel pour valider les modifications du profil."
+      );
       setLoading(false);
       return;
     }
 
     try {
-      // Mise à jour du profil
-      const updatedUser = await updateProfile(editData);
-      setProfileData(updatedUser);
+      // Met à jour le profil côté Supabase
+      await updateProfile(editData, passwordData.currentPassword);
 
-      // Mise à jour du mot de passe si renseigné
+      // Met à jour le mot de passe si demandé
       if (passwordData.newPassword) {
-        await updatePassword({ newPassword: passwordData.newPassword });
-        setPasswordData({ newPassword: "", confirmNewPassword: "" });
+        await updatePassword({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        });
       }
 
       setMessage("✅ Modifications enregistrées.");
-      setTimeout(() => setMessage(""), 3000);
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      });
     } catch (err) {
-      console.error("Erreur mise à jour profil :", err);
-      setError("❌ Une erreur est survenue lors de la mise à jour.");
+      setError(err.message || "❌ Une erreur est survenue.");
     } finally {
       setLoading(false);
     }
@@ -123,7 +125,6 @@ const ProfilePage = () => {
         loading ? "opacity-50 pointer-events-none" : ""
       }`}
     >
-      {/* Overlay de chargement */}
       {loading && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-10">
           <p className="text-xl font-semibold">Chargement...</p>
@@ -137,7 +138,6 @@ const ProfilePage = () => {
         className="flex flex-col"
         style={{ overflowY: "auto", maxHeight: "800px" }}
       >
-        {/* Informations personnelles */}
         <h2 className="colorh2">Informations personnelles</h2>
         {[
           "firstname",
@@ -163,50 +163,66 @@ const ProfilePage = () => {
           </div>
         ))}
 
-        {/* Changement de mot de passe */}
-        <div className="flex justify-between items-center mt-4">
-          <h2 className="colorh2">Changement mot de passe</h2>
-          <button
-            type="button"
-            onClick={() => setShowPasswords(!showPasswords)}
-          >
-            {showPasswords ? "🙈" : "👁️"}
-          </button>
-        </div>
+        <h2 className="colorh2 mt-4">Sécurité</h2>
 
-        <div className="input-group">
-          <label htmlFor="newPasswordProfile">Nouveau mot de passe</label>
-          <input
-            className="inputGeneral text-black"
-            type={showPasswords ? "text" : "password"}
-            id="newPasswordProfile"
-            name="newPassword"
-            value={passwordData.newPassword}
-            onChange={handlePasswordChange}
-          />
-        </div>
+        {["currentPassword", "newPassword", "confirmNewPassword"].map(
+          (field) => (
+            <div key={field} className="input-group relative">
+              <label htmlFor={`${field}Profile`}>
+                {field === "currentPassword"
+                  ? "Mot de passe actuel"
+                  : field === "newPassword"
+                  ? "Nouveau mot de passe"
+                  : "Confirmer mot de passe"}
+              </label>
+              <input
+                className="inputGeneral text-black pr-10"
+                type={showPassword[field] ? "text" : "password"}
+                id={`${field}Profile`}
+                name={field}
+                value={passwordData[field]}
+                onChange={handlePasswordChange}
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-[32px] text-gray-500"
+                onClick={() => togglePassword(field)}
+              >
+                {showPassword[field] ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M1 1l22 22" />
+                    <path d="M17.94 17.94A10.46 10.46 0 0112 19c-5 0-9-3-11-7 1.11-2.06 2.79-3.89 4.78-5.24" />
+                    <path d="M9.53 9.53a3.5 3.5 0 014.94 4.94" />
+                    <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M1.05 12C2.84 7.94 7 5 12 5s9.16 2.94 10.95 7c-1.79 4.06-6 7-10.95 7S2.84 16.06 1.05 12z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          )
+        )}
 
-        <div className="input-group">
-          <label htmlFor="confirmNewPasswordProfile">
-            Confirmer mot de passe
-          </label>
-          <input
-            className="inputGeneral text-black"
-            type={showPasswords ? "text" : "password"}
-            id="confirmNewPasswordProfile"
-            name="confirmNewPassword"
-            value={passwordData.confirmNewPassword}
-            onChange={handlePasswordChange}
-          />
-        </div>
-
-        {/* Messages de succès ou erreur */}
         {message && (
           <p className="text-green-600 font-semibold mb-4">{message}</p>
         )}
         {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}
 
-        {/* Bouton de soumission */}
         <button
           type="submit"
           className="allButton mt-6 mx-auto"
