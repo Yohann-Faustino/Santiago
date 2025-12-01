@@ -4,41 +4,32 @@ import { commentService } from "../services/comment.service";
 import { accountService } from "../services/account.service";
 
 const Comments = () => {
-  // Récupérer l'ID utilisateur depuis accountService:
-  const userId = accountService.getCurrentUserId();
+  // Récupérer l'ID utilisateur depuis accountService
+  const userId = accountService.getUser()?.id || null;
 
-  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
+  // États pour gérer le chargement, messages et erreurs
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
-
-  // Gère l'état des message de succes
-  const [successMessage, setSuccessMessage] = useState('');
-
-  // Surveille l’état des champs du formulaire
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState("");
   const [commentData, setCommentData] = useState({
-    title: '',
-    content: '',
-    users_id: userId // Dans la colonne users_id de la bdd on met la fonction qui récupère l'id de l'user.
+    title: "",
+    content: "",
+    users_id: userId,
   });
-
-  // Contient la liste des commentaires déja existants:
   const [comments, setComments] = useState([]);
 
-// Message d'erreur en cas de non récupération de la liste des commentaires existants
-  const [error, setError] = useState(null);
-
-  // Permet de rediriger l'utilisateur après une action spécifique
   const navigate = useNavigate();
 
-  // Met à jour commentData lors des modifications du formulaire:
+  // Met à jour l'état du formulaire
   const onChange = (e) => {
     setCommentData({
       ...commentData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  // Gère la soumission du formulaire:
+  // Soumission du commentaire
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,66 +40,70 @@ const Comments = () => {
 
     const commentWithUserId = {
       ...commentData,
-      users_id: userId
+      users_id: userId,
     };
 
     try {
       setLoadingAdd(true);
-      await commentService.addComment(commentWithUserId);
-      await fetchComments(); // Rafraîchit les commentaires après l'ajout.
-      // Réinitialise les champs du formulaire:
+      setError("");
+      const addedComment = await commentService.addComment(commentWithUserId);
+
+      if (!addedComment) return; // erreur déjà loggée dans le service
+
+      await fetchComments(); // rafraîchit la liste après ajout
+
+      // Réinitialise le formulaire
       setCommentData({
-        title: '',
-        content: '',
-        users_id: userId
+        title: "",
+        content: "",
+        users_id: userId,
       });
-      setSuccessMessage('Commentaire ajouté avec succès !');
-      setTimeout(() => setSuccessMessage(''), 3000);
+
+      setSuccessMessage("Commentaire ajouté avec succès !");
+      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
-      console.error('Erreur ajout commentaire:', err.response?.data || err.message);
-      if (err.response && err.response.status === 400) {
-        alert(err.response.data.message || 'Vous ne pouvez ajouter qu\'un commentaire toutes les 24 heures.');
-      } else {
-        alert('Erreur lors de l\'ajout du commentaire.');
-      }
+      console.error("Erreur ajout commentaire:", err);
+      // Affiche le message exact renvoyé par Supabase, y compris notre trigger 24h
+      const msg = err?.message || "Erreur lors de l'ajout du commentaire.";
+      setError(msg);
     } finally {
       setLoadingAdd(false);
     }
   };
 
-  // Récupère la liste des commentaires:
+  // Récupération de tous les commentaires
   const fetchComments = async () => {
     try {
       setLoadingComments(true);
       const response = await commentService.getAllComments();
-      setComments(response.data);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des commentaires:', error);
-      setError('Erreur lors de la récupération des commentaires.');
+      setComments(response.data || []);
+    } catch (err) {
+      console.error("Erreur récupération commentaires:", err);
+      setError("Erreur lors de la récupération des commentaires.");
     } finally {
       setLoadingComments(false);
     }
   };
 
-  // Ce hook s'active en même temps qu'un événement particulier choisi par le dev, et s'il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
-  // useEffect permet de charger progressivement les données car il demande de charger les données de la bdd après que la page soit chargée.
-  // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des utilisateurs depuis la bdd.
+  // Charge les commentaires au montage
   useEffect(() => {
     fetchComments();
   }, []);
 
   return (
     <div className="commentBlock flex flex-row-reverse w-[95%] max-w-[1200px]">
+      {/* Formulaire de commentaire */}
       <div className="commentInputBlock flex flex-col m-3 justify-center text-center">
-        <h1 className="colorTitle mb-3">Laissez un commentaire:</h1>
+        <h1 className="colorTitle mb-3">Laissez un commentaire :</h1>
 
-        {/* Utilisation de fieldset et legend pour le regroupement logique */}
         <form onSubmit={onSubmit}>
-          <fieldset className=" flex flex-col border p-2 rounded-lg border-blue-600">
-            <legend className="text-lg font-semibold mb-2">Formulaire de commentaire</legend>
+          <fieldset className="flex flex-col border p-2 rounded-lg border-blue-600">
+            <legend className="text-lg font-semibold mb-2">
+              Formulaire de commentaire
+            </legend>
 
-            {/* Ajout d'id pour améliorer l'association label/input */}
-            <label htmlFor="commentTitle">Nom et Prénom:</label>
+            {/* Nom / Prénom */}
+            <label htmlFor="commentTitle">Nom et Prénom :</label>
             <input
               className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
@@ -119,7 +114,8 @@ const Comments = () => {
               required
             />
 
-            <label htmlFor="contentComment">Écrivez votre commentaire:</label>
+            {/* Contenu du commentaire */}
+            <label htmlFor="contentComment">Écrivez votre commentaire :</label>
             <textarea
               className="inputGeneral focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="contentComment"
@@ -129,38 +125,55 @@ const Comments = () => {
               required
             />
 
+            {/* Bouton de soumission */}
             <button
-              className="allButton"
+              className="allButton mt-3"
               type="submit"
               disabled={loadingAdd}
             >
-              {loadingAdd ? "Ajout du commentaire en cours..." : "Ajouter un commentaire"}
+              {loadingAdd
+                ? "Ajout du commentaire en cours..."
+                : "Ajouter un commentaire"}
             </button>
           </fieldset>
         </form>
 
+        {/* Messages dynamiques */}
         {successMessage && (
           <div role="status" className="text-green-600 mt-3" aria-live="polite">
             {successMessage}
           </div>
         )}
-
-        {/* Message d'erreur accessible pour lecteur d'écran */}
-        {error && <div role="alert" className="text-red-400 mt-3">{error}</div>}
+        {error && (
+          <div role="alert" className="text-red-400 mt-3">
+            {error}
+          </div>
+        )}
       </div>
 
-      <div className="commentListBlock">
-        <h2 className="colorTitle mb-3 text-center">Liste des Commentaires:</h2>
+      {/* Liste des commentaires */}
+      <div className="commentListBlock flex-1">
+        <h2 className="colorTitle mb-3 text-center">
+          Liste des Commentaires :
+        </h2>
 
         {loadingComments ? (
-          <p className="text-center text-blue-500">Chargement des commentaires...</p>
+          <p className="text-center text-blue-500">
+            Chargement des commentaires...
+          </p>
         ) : (
-          <div className="cards" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <div
+            className="cards"
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
             <ul>
-              {comments.map(comment => (
-                <li key={comment.id}>
+              {comments.map((comment) => (
+                <li key={comment.id} className="mb-4 border-b pb-2">
                   <h3 className="text-red-700">{comment.title}</h3>
-                  <p className="mb-3">{comment.content}</p>
+                  <p>{comment.content}</p>
+                  <small className="text-gray-500">
+                    Posté le {new Date(comment.created).toLocaleString()}
+                  </small>
                 </li>
               ))}
             </ul>

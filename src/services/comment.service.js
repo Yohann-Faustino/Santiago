@@ -13,7 +13,7 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const commentService = {
-  // Récupère tous les commentaires
+  // Récupère tous les commentaires, du plus récent au plus ancien
   getAllComments: async () => {
     try {
       const { data, error } = await supabase
@@ -57,10 +57,11 @@ export const commentService = {
   // Ajoute un commentaire
   addComment: async (commentData) => {
     try {
+      // Supabase attend un tableau pour insert()
       const { data, error } = await supabase
         .from("comments")
-        .insert(commentData)
-        .select();
+        .insert([commentData])
+        .select(); // select() pour récupérer la ligne insérée
 
       if (error) {
         console.error("❌ Supabase addComment error:", error);
@@ -74,7 +75,7 @@ export const commentService = {
     }
   },
 
-  // Met à jour un commentaire
+  // Met à jour un commentaire existant
   updatedComment: async (comment) => {
     try {
       const { data, error } = await supabase
