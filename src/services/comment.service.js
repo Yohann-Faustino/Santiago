@@ -1,3 +1,4 @@
+// src/services/comment.service.js
 import { createClient } from "@supabase/supabase-js";
 
 // IMPORTANT : les variables doivent commencer par VITE_ pour fonctionner dans React (Vite)
@@ -57,7 +58,6 @@ export const commentService = {
   // Ajoute un commentaire
   addComment: async (commentData) => {
     try {
-      // Supabase attend un tableau pour insert()
       const { data, error } = await supabase
         .from("comments")
         .insert([commentData])
@@ -75,13 +75,14 @@ export const commentService = {
     }
   },
 
-  // Met à jour un commentaire existant
-  updatedComment: async (comment) => {
+  // Met à jour un commentaire existant par son ID
+  updatedComment: async (id, commentData) => {
     try {
+      // Supabase n'autorise pas la mise à jour de la colonne 'id'
       const { data, error } = await supabase
         .from("comments")
-        .update(comment)
-        .eq("id", comment.id)
+        .update(commentData)
+        .eq("id", id)
         .select();
 
       if (error) {
