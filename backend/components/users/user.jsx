@@ -4,126 +4,193 @@ import { Link } from "react-router-dom";
 import SideMenu from "../admin/sideMenu";
 
 const User = () => {
+  // Récupère tous les utilisateurs pour les afficher :
+  const [users, setUsers] = useState([]);
 
-    // Récupères l'utilisateur que l'on souhaite modifier: 
-    const [users, setUsers] = useState([]);
+  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...)
+  const [loading, setLoading] = useState(true);
 
-    // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
-    const [loading, setLoading] = useState(true);
+  // Ce hook gère les messages utilisateur
+  const [message, setMessage] = useState("");
 
-    // Ce hook gere les messages utilisateur
-    const [message, setMessage] = useState('');
+  // Ce hook sert de pense-bête pour éviter que useEffect se déclenche 2 fois en mode strict
+  const flag = useRef(false);
 
-    // Ce hook sert de pense-bête pour que mon code se rappelle d'une fonction décrite plus bas.
-    const flag = useRef(false);
+  // useEffect permet de charger les données après le rendu initial du composant
+  useEffect(() => {
+    // Empêche un double appel inutile :
+    if (flag.current === false) {
+      userService
+        .getAllUsers()
+        .then((data) => {
+          // ⚠️ data = tableau direct car le service renvoie un tableau !
+          setUsers(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setMessage("❌ Erreur lors du chargement des utilisateurs.");
+          setTimeout(() => setMessage(""), 3000);
+          setLoading(false);
+        });
+    }
 
-    // Ce hook s'active en même temps qu'un événement particulier choisi par le dev et si il n'y a pas d'événement particulier on met un tableau vide pour qu'il s'exécute qu'une seule fois.
-    // useEffect permet de charger progressivement les données car il demande à charger les données de la bdd après que la page soit chargée.
-    // On ajoute une fonction qui fait une requête HTTP pour récupérer les données des commentaires depuis la bdd.
-    useEffect(() => {
+    return () => (flag.current = true);
+  }, []);
 
-        // On utilise flag.current pour éviter de rappeler commentService.getAllUsers() plus d'une fois lors du rendu du composant:
-        if (flag.current === false) {
-            userService.getAllUsers()
-                .then(res => {
-                    setUsers(res.data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error(err);
-                    setMessage('❌ Erreur lors du chargement des utilisateurs.');
-                    setTimeout(() => setMessage(''), 3000);
-                    setLoading(false);
-                });
-        }
-        return () => flag.current = true;
-    }, []);
+  // Fonction de suppression d'un utilisateur
+  const delUser = (userId, userRole, userFullName) => {
+    const isAdmin = userRole === "admin" || userRole === "administrateur";
 
-    const delUser = (userId, userRole, userFullName) => {
-        const isAdmin = userRole === "admin" || userRole === "administrateur";
+    const confirmationMessage = isAdmin
+      ? `⚠️ Attention : tu t'apprêtes à supprimer un administrateur (${userFullName}). Es-tu sûr(e) ?`
+      : `Es-tu sûr(e) de vouloir supprimer ${userFullName} ?`;
 
-        const confirmationMessage = isAdmin
-            ? `⚠️ Attention : tu t'apprêtes à supprimer un administrateur (${userFullName}). Es-tu sûr(e) de vouloir continuer ?`
-            : `Es-tu sûr(e) de vouloir supprimer l'utilisateur ${userFullName} ?`;
+    if (!window.confirm(confirmationMessage)) return;
 
-        if (!window.confirm(confirmationMessage)) return;
+    userService
+      .deleteUser(userId)
+      .then(() => {
+        // On retire l'utilisateur supprimé du tableau
+        setUsers((current) => current.filter((user) => user.id !== userId));
+        setMessage(`✅ Utilisateur ${userFullName} supprimé avec succès.`);
+        setTimeout(() => setMessage(""), 3000);
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessage(`❌ Impossible de supprimer ${userFullName}.`);
+        setTimeout(() => setMessage(""), 3000);
+      });
+  };
 
-        userService.delUser(userId)
-            .then(() => {
-                setUsers((current) => current.filter(user => user.id !== userId));
-                setMessage(`✅ Utilisateur ${userFullName} supprimé avec succès.`);
-                setTimeout(() => setMessage(''), 3000);
-            })
-            .catch(err => {
-                console.error(err);
-                setMessage(`❌ Impossible de supprimer ${userFullName}.`);
-                setTimeout(() => setMessage(''), 3000);
-            });
-    };
+  return (
+    <div className="users p-4">
+      <h1 className="mb-4">Liste des utilisateurs :</h1>
 
-    return (
-        <div className="users p-4">
-            <h1 className="mb-4">Liste des utilisateurs:</h1>
-            {message && (
-                <div aria-live="polite" className="mt-2 font-semibold mb-4 text-center">
-                    {message}
-                </div>
-            )}            {loading ? (
-                <p>Chargement des utilisateurs...</p>
-            ) : (
-                <div className="usersSideMenu w-full"><div>
-                    <SideMenu />
-                </div>
-                    <div className=" usersBoard">
-                        <table className="min-w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr className="bg-red-500">
-                                    <th className="p-2 text-center border border-gray-300">🚮</th>
-                                    <th className="p-2 text-center border border-gray-300">#</th>
-                                    <th className="p-2 text-center border border-gray-300">Prénom</th>
-                                    <th className="p-2 text-center border border-gray-300">Nom</th>
-                                    <th className="p-2 text-center border border-gray-300">Email</th>
-                                    <th className="p-2 text-center border border-gray-300">Téléphone</th>
-                                    <th className="p-2 text-center border border-gray-300">Adresse</th>
-                                    <th className="p-2 text-center border border-gray-300">Ville</th>
-                                    <th className="p-2 text-center border border-gray-300">Code Postale</th>
-                                    <th className="p-2 text-center border border-gray-300">Type</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    users.map(user => (
-                                        <tr key={user.id} className="hover:bg-gray-100">
-                                            <td>
-                                                <button
-                                                    className="text-center border border-gray-300 cursor-pointer hover:bg-red-100"
-                                                    onClick={() =>
-                                                        delUser(user.id, user.role, `${user.firstname} ${user.lastname}`)
-                                                    } aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
-                                                    title="Supprimer l'utilisateur" // Permet d'afficher une infobulle pour expliquer qu'il sagit de supprimer l'user
-                                                >
-                                                    🗑️
-                                                </button>
-                                            </td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.id}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.firstname}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.lastname}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.email}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.phone}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.address}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.city}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.postalcode}</Link></td>
-                                            <td className="p-2 text-center border border-gray-300"><Link to={`/admin/users/useredit/${user.id}`}>{user.role}</Link></td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
+      {/* Affichage d’un message de succès ou d’erreur */}
+      {message && (
+        <div aria-live="polite" className="mt-2 font-semibold mb-4 text-center">
+          {message}
         </div>
-    );
+      )}
+
+      {loading ? (
+        <p>Chargement des utilisateurs...</p>
+      ) : (
+        <div className="usersSideMenu w-full">
+          <div>
+            <SideMenu />
+          </div>
+
+          <div className="usersBoard">
+            <table className="min-w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-red-500">
+                  <th className="p-2 text-center border border-gray-300">🚮</th>
+                  <th className="p-2 text-center border border-gray-300">#</th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Prénom
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Nom
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Email
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Téléphone
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Adresse
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Ville
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Code Postal
+                  </th>
+                  <th className="p-2 text-center border border-gray-300">
+                    Type
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.id} className="hover:bg-gray-100">
+                    {/* Bouton delete */}
+                    <td className="p-2 text-center border border-gray-300">
+                      <button
+                        className="cursor-pointer hover:bg-red-100"
+                        onClick={() =>
+                          delUser(
+                            user.id,
+                            user.role,
+                            `${user.firstname} ${user.lastname}`
+                          )
+                        }
+                        aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
+                        title="Supprimer l'utilisateur"
+                      >
+                        🗑️
+                      </button>
+                    </td>
+
+                    {/* Chaque cellule pointe vers l’édition */}
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.id}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.firstname}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.lastname}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.email}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.phone}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.address}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.city}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.postalcode}
+                      </Link>
+                    </td>
+                    <td className="p-2 text-center border border-gray-300">
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.role}
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default User;
