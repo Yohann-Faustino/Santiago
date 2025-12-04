@@ -1,9 +1,9 @@
-// src/pages/AuthenticationPage.jsx
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { accountService } from "../services/account.service";
 import { UserContext } from "../contexts/UserContext";
+import { Link } from "react-router-dom";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
@@ -194,6 +194,15 @@ const AuthenticationPage = () => {
               Inscrivez-vous
             </button>
           </p>
+          {/* Lien Mot de passe oublié */}
+          <div className="flex justify-center mt-2">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-500 hover:underline"
+            >
+              Mot de passe oublié ?
+            </Link>
+          </div>
         </div>
 
         {/* Formulaire Inscription */}

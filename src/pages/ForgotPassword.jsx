@@ -1,84 +1,55 @@
-import React, { useState } from "react";
-import AxiosCall from "../services/axiosCall";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
+import { forgotPassword } from "../services/auth.service";
 
 const ForgotPassword = () => {
-
-  // États locaux pour le formulaire
+  // États pour l'email, le message de succès et le message d'erreur
   const [email, setEmail] = useState("");
-
-  // Gère les messages d'erreur ou de succès
-  const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Ajouter un état pour le token captcha
-  const [captchaToken, setCaptchaToken] = useState(null);
-
-  // useState pour gérer l'état de chargement lors des appels API (chargement en cours...):
-  const [loading, setLoading] = useState(false);
-
-  // Ajoute le token au captcha a la demande du reset de MDP
-  const handleCaptchaChange = (token) => {
-    setCaptchaToken(token);
-  };
-
-  // Gestion de la soumission du formulaire
+  // Fonction exécutée à la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
-    setSuccessMessage("");
+    setMessage(""); // Réinitialise les messages
     setError("");
 
-    if (!captchaToken) {
-      setError("Veuillez valider le reCAPTCHA.");
-      return;
-    }
-
     try {
-      setLoading(true);
-      // Envoi des données pour l'envoi de mail:
-      const response = await AxiosCall.post('/forgot-password', { email, captchaToken });
-      if (response.status === 200) {
-        setSuccessMessage("Un email de réinitialisation a été envoyé si cet email est enregistré.");
-        setCaptchaToken(null);
-      }
+      // Appelle le service pour envoyer l'email de réinitialisation
+      await forgotPassword(email);
+      setMessage(
+        "📩 Un email de réinitialisation a été envoyé ! Vérifiez votre boîte de réception."
+      );
     } catch (err) {
-      setError("Erreur lors de la demande de réinitialisation.");
-    } finally {
-      setLoading(false); // 👈 stoppe le chargement
+      // Affiche l'erreur si la requête échoue
+      setError(err.message);
     }
   };
 
   return (
-    <div className="forgotPasswordContainer m-auto">
-      <h1 className="colorTitle mb-5">Réinitialisation du mot de passe</h1>
+    <div className="w-1/3 mx-auto mt-10">
+      {/* Titre de la page */}
+      <h1 className="text-center text-xl font-bold mb-4">
+        Mot de passe oublié
+      </h1>
 
-      {successMessage && <p className="text-green-600" role="alert" aria-live="polite">{successMessage}</p>}
-      {error && <p className="errorMessage text-red-400">{error}</p>}
-
-      <form onSubmit={handleSubmit} className=" flex flex-col border border-blue-700 rounded-lg p-2">
-        <label htmlFor="emailInputForgotPassword" className="sr-only">Adresse email</label> {/*Visible uniquement pour l'accessibilité sinon le label fait doublon avec le placeholder dans l'input*/}
+      {/* Formulaire */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
-          id="emailInputForgotPassword"
           type="email"
-          placeholder="Votre adresse email"
+          placeholder="Votre email"
+          className="inputGeneral text-black"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)} // Met à jour l'état email
           required
-          className=" text-center mb-2 inputField border rounded-lg"
         />
-        <ReCAPTCHA
-          // Clef récupérée sur Google ReCaptcha
-          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-          onChange={handleCaptchaChange}
-        />
-        <button
-          type="submit"
-          className="allButton m-auto"
-          disabled={loading}
-        >
-          {loading ? "Envoi en cours..." : "Envoyer"}
+        <button className="allButton" type="submit">
+          Envoyer l'email
         </button>
       </form>
+
+      {/* Messages de succès ou d'erreur */}
+      {message && <p className="text-green-600 mt-2">{message}</p>}
+      {error && <p className="text-red-600 mt-2">{error}</p>}
     </div>
   );
 };

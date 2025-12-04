@@ -88,7 +88,7 @@ const ProfilePage = () => {
 
     if (!passwordData.currentPassword) {
       setError(
-        "Veuillez confirmer votre mot de passe actuel pour valider les modifications du profil."
+        "Veuillez saisir votre mot de passe actuel pour valider les modifications du profil."
       );
       setLoading(false);
       return;
@@ -175,6 +175,7 @@ const ProfilePage = () => {
                   ? "Nouveau mot de passe"
                   : "Confirmer mot de passe"}
               </label>
+
               <input
                 className="inputGeneral text-black pr-10"
                 type={showPassword[field] ? "text" : "password"}
@@ -183,18 +184,24 @@ const ProfilePage = () => {
                 value={passwordData[field]}
                 onChange={handlePasswordChange}
               />
+
+              {/* BOUTON ŒIL — bien positionné */}
               <button
                 type="button"
-                className="absolute right-2 top-[32px] text-gray-500"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 onClick={() => togglePassword(field)}
               >
                 {showPassword[field] ? (
+                  // Oeil fermé
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5 text-gray-600"
-                    fill="none"
                     viewBox="0 0 24 24"
+                    fill="none"
                     stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <path d="M1 1l22 22" />
                     <path d="M17.94 17.94A10.46 10.46 0 0112 19c-5 0-9-3-11-7 1.11-2.06 2.79-3.89 4.78-5.24" />
@@ -202,15 +209,27 @@ const ProfilePage = () => {
                     <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
                   </svg>
                 ) : (
+                  // Oeil ouvert
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-gray-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    className="h-5 w-5 text-gray-600"
                   >
-                    <path d="M1.05 12C2.84 7.94 7 5 12 5s9.16 2.94 10.95 7c-1.79 4.06-6 7-10.95 7S2.84 16.06 1.05 12z" />
-                    <circle cx="12" cy="12" r="3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
+               -1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
                   </svg>
                 )}
               </button>
