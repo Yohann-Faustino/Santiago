@@ -6,7 +6,10 @@ import {
 } from "../services/profile.service";
 
 const ProfilePage = () => {
+  // État principal du profil
   const [profileData, setProfileData] = useState(null);
+
+  // État pour la modification des informations personnelles
   const [editData, setEditData] = useState({
     firstname: "",
     lastname: "",
@@ -17,32 +20,36 @@ const ProfilePage = () => {
     postalcode: "",
   });
 
+  // État pour la modification du mot de passe
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
 
-  // Un état pour chaque œil
+  // État pour afficher/masquer les mots de passe
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,
     newPassword: false,
     confirmNewPassword: false,
   });
 
+  // État de chargement et messages
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  // Flag pour éviter les appels multiples dans useEffect
   const flag = useRef(false);
 
+  // Récupération du profil au chargement
   useEffect(() => {
     if (!flag.current) {
       flag.current = true;
       const fetchProfileData = async () => {
         setLoading(true);
         try {
-          const user = await getProfile();
+          const user = await getProfile(); // Récupère le profil depuis Supabase
           setProfileData(user);
           setEditData({
             firstname: user.firstname || "",
@@ -63,20 +70,25 @@ const ProfilePage = () => {
     }
   }, []);
 
+  // Gestion des changements de champs
   const handleChange = (e) =>
     setEditData({ ...editData, [e.target.name]: e.target.value });
+
   const handlePasswordChange = (e) =>
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
 
+  // Toggle affichage mot de passe
   const togglePassword = (field) =>
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
 
+  // Soumission du formulaire de profil
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
+    // Vérifie la correspondance des nouveaux mots de passe
     if (
       passwordData.newPassword &&
       passwordData.newPassword !== passwordData.confirmNewPassword
@@ -86,6 +98,7 @@ const ProfilePage = () => {
       return;
     }
 
+    // Vérifie que le mot de passe actuel est fourni
     if (!passwordData.currentPassword) {
       setError(
         "Veuillez saisir votre mot de passe actuel pour valider les modifications du profil."
@@ -95,7 +108,7 @@ const ProfilePage = () => {
     }
 
     try {
-      // Met à jour le profil côté Supabase
+      // Met à jour le profil via Supabase
       await updateProfile(editData, passwordData.currentPassword);
 
       // Met à jour le mot de passe si demandé
@@ -107,6 +120,8 @@ const ProfilePage = () => {
       }
 
       setMessage("✅ Modifications enregistrées.");
+
+      // Réinitialise les champs mot de passe
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -125,6 +140,7 @@ const ProfilePage = () => {
         loading ? "opacity-50 pointer-events-none" : ""
       }`}
     >
+      {/* Overlay de chargement */}
       {loading && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-10">
           <p className="text-xl font-semibold">Chargement...</p>
@@ -133,12 +149,15 @@ const ProfilePage = () => {
 
       <h1 className="colorTitle text-center">Mon Profil</h1>
 
+      {/* Formulaire de profil */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col"
         style={{ overflowY: "auto", maxHeight: "800px" }}
       >
         <h2 className="colorh2">Informations personnelles</h2>
+
+        {/* Champs infos perso */}
         {[
           "firstname",
           "lastname",
@@ -165,6 +184,7 @@ const ProfilePage = () => {
 
         <h2 className="colorh2 mt-4">Sécurité</h2>
 
+        {/* Champs mot de passe */}
         {["currentPassword", "newPassword", "confirmNewPassword"].map(
           (field) => (
             <div key={field} className="input-group relative">
@@ -185,14 +205,13 @@ const ProfilePage = () => {
                 onChange={handlePasswordChange}
               />
 
-              {/* BOUTON ŒIL — bien positionné */}
+              {/* Bouton œil pour afficher/masquer le mot de passe */}
               <button
                 type="button"
                 className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 onClick={() => togglePassword(field)}
               >
                 {showPassword[field] ? (
-                  // Oeil fermé
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5 text-gray-600"
@@ -209,7 +228,6 @@ const ProfilePage = () => {
                     <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
                   </svg>
                 ) : (
-                  // Oeil ouvert
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -227,8 +245,7 @@ const ProfilePage = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
-               -1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     />
                   </svg>
                 )}
@@ -237,11 +254,13 @@ const ProfilePage = () => {
           )
         )}
 
+        {/* Messages d'erreur ou succès */}
         {message && (
           <p className="text-green-600 font-semibold mb-4">{message}</p>
         )}
         {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}
 
+        {/* Bouton de soumission */}
         <button
           type="submit"
           className="allButton mt-6 mx-auto"

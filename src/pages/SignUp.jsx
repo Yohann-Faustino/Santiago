@@ -9,29 +9,33 @@ const AuthenticationPage = () => {
   const navigate = useNavigate();
   const { refreshUser } = useContext(UserContext);
 
-  // États principaux
+  // État pour savoir si on est sur l'inscription ou la connexion
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Formulaire connexion
+  // États pour le formulaire de connexion
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
+  // Gestion des changements dans le formulaire de connexion
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
+  // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
+
     try {
+      // Connexion via Supabase
       await accountService.login(loginData);
       await refreshUser();
       setMessage("✅ Connexion réussie !");
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate("/"), 1500); // Redirection vers l’accueil
     } catch (err) {
       setError(err.message || "Erreur lors de la connexion.");
     } finally {
@@ -39,7 +43,7 @@ const AuthenticationPage = () => {
     }
   };
 
-  // Formulaire inscription
+  // États pour le formulaire d'inscription
   const [signUpData, setSignUpData] = useState({
     firstname: "",
     lastname: "",
@@ -55,21 +59,25 @@ const AuthenticationPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaValue, setCaptchaValue] = useState(null);
 
+  // Gestion des changements dans le formulaire d'inscription
   const handleSignUpChange = (e) =>
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
 
+  // Soumission du formulaire d'inscription
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
+    // Vérification du captcha
     if (!captchaValue) {
       setError("Veuillez valider le reCAPTCHA.");
       setLoading(false);
       return;
     }
 
+    // Vérification des mots de passe
     if (signUpData.password !== signUpData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
       setLoading(false);
@@ -77,10 +85,11 @@ const AuthenticationPage = () => {
     }
 
     try {
+      // Création du compte via Supabase
       await accountService.signUp(signUpData);
       await refreshUser();
       setMessage("✅ Inscription réussie !");
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/"), 2000); // Redirection vers l’accueil
     } catch (err) {
       setError(err.message || "Erreur lors de l'inscription.");
     } finally {
@@ -88,7 +97,7 @@ const AuthenticationPage = () => {
     }
   };
 
-  // Composant Input avec toggle mot de passe
+  // Composant Input pour mot de passe avec toggle visibilité
   const PasswordInput = ({
     value,
     onChange,
@@ -194,7 +203,6 @@ const AuthenticationPage = () => {
               Inscrivez-vous
             </button>
           </p>
-          {/* Lien Mot de passe oublié */}
           <div className="flex justify-center mt-2">
             <Link
               to="/forgot-password"
@@ -217,23 +225,27 @@ const AuthenticationPage = () => {
             Inscription
           </h2>
           <form onSubmit={handleSignUpSubmit} className="flex flex-col gap-3">
-            {[
-              { name: "firstname", placeholder: "Prénom" },
-              { name: "lastname", placeholder: "Nom" },
-              { name: "email", placeholder: "Email" },
-            ].map((field) => (
+            {/* Inputs texte de base */}
+            {["firstname", "lastname", "email"].map((field) => (
               <input
-                key={field.name}
+                key={field}
                 type="text"
-                name={field.name}
-                placeholder={field.placeholder}
-                value={signUpData[field.name]}
+                name={field}
+                placeholder={
+                  field === "firstname"
+                    ? "Prénom"
+                    : field === "lastname"
+                    ? "Nom"
+                    : "Email"
+                }
+                value={signUpData[field]}
                 onChange={handleSignUpChange}
                 required
                 className="inputGeneral text-black"
               />
             ))}
 
+            {/* Inputs mot de passe */}
             <PasswordInput
               value={signUpData.password}
               onChange={(e) =>
@@ -256,23 +268,28 @@ const AuthenticationPage = () => {
               toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
             />
 
-            {[
-              { name: "phone", placeholder: "Téléphone" },
-              { name: "address", placeholder: "Adresse" },
-              { name: "city", placeholder: "Ville" },
-              { name: "postalcode", placeholder: "Code postal" },
-            ].map((field) => (
+            {/* Inputs supplémentaires */}
+            {["phone", "address", "city", "postalcode"].map((field) => (
               <input
-                key={field.name}
+                key={field}
                 type="text"
-                name={field.name}
-                placeholder={field.placeholder}
-                value={signUpData[field.name]}
+                name={field}
+                placeholder={
+                  field === "phone"
+                    ? "Téléphone"
+                    : field === "address"
+                    ? "Adresse"
+                    : field === "city"
+                    ? "Ville"
+                    : "Code postal"
+                }
+                value={signUpData[field]}
                 onChange={handleSignUpChange}
                 className="inputGeneral text-black"
               />
             ))}
 
+            {/* Captcha */}
             <ReCAPTCHA
               className="flex justify-center"
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}

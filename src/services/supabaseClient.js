@@ -1,4 +1,3 @@
-// src/services/supabaseClient.js
 import { createClient } from "@supabase/supabase-js";
 
 // Récupération des variables d'environnement

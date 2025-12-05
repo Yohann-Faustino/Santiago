@@ -4,10 +4,10 @@ import { commentService } from "../services/comment.service";
 import { accountService } from "../services/account.service";
 
 const Comments = () => {
-  // Récupérer l'ID utilisateur depuis accountService
+  // Récupère l'ID utilisateur depuis accountService
   const userId = accountService.getUser()?.id || null;
 
-  // États pour gérer le chargement, messages et erreurs
+  // États pour gestion du formulaire et des messages
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -33,6 +33,7 @@ const Comments = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // Redirige vers l'inscription si non connecté
     if (!accountService.isLogged()) {
       navigate("/signup");
       return;
@@ -46,11 +47,13 @@ const Comments = () => {
     try {
       setLoadingAdd(true);
       setError("");
+      // Ajoute le commentaire via le service
       const addedComment = await commentService.addComment(commentWithUserId);
 
-      if (!addedComment) return; // erreur déjà loggée dans le service
+      if (!addedComment) return;
 
-      await fetchComments(); // rafraîchit la liste après ajout
+      // Rafraîchit la liste des commentaires
+      await fetchComments();
 
       // Réinitialise le formulaire
       setCommentData({
@@ -63,7 +66,6 @@ const Comments = () => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error("Erreur ajout commentaire:", err);
-      // Affiche le message exact renvoyé par Supabase, y compris notre trigger 24h
       const msg = err?.message || "Erreur lors de l'ajout du commentaire.";
       setError(msg);
     } finally {
@@ -71,7 +73,7 @@ const Comments = () => {
     }
   };
 
-  // Récupération de tous les commentaires
+  // Récupère tous les commentaires
   const fetchComments = async () => {
     try {
       setLoadingComments(true);

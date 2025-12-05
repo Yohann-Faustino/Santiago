@@ -1,16 +1,17 @@
-// src/components/Nav.jsx
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import { UserContext } from "../contexts/UserContext";
 
 const Nav = () => {
-  const { user } = useContext(UserContext); // récupère l'utilisateur depuis le contexte
-  const isLoggedIn = !!user; // true si user existe
-  const isAdmin = user?.role === "admin"; // rôle admin
+  // Récupère l'utilisateur connecté depuis le contexte
+  const { user } = useContext(UserContext);
+  const isLoggedIn = !!user; // true si un utilisateur est connecté
+  const isAdmin = user?.role === "admin"; // true si l'utilisateur a le rôle admin
 
+  // État pour savoir quel onglet est actif (pour le style)
   const [activeIndex, setActiveIndex] = useState(null);
-  const handleClick = (index) => setActiveIndex(index); // pour gérer l'état actif du menu
+  const handleClick = (index) => setActiveIndex(index);
 
   return (
     <nav className="mr-4" aria-label="Navigation principale">
@@ -49,12 +50,14 @@ const Nav = () => {
         {/* Boutons Profil / Admin / Déconnexion si connecté */}
         {isLoggedIn && (
           <>
+            {/* Profil */}
             <li className={activeIndex === 6 ? "whiteLink" : "linkNav"}>
               <Link to="/profile" onClick={() => handleClick(6)}>
                 Profil
               </Link>
             </li>
 
+            {/* Admin (visible seulement si rôle admin) */}
             {isAdmin && (
               <li className={activeIndex === 7 ? "whiteLink" : "linkNav"}>
                 <Link to="/admin" onClick={() => handleClick(7)}>
@@ -63,6 +66,7 @@ const Nav = () => {
               </li>
             )}
 
+            {/* Déconnexion */}
             <li className={activeIndex === 10 ? "whiteLink" : "linkNav"}>
               <div onClick={() => handleClick(10)} className="cursor-pointer">
                 <LogoutButton />

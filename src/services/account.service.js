@@ -1,4 +1,3 @@
-// src/services/account.service.js
 import { supabase } from "./supabaseClient";
 
 // Fonction pour créer un nouvel utilisateur

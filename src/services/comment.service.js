@@ -1,4 +1,3 @@
-// src/services/comment.service.js
 import { createClient } from "@supabase/supabase-js";
 
 // IMPORTANT : les variables doivent commencer par VITE_ pour fonctionner dans React (Vite)

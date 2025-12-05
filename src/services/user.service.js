@@ -70,6 +70,8 @@ export const userService = {
       return false;
     }
   },
+
+  // Récupère tous les utilisateurs
   getAllUsers: async () => {
     try {
       const { data, error } = await supabase

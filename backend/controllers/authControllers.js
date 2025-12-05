@@ -7,7 +7,6 @@ import Users from "../models/users.js";
 import validator from "validator";
 import crypto from "crypto";
 import sendEmail from "../../src/services/sendEmail.js";
-import axios from "axios";
 import verifyCaptcha from "../utils/verifyCaptcha.js";
 
 // Fonction pour valider le mot de passe si il respecte certains critères de sécurité définis:
@@ -222,12 +221,10 @@ const authController = {
     try {
       const user = await Users.findOne({ where: { email } });
       if (!user) {
-        return res
-          .status(200)
-          .json({
-            message:
-              "Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.",
-          });
+        return res.status(200).json({
+          message:
+            "Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.",
+        });
       }
 
       // Génère un token de réinitialisation

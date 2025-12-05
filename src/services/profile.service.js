@@ -1,4 +1,3 @@
-// src/services/profile.service.js
 import { supabase } from "./supabaseClient";
 
 // Récupère le profil de l'utilisateur connecté
