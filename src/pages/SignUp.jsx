@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { accountService } from "../services/account.service";
 import { UserContext } from "../contexts/UserContext";
-import { Link } from "react-router-dom";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
-  const { refreshUser } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
 
   // État pour savoir si on est sur l'inscription ou la connexion
   const [isSignUp, setIsSignUp] = useState(false);
@@ -19,11 +18,9 @@ const AuthenticationPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
-  // Gestion des changements dans le formulaire de connexion
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
-  // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,11 +28,11 @@ const AuthenticationPage = () => {
     setMessage("");
 
     try {
-      // Connexion via Supabase
-      await accountService.login(loginData);
-      await refreshUser();
+      // ✅ Passer email et password séparément pour Supabase
+      await accountService.login(loginData.email, loginData.password);
+      await refreshUser(); // met à jour le user dans le contexte
       setMessage("✅ Connexion réussie !");
-      setTimeout(() => navigate("/"), 1500); // Redirection vers l’accueil
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       setError(err.message || "Erreur lors de la connexion.");
     } finally {
@@ -59,25 +56,21 @@ const AuthenticationPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaValue, setCaptchaValue] = useState(null);
 
-  // Gestion des changements dans le formulaire d'inscription
   const handleSignUpChange = (e) =>
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
 
-  // Soumission du formulaire d'inscription
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
-    // Vérification du captcha
     if (!captchaValue) {
       setError("Veuillez valider le reCAPTCHA.");
       setLoading(false);
       return;
     }
 
-    // Vérification des mots de passe
     if (signUpData.password !== signUpData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
       setLoading(false);
@@ -85,11 +78,14 @@ const AuthenticationPage = () => {
     }
 
     try {
-      // Création du compte via Supabase
-      await accountService.signUp(signUpData);
-      await refreshUser();
+      await accountService.signUp(
+        signUpData.email,
+        signUpData.password,
+        signUpData.role || "utilisateur"
+      );
+      await refreshUser(); // met à jour le user dans le contexte
       setMessage("✅ Inscription réussie !");
-      setTimeout(() => navigate("/"), 2000); // Redirection vers l’accueil
+      setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       setError(err.message || "Erreur lors de l'inscription.");
     } finally {
@@ -97,7 +93,7 @@ const AuthenticationPage = () => {
     }
   };
 
-  // Composant Input pour mot de passe avec toggle visibilité
+  // Composant mot de passe avec toggle visibilité
   const PasswordInput = ({
     value,
     onChange,
@@ -121,7 +117,6 @@ const AuthenticationPage = () => {
         tabIndex={-1}
       >
         {show ? (
-          // Oeil fermé
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-600"
@@ -138,7 +133,6 @@ const AuthenticationPage = () => {
             <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
           </svg>
         ) : (
-          // Oeil ouvert
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-600"
@@ -158,7 +152,7 @@ const AuthenticationPage = () => {
   return (
     <div className="w-full flex justify-center relative bg-white dark:bg-black text-black dark:text-white transition-colors">
       <div className="w-[420px] relative h-[600px] flex flex-col justify-center">
-        {/* Formulaire Connexion */}
+        {/* Connexion */}
         <div
           className={`absolute top-0 left-0 w-full transition-all duration-500 ease-in-out ${
             isSignUp
@@ -213,7 +207,7 @@ const AuthenticationPage = () => {
           </div>
         </div>
 
-        {/* Formulaire Inscription */}
+        {/* Inscription */}
         <div
           className={`absolute top-0 left-0 w-full transition-all duration-500 ease-in-out ${
             isSignUp
@@ -225,7 +219,6 @@ const AuthenticationPage = () => {
             Inscription
           </h2>
           <form onSubmit={handleSignUpSubmit} className="flex flex-col gap-3">
-            {/* Inputs texte de base */}
             {["firstname", "lastname", "email"].map((field) => (
               <input
                 key={field}
@@ -245,7 +238,6 @@ const AuthenticationPage = () => {
               />
             ))}
 
-            {/* Inputs mot de passe */}
             <PasswordInput
               value={signUpData.password}
               onChange={(e) =>
@@ -268,7 +260,6 @@ const AuthenticationPage = () => {
               toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
             />
 
-            {/* Inputs supplémentaires */}
             {["phone", "address", "city", "postalcode"].map((field) => (
               <input
                 key={field}
@@ -289,7 +280,6 @@ const AuthenticationPage = () => {
               />
             ))}
 
-            {/* Captcha */}
             <ReCAPTCHA
               className="flex justify-center"
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}

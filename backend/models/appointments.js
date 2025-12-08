@@ -21,7 +21,6 @@ Appointments.init(
     },
   },
   {
-    sequelize,
     modelName: "Appointments",
     tableName: "Appointments",
   }

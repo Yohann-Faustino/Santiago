@@ -1,113 +1,79 @@
-import { supabase } from "./supabaseClient";
+// Gère l'état de connexion et le rôle de l'utilisateur via Supabase Auth
 
-// Fonction pour créer un nouvel utilisateur
-let signUp = async (formData) => {
-  // Création de l'utilisateur dans Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signUp(
-    {
-      email: formData.email,
-      password: formData.password,
-    },
-    { redirectTo: import.meta.env.VITE_APP_URL + "/login" } // redirection après confirmation email
-  );
-  if (authError) throw authError;
+import { supabase } from "../services/supabaseClient.js";
 
-  const user = authData.user;
-
-  // Création de l'utilisateur dans la table "users"
-  const { data: userData, error: dbError } = await supabase
-    .from("users")
-    .insert([
-      {
-        auth_id: user.id,
-        firstname: formData.firstname,
-        lastname: formData.lastname,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        city: formData.city,
-        postalcode: formData.postalcode,
-        role: "user", // rôle par défaut
-      },
-    ])
-    .select()
-    .single();
-
-  if (dbError) throw dbError;
-
-  return { auth: user, user: userData };
-};
-
-// Fonction pour se connecter
-let login = async (credentials) => {
-  // Connexion via Supabase Auth
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: credentials.email,
-    password: credentials.password,
-  });
-  if (error) throw error;
-
-  // Récupération du user depuis la session
-  const user = data.user;
-
-  // On récupère le rôle depuis la table "users"
-  const { data: userData, error: roleError } = await supabase
-    .from("users")
-    .select("role")
-    .eq("auth_id", user.id)
-    .single();
-
-  if (roleError) throw roleError;
-
-  // Stockage de la session et du rôle utilisateur dans le localStorage
-  localStorage.setItem("supabaseSession", JSON.stringify(data.session));
-  localStorage.setItem(
-    "user",
-    JSON.stringify({ ...user, role: userData.role })
-  );
-
-  return data;
-};
-
-// Déconnexion
-let logout = async () => {
-  await supabase.auth.signOut();
-  localStorage.removeItem("supabaseSession");
-  localStorage.removeItem("user");
-
-  // Notifie les autres onglets que l'utilisateur s'est déconnecté
-  window.dispatchEvent(new Event("storage"));
-};
-
-// Vérifie si un utilisateur est connecté
-let isLogged = () => !!localStorage.getItem("user");
-
-// Récupère le token de l'utilisateur
-let getToken = () =>
-  JSON.parse(localStorage.getItem("supabaseSession"))?.access_token || null;
-
-// Récupère l'utilisateur complet depuis le localStorage
-let getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user"));
-  } catch {
-    return null;
-  }
-};
-
-// Récupère le rôle actuel de l'utilisateur
-let getRole = () => {
-  const user = getUser();
-  return user?.role || null;
-};
-
-// Export des fonctions du service
 export const accountService = {
-  signUp,
-  login,
-  logout,
-  isLogged,
-  getToken,
-  getUser,
-  getRole,
+  /**
+   * Vérifie si un utilisateur est connecté
+   * @returns {Promise<boolean>}
+   */
+  isLogged: async () => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    if (error) {
+      console.error("Erreur récupération session :", error);
+      return false;
+    }
+    return !!session;
+  },
+
+  /**
+   * Récupère le rôle de l'utilisateur connecté
+   * @returns {Promise<string|null>}
+   */
+  getRole: async () => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    if (error) {
+      console.error("Erreur récupération rôle :", error);
+      return null;
+    }
+    if (!session) return null;
+    // Le rôle est stocké dans user_metadata
+    return session.user.user_metadata?.role || "utilisateur";
+  },
+
+  /**
+   * Déconnexion de l'utilisateur
+   */
+  logout: async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error("Erreur lors de la déconnexion :", error);
+  },
+
+  /**
+   * Inscription d'un nouvel utilisateur
+   * @param {string} email
+   * @param {string} password
+   * @param {string} role - rôle par défaut "utilisateur"
+   */
+  signup: async (email, password, role = "utilisateur") => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { role }, // stocke le rôle dans user_metadata
+      },
+    });
+    if (error) throw error;
+    return data;
+  },
+
+  /**
+   * Connexion d'un utilisateur existant
+   * @param {string} email
+   * @param {string} password
+   */
+  login: async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data;
+  },
 };

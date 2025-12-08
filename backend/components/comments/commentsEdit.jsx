@@ -1,62 +1,46 @@
-// src/pages/admin/CommentsEdit.jsx
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { commentService } from "../../../src/services/comment.service.js";
+import { supabase } from "../../../src/services/supabaseClient";
 import SideMenu from "../admin/sideMenu.jsx";
 
 const CommentsEdit = () => {
-  // État local pour stocker les données du commentaire
   const [comment, setComment] = useState({
     title: "",
     content: "",
     users_id: "",
   });
-
-  // useState pour gérer l'état de chargement lors des appels API
   const [loading, setLoading] = useState(false);
-
-  // Référence pour éviter les appels multiples
-  const flag = useRef(false);
-
-  // Message de succès ou d'erreur
   const [message, setMessage] = useState("");
-
-  // Récupération de l'ID du commentaire depuis l'URL
+  const flag = useRef(false);
   const { cid } = useParams();
 
-  // Fonction pour gérer le changement des inputs
   const onChange = (e) => {
     const { name, value } = e.target;
-    setComment((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setComment((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Fonction de soumission du formulaire
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-
-      // Supabase n'accepte pas la mise à jour de la colonne 'id'
       const { title, content, users_id } = comment;
       const updatedData = { title, content, users_id };
 
-      // Mise à jour du commentaire
-      const updated = await commentService.updatedComment(cid, updatedData);
+      const { error } = await supabase
+        .from("comments")
+        .update(updatedData)
+        .eq("id", cid);
 
-      if (updated) {
-        setMessage("✅ Commentaire mis à jour avec succès.");
-      } else {
+      if (error) {
         setMessage("❌ Une erreur est survenue lors de la mise à jour.");
+      } else {
+        setMessage("✅ Commentaire mis à jour avec succès.");
       }
 
-      // Efface le message après 3s
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      console.error("Erreur mise à jour commentaire:", err);
+      console.error(err);
       setMessage("❌ Une erreur est survenue lors de la mise à jour.");
       setTimeout(() => setMessage(""), 3000);
     } finally {
@@ -64,56 +48,74 @@ const CommentsEdit = () => {
     }
   };
 
-  // Récupération du commentaire à éditer au chargement
   useEffect(() => {
     if (!flag.current) {
-      commentService
-        .getComment(cid)
-        .then((res) => {
-          if (res) setComment(res);
-          else setMessage("❌ Impossible de charger le commentaire.");
-        })
-        .catch(() => {
+      const fetchComment = async () => {
+        try {
+          const { data, error } = await supabase
+            .from("comments")
+            .select("*")
+            .eq("id", cid)
+            .single();
+          if (error) throw error;
+          setComment(data);
+        } catch (err) {
+          console.error(err);
           setMessage("❌ Impossible de charger le commentaire.");
-        });
-
+        }
+      };
+      fetchComment();
       flag.current = true;
     }
   }, [cid]);
 
   return (
-    <div className="commentsEdit p-4">
-      <h1 className="mb-3">Modifier le Commentaire:</h1>
+    <div className="commentsEdit max-w-3xl mx-auto p-6 bg-gray-50 rounded-xl shadow-md mt-6">
+      <h1 className="text-center text-red-700 text-2xl font-bold mb-6">
+        Modifier le Commentaire
+      </h1>
 
-      <div className="mb-5">
+      <div className="mb-6 flex justify-center">
         <SideMenu />
       </div>
 
-      <form onSubmit={onSubmit} className="flex flex-col text-center">
-        <div className="flex flex-col mb-3">
-          <label htmlFor="editCommentTitle">Titre</label>
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col items-center gap-6 text-center"
+      >
+        <div className="flex flex-col w-full max-w-md">
+          <label
+            htmlFor="editCommentTitle"
+            className="font-semibold mb-1 text-gray-700 text-left"
+          >
+            Titre
+          </label>
           <input
-            className="modifiable text-center"
             id="editCommentTitle"
             type="text"
             name="title"
             value={comment.title || ""}
             onChange={onChange}
+            className="modifiable text-center w-full px-3 py-2 border-2 border-blue-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        <div className="flex flex-col mb-3">
-          <label htmlFor="editCommentContent">Contenu</label>
+        <div className="flex flex-col w-full max-w-md">
+          <label
+            htmlFor="editCommentContent"
+            className="font-semibold mb-1 text-gray-700 text-left"
+          >
+            Contenu
+          </label>
           <textarea
-            className="modifiable text-center"
             id="editCommentContent"
             name="content"
             value={comment.content || ""}
             onChange={onChange}
+            className="modifiable text-center w-full px-3 py-2 border-2 border-blue-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        {/* Message de succès ou d'erreur */}
         {message && (
           <p
             role="alert"
@@ -126,8 +128,9 @@ const CommentsEdit = () => {
           </p>
         )}
 
+        {/* Bouton bleu identique aux autres pages */}
         <button
-          className="p-2 bg-blue-900 text-white rounded"
+          className="allButton px-6 py-3 bg-blue-700 text-white font-semibold rounded-md w-full max-w-sm hover:bg-blue-600 disabled:bg-blue-400"
           disabled={loading}
         >
           {loading ? "Enregistrement en cours..." : "Enregistrer"}

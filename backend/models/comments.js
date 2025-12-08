@@ -34,7 +34,6 @@ Comments.init(
     },
   },
   {
-    sequelize,
     modelName: "Comments",
     tableName: "Comments",
     timestamps: false, // Sequelize ajoute automatiquement les champs `created` et `updated` ce qui évite de modifier la bdd et donc le seeding/migrate.

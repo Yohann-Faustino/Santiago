@@ -8,6 +8,7 @@ import AuthGuard from "../backend/components/securite/authGuard";
 import ThemeToggle from "./components/themeToggle";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+// import TestAdmin from "./components/testAdmin";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
       </div>
 
       {/* Gère l’historique de navigation dans le navigateur */}
+      {/* Route de test pour la connexion admin */}
       <BrowserRouter>
+        {/* <TestAdmin /> */}
         <main>
           <Routes>
             {/* Router pour la partie publique du site */}

@@ -10,7 +10,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testConnection() {
-  const { data, error } = await supabase.from("Users").select("*").limit(1);
+  const { data, error } = await supabase.from("users").select("*").limit(1);
 
   if (error) {
     console.error("❌ Problème de connexion à Supabase:", error);

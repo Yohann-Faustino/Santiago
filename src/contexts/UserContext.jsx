@@ -1,41 +1,74 @@
-import { createContext, useState, useEffect } from "react";
-import { accountService } from "../services/account.service";
+// src/contexts/UserContext.jsx
+import React, { createContext, useState, useEffect } from "react";
+import { supabase } from "../services/supabaseClient";
 
-// Création du contexte utilisateur
-// Permet de partager l'état utilisateur dans toute l'application
 export const UserContext = createContext();
 
-// Fournisseur du contexte
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Stocke l'utilisateur connecté
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Fonction pour récupérer les infos utilisateur depuis Supabase / localStorage
+  // Fonction pour récupérer la session et les infos de l'utilisateur
   const refreshUser = async () => {
+    setLoading(true);
+
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.error("Erreur récupération session :", sessionError);
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    if (!session) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    const email = session.user.email;
+
     try {
-      // getUser() retourne l'utilisateur complet stocké dans localStorage
-      const u = await accountService.getUser();
-      setUser(u);
+      // Récupère le rôle depuis la table 'users' côté Supabase
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("role, firstname, lastname")
+        .eq("email", email)
+        .single();
+
+      if (userError) throw userError;
+
+      setUser({
+        email,
+        role: userData.role || "utilisateur",
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+      });
     } catch (err) {
-      console.error("[UserContext] Erreur récupération utilisateur:", err);
-      setUser(null); // en cas d'erreur, on vide l'utilisateur
+      console.error("Erreur récupération utilisateur :", err);
+      setUser({ email, role: "utilisateur" });
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Au montage du composant :
-  // 1. On récupère l'utilisateur actuel
-  // 2. On écoute les changements de localStorage (autre onglet)
   useEffect(() => {
-    refreshUser(); // récupération initiale
+    refreshUser();
 
-    const handleStorage = () => refreshUser(); // rafraîchit si localStorage change
-    window.addEventListener("storage", handleStorage);
+    // Écoute les changements de session (login/logout)
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      refreshUser();
+    });
 
-    return () => window.removeEventListener("storage", handleStorage);
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   return (
-    // Fournit l'état utilisateur et la fonction refreshUser aux composants enfants
-    <UserContext.Provider value={{ user, refreshUser }}>
+    <UserContext.Provider value={{ user, refreshUser, loading }}>
       {children}
     </UserContext.Provider>
   );

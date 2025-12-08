@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { userService } from "../../../src/services/user.service.js";
+// SUPABASE
+import { supabase } from "../../../src/services/supabaseClient";
 import SideMenu from "../admin/sideMenu.jsx";
 
 const UserEdit = () => {
@@ -28,12 +29,29 @@ const UserEdit = () => {
   // Soumission du formulaire
   const onSubmit = async (e) => {
     e.preventDefault();
-    const userWithId = { ...user, id: uid }; // inclure l'id pour Supabase
-
     try {
       setLoading(true);
-      await userService.updateUser(userWithId);
-      setMessage("✅ Modifications du profil enregistrées.");
+      // SUPABASE: mise à jour de l'utilisateur dans la table "users"
+      const { error } = await supabase
+        .from("users")
+        .update({
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          phone: user.phone,
+          address: user.address,
+          city: user.city,
+          postalcode: user.postalcode,
+          role: user.role,
+        })
+        .eq("id", uid);
+
+      if (error) {
+        console.error(error);
+        setMessage("❌ Une erreur est survenue.");
+      } else {
+        setMessage("✅ Modifications du profil enregistrées.");
+      }
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
@@ -47,27 +65,40 @@ const UserEdit = () => {
   // Récupération des données utilisateur
   useEffect(() => {
     if (!flag.current) {
-      userService
-        .getUser(uid)
-        .then((res) => setUser(res.data))
-        .catch((err) => {
+      const fetchUser = async () => {
+        try {
+          // SUPABASE: récupération de l'utilisateur par id
+          const { data, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", uid)
+            .single();
+
+          if (error) {
+            console.error(error);
+            setMessage("❌ Impossible de récupérer les données.");
+          } else {
+            setUser(data);
+          }
+        } catch (err) {
           console.error(err);
           setMessage("❌ Impossible de récupérer les données.");
-        });
-    }
-    return () => {
+        }
+      };
+      fetchUser();
       flag.current = true;
-    };
+    }
   }, [uid]);
 
   return (
-    <div className="userEdit p-4">
-      <h1 className="mb-3">Modifier l'utilisateur:</h1>
-      <div className="mb-5">
+    <div className="userEdit flex flex-col items-center p-4">
+      <h1 className="mb-3">Modifier l'utilisateur :</h1>
+
+      <div className="mb-5 w-full max-w-xl">
         <SideMenu />
       </div>
 
-      <form onSubmit={onSubmit} className="text-center">
+      <form onSubmit={onSubmit} className="text-center w-full max-w-xl">
         {[
           "firstname",
           "lastname",
@@ -79,7 +110,7 @@ const UserEdit = () => {
         ].map((field) => (
           <div className="flex flex-col mb-3" key={field}>
             <label htmlFor={`${field}Edit`}>
-              Modifier {field.charAt(0).toUpperCase() + field.slice(1)}:
+              Modifier {field.charAt(0).toUpperCase() + field.slice(1)} :
             </label>
             <input
               id={`${field}Edit`}
@@ -117,11 +148,8 @@ const UserEdit = () => {
           </p>
         )}
 
-        <div>
-          <button
-            className="mt-4 p-2 bg-blue-900 text-white rounded"
-            disabled={loading}
-          >
+        <div className="flex justify-center">
+          <button type="submit" className="allButton mt-4" disabled={loading}>
             {loading ? "Enregistrement en cours..." : "Enregistrer"}
           </button>
         </div>

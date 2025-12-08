@@ -1,45 +1,50 @@
 import React, { useRef, useState, useEffect } from "react";
-import { userService } from "../../../src/services/user.service";
+// SUPABASE: import client Supabase
+import { supabase } from "../../../src/services/supabaseClient";
 import { Link } from "react-router-dom";
 import SideMenu from "../admin/sideMenu";
 
 const User = () => {
-  // Récupère tous les utilisateurs pour les afficher :
+  // Ce hook prépare une place pour stocker les données des utilisateurs une fois qu'elles seront récupérées.
   const [users, setUsers] = useState([]);
 
   // useState pour gérer l'état de chargement lors des appels API (chargement en cours...)
   const [loading, setLoading] = useState(true);
 
-  // Ce hook gère les messages utilisateur
+  // Ce hook pour affiche les messages utilisateur.
   const [message, setMessage] = useState("");
 
-  // Ce hook sert de pense-bête pour éviter que useEffect se déclenche 2 fois en mode strict
+  // Ce hook sert de pense-bête pour éviter les appels multiples
   const flag = useRef(false);
 
   // useEffect permet de charger les données après le rendu initial du composant
   useEffect(() => {
-    // Empêche un double appel inutile :
-    if (flag.current === false) {
-      userService
-        .getAllUsers()
-        .then((data) => {
-          // ⚠️ data = tableau direct car le service renvoie un tableau !
+    if (!flag.current) {
+      // SUPABASE: récupération des utilisateurs
+      const fetchUsers = async () => {
+        setLoading(true);
+        try {
+          const { data, error } = await supabase
+            .from("users")
+            .select("*")
+            .order("id", { ascending: true });
+          if (error) throw error;
           setUsers(data);
-          setLoading(false);
-        })
-        .catch((err) => {
+        } catch (err) {
           console.error(err);
-          setMessage("❌ Erreur lors du chargement des utilisateurs.");
+          setMessage("❌ Impossible de charger les utilisateurs.");
           setTimeout(() => setMessage(""), 3000);
+        } finally {
           setLoading(false);
-        });
+        }
+      };
+      fetchUsers();
+      flag.current = true;
     }
-
-    return () => (flag.current = true);
   }, []);
 
   // Fonction de suppression d'un utilisateur
-  const delUser = (userId, userRole, userFullName) => {
+  const delUser = async (userId, userRole, userFullName) => {
     const isAdmin = userRole === "admin" || userRole === "administrateur";
 
     const confirmationMessage = isAdmin
@@ -48,19 +53,19 @@ const User = () => {
 
     if (!window.confirm(confirmationMessage)) return;
 
-    userService
-      .deleteUser(userId)
-      .then(() => {
-        // On retire l'utilisateur supprimé du tableau
-        setUsers((current) => current.filter((user) => user.id !== userId));
-        setMessage(`✅ Utilisateur ${userFullName} supprimé avec succès.`);
-        setTimeout(() => setMessage(""), 3000);
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage(`❌ Impossible de supprimer ${userFullName}.`);
-        setTimeout(() => setMessage(""), 3000);
-      });
+    try {
+      // SUPABASE: suppression de l'utilisateur
+      const { error } = await supabase.from("users").delete().eq("id", userId);
+      if (error) throw error;
+
+      setUsers((current) => current.filter((user) => user.id !== userId));
+      setMessage(`✅ Utilisateur ${userFullName} supprimé avec succès.`);
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error(err);
+      setMessage(`❌ Impossible de supprimer ${userFullName}.`);
+      setTimeout(() => setMessage(""), 3000);
+    }
   };
 
   return (
