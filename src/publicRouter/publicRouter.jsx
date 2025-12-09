@@ -6,13 +6,13 @@ import { Routes, Route } from "react-router-dom";
 // Import simplifié grâce à indexPublic.js
 import {
   Layout,
-  Appointments,
+  // Appointments, pour le futur du projet
   Comment,
   Contact,
   Error,
   Home,
   LegalDisclaimer,
-  Planning,
+  // Planning, pour le futur du projet
   PrivacyPolicy,
   Profile,
   Services,

@@ -3,12 +3,14 @@
 import { supabase } from "../services/supabaseClient.js";
 
 export const commentService = {
+  // Récupère tous les commentaires
   getAllComments: async () => {
     const { data, error } = await supabase.from("comments").select("*");
     if (error) throw error;
     return data;
   },
 
+  // Récupère un commentaire par son ID
   getComment: async (id) => {
     const { data, error } = await supabase
       .from("comments")
@@ -19,6 +21,7 @@ export const commentService = {
     return data;
   },
 
+  // Met à jour un commentaire existant avec de nouvelles données
   updatedComment: async (id, updates) => {
     const { data, error } = await supabase
       .from("comments")
@@ -28,6 +31,7 @@ export const commentService = {
     return data;
   },
 
+  // Supprime un commentaire par son ID
   deleteComment: async (id) => {
     const { data, error } = await supabase
       .from("comments")
@@ -37,6 +41,7 @@ export const commentService = {
     return data;
   },
 
+  // Ajoute un nouveau commentaire
   addComment: async (comment) => {
     const { data, error } = await supabase.from("comments").insert([comment]);
     if (error) throw error;

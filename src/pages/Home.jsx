@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import Decp from "/assets/decp.png";
 import Slider from "../components/slider"; // Slider d’images DECP
 import SliderCom from "../components/sliderCom"; // Slider des commentaires clients

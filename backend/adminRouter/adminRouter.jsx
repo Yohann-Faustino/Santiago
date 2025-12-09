@@ -1,6 +1,5 @@
 // On déterminent quel composant React doit être rendu sur une URL choisie:
 
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LayoutAdmin from "../admin/layoutAdmin";
 import Dashboard from "../admin/dashboard";

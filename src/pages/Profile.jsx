@@ -6,9 +6,6 @@ import {
 } from "../services/profile.service";
 
 const ProfilePage = () => {
-  // État principal du profil
-  const [profileData, setProfileData] = useState(null);
-
   // État pour la modification des informations personnelles
   const [editData, setEditData] = useState({
     firstname: "",
@@ -50,7 +47,6 @@ const ProfilePage = () => {
         setLoading(true);
         try {
           const user = await getProfile(); // Récupère le profil depuis Supabase
-          setProfileData(user);
           setEditData({
             firstname: user.firstname || "",
             lastname: user.lastname || "",

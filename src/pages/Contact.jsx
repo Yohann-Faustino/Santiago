@@ -1,5 +1,3 @@
-import React from "react";
-
 const Contact = () => {
   // Composant affichant les informations de contact de l'entreprise
   return (

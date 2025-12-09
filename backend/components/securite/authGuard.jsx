@@ -1,7 +1,6 @@
-// src/components/auth/AuthGuard.jsx
-import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../../../src/contexts/UserContext.jsx";
+import { useContext } from "react";
 
 const AuthGuard = ({ children }) => {
   const { user, loading } = useContext(UserContext);
