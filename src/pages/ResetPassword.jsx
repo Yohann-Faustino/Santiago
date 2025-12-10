@@ -18,6 +18,16 @@ const ResetPassword = () => {
     }
   }, [searchParams]);
 
+  // Regex pour sécuriser le mot de passe:
+  // 8 caractères mini
+  // 1 majuscule
+  // 1 minuscule
+  // 1 chiffre
+  // 1 caractère spécial
+
+  const strongPasswordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   // Fonction exécutée lors de la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
@@ -27,6 +37,14 @@ const ResetPassword = () => {
     // Vérifie que les deux mots de passe correspondent
     if (newPassword !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    // Vérifie que le mot de passe respecte le regex de sécurité
+    if (!strongPasswordRegex.test(newPassword)) {
+      setError(
+        "Le mot de passe doit contenir au minimum 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial."
+      );
       return;
     }
 
