@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
-import { accountService } from "../services/account.service";
-import { UserContext } from "../contexts/UserContext";
+import { accountService } from "../services/account.service.js";
+import { UserContext } from "../contexts/UserContext.jsx";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
@@ -78,11 +78,7 @@ const AuthenticationPage = () => {
     }
 
     try {
-      await accountService.signUp(
-        signUpData.email,
-        signUpData.password,
-        signUpData.role || "utilisateur"
-      );
+      await accountService.signUp(signUpData.email, signUpData.password);
       await refreshUser(); // met à jour le user dans le contexte
       setMessage("✅ Inscription réussie !");
       setTimeout(() => navigate("/"), 2000);
