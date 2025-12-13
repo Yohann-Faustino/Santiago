@@ -1,31 +1,56 @@
-import { supabase } from "./supabaseClient";
+// profile.service.js
+import { supabase } from "./supabaseClient.js";
 
-// Récupère le profil de l'utilisateur connecté
-let getProfile = async () => {
+/**
+ * Récupère le profil de l'utilisateur connecté
+ * @returns {Promise<object>} Données de l'utilisateur
+ */
+export const getProfile = async () => {
+  // Récupération de la session Supabase
   const {
     data: { session },
+    error: sessionError,
   } = await supabase.auth.getSession();
+
+  if (sessionError) throw sessionError;
   const user = session?.user;
   if (!user) throw new Error("Utilisateur non connecté.");
 
+  // Récupère les infos de l'utilisateur dans la table 'users'
   const { data, error } = await supabase
     .from("users")
     .select("*")
     .eq("auth_id", user.id)
-    .single();
+    .single(); // .single() renvoie un objet plutôt qu'un tableau
 
   if (error) throw error;
   return data;
 };
 
-// Met à jour le profil utilisateur
-let updateProfile = async (profileData) => {
+/**
+ * Met à jour le profil de l'utilisateur
+ * @param {object} profileData - Données à mettre à jour
+ * @param {string} currentPassword - Mot de passe actuel pour vérification
+ * @returns {Promise<object>} Données mises à jour
+ */
+export const updateProfile = async (profileData, currentPassword) => {
   const {
     data: { session },
+    error: sessionError,
   } = await supabase.auth.getSession();
+
+  if (sessionError) throw sessionError;
   const user = session?.user;
   if (!user) throw new Error("Utilisateur non connecté.");
 
+  // Optionnel : tu peux vérifier le mot de passe actuel en tentant un login
+  const { error: verifyError } = await supabase.auth.signInWithPassword({
+    email: user.email,
+    password: currentPassword,
+  });
+  if (verifyError) throw new Error("Mot de passe actuel incorrect.");
+
+  // Mise à jour des informations dans la table 'users'
   const { data, error } = await supabase
     .from("users")
     .update(profileData)
@@ -37,13 +62,21 @@ let updateProfile = async (profileData) => {
   return data;
 };
 
-// Met à jour le mot de passe
-let updatePassword = async (passwordData) => {
+/**
+ * Met à jour le mot de passe de l'utilisateur
+ * @param {object} passwordData - { currentPassword, newPassword }
+ * @returns {Promise<object>}
+ */
+export const updatePassword = async (passwordData) => {
   const {
     data: { session },
+    error: sessionError,
   } = await supabase.auth.getSession();
+
+  if (sessionError) throw sessionError;
   if (!session) throw new Error("Utilisateur non connecté.");
 
+  // Met à jour le mot de passe dans Supabase Auth
   const { error } = await supabase.auth.updateUser({
     password: passwordData.newPassword,
   });
@@ -51,5 +84,3 @@ let updatePassword = async (passwordData) => {
   if (error) throw error;
   return { message: "Mot de passe mis à jour." };
 };
-
-export { getProfile, updateProfile, updatePassword };

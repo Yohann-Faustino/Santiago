@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  getProfile,
-  updateProfile,
-  updatePassword,
-} from "../services/profile.service";
+import { supabase } from "../services/supabaseClient.js";
 
 const ProfilePage = () => {
-  // État pour la modification des informations personnelles
+  // ======================= États =======================
   const [editData, setEditData] = useState({
     firstname: "",
     lastname: "",
@@ -17,47 +13,58 @@ const ProfilePage = () => {
     postalcode: "",
   });
 
-  // État pour la modification du mot de passe
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
 
-  // État pour afficher/masquer les mots de passe
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,
     newPassword: false,
     confirmNewPassword: false,
   });
 
-  // État de chargement et messages
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Flag pour éviter les appels multiples dans useEffect
   const flag = useRef(false);
 
-  // Récupération du profil au chargement
+  // ======================= Récupération du profil =======================
   useEffect(() => {
     if (!flag.current) {
       flag.current = true;
       const fetchProfileData = async () => {
         setLoading(true);
         try {
-          const user = await getProfile(); // Récupère le profil depuis Supabase
+          const {
+            data: { session },
+            error: sessionError,
+          } = await supabase.auth.getSession();
+          if (sessionError) throw sessionError;
+          if (!session?.user) throw new Error("Utilisateur non connecté.");
+
+          const userId = session.user.id;
+
+          const { data, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("auth_id", userId)
+            .single(); // récupère un seul enregistrement
+          if (error) throw error;
+
           setEditData({
-            firstname: user.firstname || "",
-            lastname: user.lastname || "",
-            email: user.email || "",
-            phone: user.phone || "",
-            address: user.address || "",
-            city: user.city || "",
-            postalcode: user.postalcode || "",
+            firstname: data.firstname || "",
+            lastname: data.lastname || "",
+            email: data.email || "",
+            phone: data.phone || "",
+            address: data.address || "",
+            city: data.city || "",
+            postalcode: data.postalcode || "",
           });
-        } catch {
-          setError("Erreur lors de la récupération du profil.");
+        } catch (err) {
+          setError(err.message || "Erreur lors de la récupération du profil.");
         } finally {
           setLoading(false);
         }
@@ -66,25 +73,23 @@ const ProfilePage = () => {
     }
   }, []);
 
-  // Gestion des changements de champs
+  // ======================= Gestion des champs =======================
   const handleChange = (e) =>
     setEditData({ ...editData, [e.target.name]: e.target.value });
 
   const handlePasswordChange = (e) =>
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
 
-  // Toggle affichage mot de passe
   const togglePassword = (field) =>
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
 
-  // Soumission du formulaire de profil
+  // ======================= Soumission du profil =======================
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
-    // Vérifie la correspondance des nouveaux mots de passe
     if (
       passwordData.newPassword &&
       passwordData.newPassword !== passwordData.confirmNewPassword
@@ -94,30 +99,41 @@ const ProfilePage = () => {
       return;
     }
 
-    // Vérifie que le mot de passe actuel est fourni
     if (!passwordData.currentPassword) {
       setError(
-        "Veuillez saisir votre mot de passe actuel pour valider les modifications du profil."
+        "Veuillez saisir votre mot de passe actuel pour valider les modifications."
       );
       setLoading(false);
       return;
     }
 
     try {
-      // Met à jour le profil via Supabase
-      await updateProfile(editData, passwordData.currentPassword);
+      // 1️⃣ Met à jour les infos du profil
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!session?.user) throw new Error("Utilisateur non connecté.");
 
-      // Met à jour le mot de passe si demandé
+      const userId = session.user.id;
+
+      const { error: updateError } = await supabase
+        .from("users")
+        .update(editData)
+        .eq("auth_id", userId);
+
+      if (updateError) throw updateError;
+
+      // 2️⃣ Met à jour le mot de passe si demandé
       if (passwordData.newPassword) {
-        await updatePassword({
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword,
+        const { error: passwordError } = await supabase.auth.updateUser({
+          password: passwordData.newPassword,
         });
+        if (passwordError) throw passwordError;
       }
 
-      setMessage("✅ Modifications enregistrées.");
-
-      // Réinitialise les champs mot de passe
+      setMessage("✅ Modifications enregistrées !");
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -130,13 +146,13 @@ const ProfilePage = () => {
     }
   };
 
+  // ======================= JSX =======================
   return (
     <div
       className={`profile-container mx-auto w-1/4 relative ${
         loading ? "opacity-50 pointer-events-none" : ""
       }`}
     >
-      {/* Overlay de chargement */}
       {loading && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-10">
           <p className="text-xl font-semibold">Chargement...</p>
@@ -145,7 +161,6 @@ const ProfilePage = () => {
 
       <h1 className="colorTitle text-center">Mon Profil</h1>
 
-      {/* Formulaire de profil */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col"
@@ -153,7 +168,6 @@ const ProfilePage = () => {
       >
         <h2 className="colorh2">Informations personnelles</h2>
 
-        {/* Champs infos perso */}
         {[
           "firstname",
           "lastname",
@@ -180,7 +194,6 @@ const ProfilePage = () => {
 
         <h2 className="colorh2 mt-4">Sécurité</h2>
 
-        {/* Champs mot de passe */}
         {["currentPassword", "newPassword", "confirmNewPassword"].map(
           (field) => (
             <div key={field} className="input-group relative">
@@ -191,7 +204,6 @@ const ProfilePage = () => {
                   ? "Nouveau mot de passe"
                   : "Confirmer mot de passe"}
               </label>
-
               <input
                 className="inputGeneral text-black pr-10"
                 type={showPassword[field] ? "text" : "password"}
@@ -200,63 +212,22 @@ const ProfilePage = () => {
                 value={passwordData[field]}
                 onChange={handlePasswordChange}
               />
-
-              {/* Bouton œil pour afficher/masquer le mot de passe */}
               <button
                 type="button"
                 className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 onClick={() => togglePassword(field)}
               >
-                {showPassword[field] ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-gray-600"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M1 1l22 22" />
-                    <path d="M17.94 17.94A10.46 10.46 0 0112 19c-5 0-9-3-11-7 1.11-2.06 2.79-3.89 4.78-5.24" />
-                    <path d="M9.53 9.53a3.5 3.5 0 014.94 4.94" />
-                    <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-5 w-5 text-gray-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                )}
+                {showPassword[field] ? "👁️" : "🙈"}
               </button>
             </div>
           )
         )}
 
-        {/* Messages d'erreur ou succès */}
         {message && (
           <p className="text-green-600 font-semibold mb-4">{message}</p>
         )}
         {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}
 
-        {/* Bouton de soumission */}
         <button
           type="submit"
           className="allButton mt-6 mx-auto"

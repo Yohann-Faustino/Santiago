@@ -36,16 +36,14 @@ export const accountService = {
    * @param {string} password - Mot de passe
    * @returns {Promise<object>} Données de l'utilisateur créé
    */
-  signup: async (email, password) => {
-    // Appelle Supabase pour créer un utilisateur
+  signUp: async (email, password, userMetadata = {}) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      // ⚠️ On ne stocke plus aucun rôle dans les metadata
+      options: { data: userMetadata },
     });
-
-    if (error) throw error; // Propagation de l'erreur pour le front
-    return data; // Retourne les données utilisateur créées
+    if (error) throw error;
+    return data;
   },
 
   /**

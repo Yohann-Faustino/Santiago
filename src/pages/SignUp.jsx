@@ -1,20 +1,19 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
-import { accountService } from "../services/account.service.js";
+import { supabase } from "../services/supabaseClient.js";
 import { UserContext } from "../contexts/UserContext.jsx";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
-  const { user, refreshUser } = useContext(UserContext);
+  const { refreshUser } = useContext(UserContext);
 
-  // État pour savoir si on est sur l'inscription ou la connexion
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // États pour le formulaire de connexion
+  // ================= Connexion =================
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
@@ -28,9 +27,13 @@ const AuthenticationPage = () => {
     setMessage("");
 
     try {
-      // ✅ Passer email et password séparément pour Supabase
-      await accountService.login(loginData.email, loginData.password);
-      await refreshUser(); // met à jour le user dans le contexte
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: loginData.email,
+        password: loginData.password,
+      });
+      if (error) throw error;
+
+      await refreshUser();
       setMessage("✅ Connexion réussie !");
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
@@ -40,7 +43,7 @@ const AuthenticationPage = () => {
     }
   };
 
-  // États pour le formulaire d'inscription
+  // ================= Inscription =================
   const [signUpData, setSignUpData] = useState({
     firstname: "",
     lastname: "",
@@ -78,9 +81,39 @@ const AuthenticationPage = () => {
     }
 
     try {
-      await accountService.signUp(signUpData.email, signUpData.password);
-      await refreshUser(); // met à jour le user dans le contexte
-      setMessage("✅ Inscription réussie !");
+      // 1️⃣ Création de l'utilisateur Supabase Auth
+      const { data: signUpResponse, error: signUpError } =
+        await supabase.auth.signUp({
+          email: signUpData.email,
+          password: signUpData.password,
+        });
+      if (signUpError) throw signUpError;
+
+      const authUser = signUpResponse.user;
+      if (!authUser) throw new Error("Impossible de créer l'utilisateur.");
+
+      // 2️⃣ Update automatique de la ligne 'users' créée par le trigger
+      // On remplit directement tous les champs pour éviter les valeurs null
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({
+          firstname: signUpData.firstname,
+          lastname: signUpData.lastname,
+          phone: signUpData.phone,
+          address: signUpData.address,
+          city: signUpData.city,
+          postalcode: signUpData.postalcode,
+        })
+        .eq("auth_id", authUser.id);
+
+      if (updateError) throw updateError;
+
+      // 3️⃣ Mettre à jour le contexte utilisateur
+      await refreshUser();
+
+      setMessage(
+        "✅ Inscription réussie ! Vérifiez votre email pour confirmer le compte."
+      );
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       setError(err.message || "Erreur lors de l'inscription.");
@@ -89,7 +122,7 @@ const AuthenticationPage = () => {
     }
   };
 
-  // Composant mot de passe avec toggle visibilité
+  // ================= Password Input =================
   const PasswordInput = ({
     value,
     onChange,
@@ -131,20 +164,30 @@ const AuthenticationPage = () => {
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth="2"
+            className="h-5 w-5 text-gray-600"
           >
-            <path d="M1.05 12C2.84 7.94 7 5 12 5s9.16 2.94 10.95 7c-1.79 4.06-6 7-10.95 7S2.84 16.06 1.05 12z" />
-            <circle cx="12" cy="12" r="3" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
           </svg>
         )}
       </button>
     </div>
   );
 
+  // ================= JSX =================
   return (
     <div className="w-full flex justify-center relative bg-white dark:bg-black text-black dark:text-white transition-colors">
       <div className="w-[420px] relative h-[600px] flex flex-col justify-center">
@@ -218,7 +261,7 @@ const AuthenticationPage = () => {
             {["firstname", "lastname", "email"].map((field) => (
               <input
                 key={field}
-                type="text"
+                type={field === "email" ? "email" : "text"}
                 name={field}
                 placeholder={
                   field === "firstname"
@@ -277,15 +320,17 @@ const AuthenticationPage = () => {
             ))}
 
             <ReCAPTCHA
-              className="flex justify-center"
+              className="flex justify-center my-2"
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
               onChange={(value) => setCaptchaValue(value)}
             />
 
-            {message && <p className="text-green-600">{message}</p>}
-            {error && <p className="text-red-600">{error}</p>}
+            {message && (
+              <p className="text-green-600 font-semibold">{message}</p>
+            )}
+            {error && <p className="text-red-600 font-semibold">{error}</p>}
 
-            <button type="submit" disabled={loading} className="allButton">
+            <button type="submit" disabled={loading} className="allButton mt-2">
               {loading ? "Inscription..." : "S'inscrire"}
             </button>
           </form>
