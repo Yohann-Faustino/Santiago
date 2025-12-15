@@ -81,7 +81,6 @@ const AuthenticationPage = () => {
     }
 
     try {
-      // 1️⃣ Création de l'utilisateur Supabase Auth
       const { data: signUpResponse, error: signUpError } =
         await supabase.auth.signUp({
           email: signUpData.email,
@@ -92,8 +91,6 @@ const AuthenticationPage = () => {
       const authUser = signUpResponse.user;
       if (!authUser) throw new Error("Impossible de créer l'utilisateur.");
 
-      // 2️⃣ Update automatique de la ligne 'users' créée par le trigger
-      // On remplit directement tous les champs pour éviter les valeurs null
       const { error: updateError } = await supabase
         .from("users")
         .update({
@@ -108,9 +105,7 @@ const AuthenticationPage = () => {
 
       if (updateError) throw updateError;
 
-      // 3️⃣ Mettre à jour le contexte utilisateur
       await refreshUser();
-
       setMessage(
         "✅ Inscription réussie ! Vérifiez votre email pour confirmer le compte."
       );
@@ -122,72 +117,6 @@ const AuthenticationPage = () => {
     }
   };
 
-  // ================= Password Input =================
-  const PasswordInput = ({
-    value,
-    onChange,
-    placeholder,
-    show,
-    toggleShow,
-  }) => (
-    <div className="relative">
-      <input
-        type={show ? "text" : "password"}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required
-        className="inputGeneral text-black w-full pr-10"
-      />
-      <button
-        type="button"
-        className="absolute right-2 top-1/2 transform -translate-y-1/2"
-        onClick={toggleShow}
-        tabIndex={-1}
-      >
-        {show ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-gray-600"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M1 1l22 22" />
-            <path d="M17.94 17.94A10.46 10.46 0 0112 19c-5 0-9-3-11-7 1.11-2.06 2.79-3.89 4.78-5.24" />
-            <path d="M9.53 9.53a3.5 3.5 0 014.94 4.94" />
-            <path d="M10.12 5.12A9.95 9.95 0 0121 12c-1.11 2.06-2.79 3.89-4.78 5.24" />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-5 w-5 text-gray-600"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-            />
-          </svg>
-        )}
-      </button>
-    </div>
-  );
-
-  // ================= JSX =================
   return (
     <div className="w-full flex justify-center relative bg-white dark:bg-black text-black dark:text-white transition-colors">
       <div className="w-[420px] relative h-[600px] flex flex-col justify-center">
@@ -212,15 +141,69 @@ const AuthenticationPage = () => {
               required
               className="inputGeneral text-black"
             />
-            <PasswordInput
-              value={loginData.password}
-              onChange={(e) =>
-                setLoginData({ ...loginData, password: e.target.value })
-              }
-              placeholder="Mot de passe"
-              show={showLoginPassword}
-              toggleShow={() => setShowLoginPassword(!showLoginPassword)}
-            />
+            <div className="relative">
+              <input
+                type={showLoginPassword ? "text" : "password"}
+                name="password"
+                value={loginData.password}
+                onChange={handleLoginChange}
+                placeholder="Mot de passe"
+                required
+                className="inputGeneral text-black w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                onClick={() => setShowLoginPassword(!showLoginPassword)}
+                tabIndex={-1}
+              >
+                {showLoginPassword ? (
+                  // === SVG œil ouvert ===
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                ) : (
+                  // === SVG œil fermé ===
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 3l18 18M10.12 10.12a3 3 0 014.76 4.76"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+
             {message && <p className="text-green-600">{message}</p>}
             {error && <p className="text-red-600">{error}</p>}
             <button type="submit" disabled={loading} className="allButton">
@@ -277,47 +260,156 @@ const AuthenticationPage = () => {
               />
             ))}
 
-            <PasswordInput
-              value={signUpData.password}
-              onChange={(e) =>
-                setSignUpData({ ...signUpData, password: e.target.value })
-              }
-              placeholder="Mot de passe"
-              show={showSignUpPassword}
-              toggleShow={() => setShowSignUpPassword(!showSignUpPassword)}
-            />
-            <PasswordInput
-              value={signUpData.confirmPassword}
-              onChange={(e) =>
-                setSignUpData({
-                  ...signUpData,
-                  confirmPassword: e.target.value,
-                })
-              }
-              placeholder="Confirmer le mot de passe"
-              show={showConfirmPassword}
-              toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
-            />
-
-            {["phone", "address", "city", "postalcode"].map((field) => (
+            <div className="relative">
               <input
-                key={field}
-                type="text"
-                name={field}
-                placeholder={
-                  field === "phone"
-                    ? "Téléphone"
-                    : field === "address"
-                    ? "Adresse"
-                    : field === "city"
-                    ? "Ville"
-                    : "Code postal"
-                }
-                value={signUpData[field]}
+                type={showSignUpPassword ? "text" : "password"}
+                name="password"
+                value={signUpData.password}
                 onChange={handleSignUpChange}
-                className="inputGeneral text-black"
+                placeholder="Mot de passe"
+                required
+                className="inputGeneral text-black w-full pr-10"
               />
-            ))}
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                onClick={() => setShowSignUpPassword(!showSignUpPassword)}
+                tabIndex={-1}
+              >
+                {showSignUpPassword ? (
+                  // === SVG œil ouvert ===
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                ) : (
+                  // === SVG œil fermé ===
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 3l18 18M10.12 10.12a3 3 0 014.76 4.76"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+            {["confirmPassword", "phone", "address", "city", "postalcode"].map(
+              (field) =>
+                field === "confirmPassword" ? (
+                  <div className="relative" key={field}>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={signUpData.confirmPassword}
+                      onChange={handleSignUpChange}
+                      placeholder="Confirmer le mot de passe"
+                      required
+                      className="inputGeneral text-black w-full pr-10"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? (
+                        // === SVG œil ouvert ===
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                        </svg>
+                      ) : (
+                        // === SVG œil fermé ===
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 3l18 18M10.12 10.12a3 3 0 014.76 4.76"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <input
+                    key={field}
+                    type="text"
+                    name={field}
+                    placeholder={
+                      field === "phone"
+                        ? "Téléphone"
+                        : field === "address"
+                        ? "Adresse"
+                        : field === "city"
+                        ? "Ville"
+                        : "Code postal"
+                    }
+                    value={signUpData[field]}
+                    onChange={handleSignUpChange}
+                    className="inputGeneral text-black"
+                  />
+                )
+            )}
 
             <ReCAPTCHA
               className="flex justify-center my-2"
