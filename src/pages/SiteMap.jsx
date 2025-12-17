@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 const SiteMap = () => {
   return (
+    // Navigation principale du plan du site
     <nav aria-labelledby="sitemap-title">
       <div className="flex flex-col m-auto mb-3">
         <h1 id="sitemap-title" className="colorTitle">

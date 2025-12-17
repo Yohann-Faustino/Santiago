@@ -1,4 +1,3 @@
-// profile.service.js
 import { supabase } from "./supabaseClient.js";
 
 /**

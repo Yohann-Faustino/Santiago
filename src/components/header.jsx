@@ -1,4 +1,3 @@
-// Header du site
 const Header = () => {
   return (
     <header>

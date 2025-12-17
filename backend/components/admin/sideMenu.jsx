@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+// nav du tableau admin
 const SideMenu = () => {
   return (
     <div className="sideMenu border border-red-700 rounded-lg p-2">
