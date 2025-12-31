@@ -5,25 +5,39 @@ import { supabase } from "./supabaseClient.js";
  * @returns {Promise<object>} Données de l'utilisateur
  */
 export const getProfile = async () => {
-  // Récupération de la session Supabase
+  // 🔹 Récupération de la session Supabase
   const {
     data: { session },
     error: sessionError,
   } = await supabase.auth.getSession();
 
   if (sessionError) throw sessionError;
+
   const user = session?.user;
   if (!user) throw new Error("Utilisateur non connecté.");
 
-  // Récupère les infos de l'utilisateur dans la table 'users'
+  // 🔹 Récupère les infos de l'utilisateur dans la table 'users'
   const { data, error } = await supabase
     .from("users")
     .select("*")
     .eq("auth_id", user.id)
-    .single(); // .single() renvoie un objet plutôt qu'un tableau
+    .single(); // renvoie un objet
 
   if (error) throw error;
-  return data;
+
+  // ✅ LOG 1 : ce que Supabase renvoie depuis la table users
+  console.log("DATA USERS TABLE:", data);
+
+  const result = {
+    email: user.email,
+    ...data,
+  };
+
+  // ✅ LOG 2 : objet final renvoyé au front (IMPORTANT)
+  console.log("PROFILE FINAL:", result);
+  console.log("ROLE FINAL:", result.role);
+
+  return result;
 };
 
 /**

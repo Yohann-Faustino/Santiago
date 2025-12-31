@@ -15,7 +15,7 @@ const Nav = () => {
 
   return (
     <nav className="mr-4" aria-label="Navigation principale">
-      <ul className="flex md:flex-row sm:flex-row lg:flex-col gap-2">
+      <ul className="flex flex-col lg:flex-col gap-2">
         {/* Onglets visibles par tous */}
         <li className={activeIndex === 0 ? "whiteLink" : "linkNav"}>
           <Link to="/" onClick={() => handleClick(0)}>

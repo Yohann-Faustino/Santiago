@@ -20,7 +20,7 @@
   - [📝 Licence](#-licence)
   - [🌐 Déploiement](#-déploiement)
 
-Santiago, Vitrine de l'entreprise DECP: Dégorgement, Entretien, Chauffage, Plomberie qui permet à ses clients de s'exprimer par des commentaires sur la qualité des services de celle-ci, avec un système d’authentification sécurisé, la possibilité de modifer le profile de l'utilisateur ainsi qu'un tableau de bord administrateur.
+Santiago, Vitrine de l'entreprise DECP: Dégorgement, Entretien, Chauffage, Plomberie qui permet à ses clients de s'exprimer par des commentaires sur la qualité des services de celle-ci, avec un système d’authentification sécurisé, la possibilité de modifier le profile de l'utilisateur ainsi qu'un tableau de bord administrateur.
 
 ---
 
@@ -34,19 +34,18 @@ Santiago, Vitrine de l'entreprise DECP: Dégorgement, Entretien, Chauffage, Plom
 - ✅ Interface d’administration avec tableau de bord
 - ✅ Logs de sécurité côté serveur
 - ✅ Protection contre les attaques courantes (XSS, brute force, etc.)
+- ✅ Responsive design pour mobile et desktop
 
 ---
 
 ## 🛠️ Technologies
 
 ### Backend
-- **Node.js**, **Express**
-- **Sequelize** (ORM) + **PostgreSQL**
-- **bcrypt**, **JWT**
-- **Nodemailer** (emails)
-- **express-rate-limit**, **helmet**
+
+- **Supabase** (Auth, PostgreSQL, Storage)
 
 ### Frontend
+
 - **React**
 - **Tailwind CSS**
 - **React Router**
@@ -59,9 +58,8 @@ Santiago, Vitrine de l'entreprise DECP: Dégorgement, Entretien, Chauffage, Plom
 ### Prérequis
 
 - Node.js v18+
-- PostgreSQL
+- Compte Supabase
 - Clé API reCAPTCHA (v2)
-- Compte SMTP (Gmail, Mailtrap, etc.)
 
 ### Étapes
 
@@ -83,64 +81,46 @@ npm install
 Créer un fichier `.env` à la racine du projet avec :
 
 ```env
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=xxxx
+VITE_RECAPTCHA_SITE_KEY=xxxx
+RECAPTCHA_SECRET_KEY=xxxx
+FRONTEND_URL=http://localhost:3000
+NODE_ENV=development
 PORT=3000
-DATABASE_URL=postgres://username:password@localhost:5432/santiago
-JWT_SECRET=code_super_secret
-RECAPTCHA_SECRET=la_clé_secrète_recaptcha
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=email@example.com
-SMTP_PASS=mot_de_passe
-EMAIL_FROM="Santiago <email@example.com>"
 ```
 
-#### 4. Créer et migrer la base de données
-
-On gère la base PostgreSQL manuellement avec des fichiers SQL (migrate.sql, seeding.sql) et la commande psql.
-
-```bash
-psql -d nomBdd -U nomUtilisateur
-psql -d nomBdd -U nomUtilisateur -f ./backend/datas/migrate.sql
-psql -d nomBdd -U nomUtilisateur -f ./backend/datas/seeding.sql
-```
-
-
-#### 5. Lancer le serveur
+#### 4. Lancer le frontend
 
 ```bash
 npm run dev
 ```
 
----
-
 ## 🧱 Structure du projet
 
 /backend
-│   ├── admin/
-│   ├── adminRouter/
-│   ├── authRouter/
-│   ├── components/
-│   ├── controllers/
-│   ├── datas/
-│   ├── middlewares/
-│   ├── models/
-│   ├── routes/
-│   ├── scripts/
-│   ├── utils/
-│   ├── .env
-│   ├── router.js
-│   └── server.js
+│ ├── admin/
+│ ├── adminRouter/
+│ ├── authRouter/
+│ ├── components/
+│ ├── controllers/
+│ ├── datas/
+│ ├── models/
+│ ├── routes/
+│ ├── scripts/
+│ └── utils/
 
 ├── public/
 ├── src/
-│   ├── components/
-│   ├── layout/
-│   ├── pages/
-│   ├── publicRouter/
-│   ├── services/
-│   ├── App.jsx
-│   ├── main.jsx
-│   ├── styles.css
+│ ├── components/
+│ ├── contexts/
+│ ├── layouts/
+│ ├── pages/
+│ ├── publicRouter/
+│ ├── services/
+│ ├── App.jsx
+│ ├── main.jsx
+│ ├── styles.css
 ├── .env
 ├── .env.example
 ├── index.html
@@ -170,7 +150,7 @@ Santiago inclut plusieurs couches de protection :
 - Hashage des mots de passe avec bcrypt
 - ReCAPTCHA pour prévenir les bots
 - Rate limiting sur les routes sensibles
-- Vérification d’identité avec token sécurisé
+- Vérification d’identité avec token sécurisé géré par Supabase
 
 ---
 
@@ -189,6 +169,36 @@ Ce projet est sous licence MIT — libre à toi de le modifier, réutiliser ou c
 ## 🌐 Déploiement
 
 [🌐 Voir le site en ligne](https://santiago-plum.vercel.app)
-Backend hébergé sur [Railway](https://railway.com/)
+Backend hébergé sur [Supabase](https://supabase.com/)
 
 ---
+
+## 🚦 Tests
+
+### 💬 Commentaires
+
+- Le carousel de commentaires fonctionne correctement
+- La page des commentaires affiche correctement tous les commentaires
+- L’ajout de commentaire n’est possible que si l’utilisateur est connecté
+- L’ajout de commentaire fonctionne une fois connecté
+- Il est impossible d’ajouter deux commentaires consécutifs par le même utilisateur
+
+### 👨‍💻 Connexion Admin
+
+- Un compte admin est reconnu comme tel à la connexion
+- L’admin accède à la liste des commentaires dans l’adminboard
+- L’admin accède à la liste des utilisateurs dans l’adminboard
+- L’admin peut récupérer, modifier et supprimer un commentaire
+- L’admin peut récupérer, modifier et supprimer un utilisateur
+- L’admin peut récupérer et modifier son profil (tous les champs + mot de passe)
+- La déconnexion fonctionne correctement
+
+### 🙋‍♂️ Connexion User
+
+- L’inscription d’un utilisateur non-admin fonctionne
+- L’utilisateur non-admin n’a pas accès à l’adminboard
+- L’utilisateur peut ajouter un commentaire
+- L’utilisateur peut modifier son profil (tous les champs + mot de passe)
+- L’utilisateur peut demander un reset de mot de passe
+- L’utilisateur peut changer son mot de passe via le reset
+- La déconnexion fonctionne correctement

@@ -68,12 +68,14 @@ const AuthenticationPage = () => {
     setError("");
     setMessage("");
 
+    // Vérification CAPTCHA
     if (!captchaValue) {
       setError("Veuillez valider le reCAPTCHA.");
       setLoading(false);
       return;
     }
 
+    // Vérification correspondance mots de passe
     if (signUpData.password !== signUpData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
       setLoading(false);
@@ -81,36 +83,54 @@ const AuthenticationPage = () => {
     }
 
     try {
+      // Création du compte Supabase Auth
       const { data: signUpResponse, error: signUpError } =
         await supabase.auth.signUp({
           email: signUpData.email,
           password: signUpData.password,
         });
+
       if (signUpError) throw signUpError;
 
       const authUser = signUpResponse.user;
       if (!authUser) throw new Error("Impossible de créer l'utilisateur.");
 
-      const { error: updateError } = await supabase
+      // Vérifier que les données sont bien remplies
+      console.log("SIGNUP DATA:", signUpData);
+      console.log("AUTH USER ID:", authUser.id);
+
+      // Insertion ou mise à jour de la ligne dans users
+      const { data: upsertData, error: upsertError } = await supabase
         .from("users")
-        .update({
-          firstname: signUpData.firstname,
-          lastname: signUpData.lastname,
-          phone: signUpData.phone,
-          address: signUpData.address,
-          city: signUpData.city,
-          postalcode: signUpData.postalcode,
-        })
-        .eq("auth_id", authUser.id);
+        .upsert(
+          [
+            {
+              auth_id: authUser.id,
+              firstname: signUpData.firstname || "",
+              lastname: signUpData.lastname || "",
+              email: signUpData.email || "",
+              phone: signUpData.phone || "",
+              address: signUpData.address || "",
+              city: signUpData.city || "",
+              postalcode: signUpData.postalcode || "",
+              role: "user",
+            },
+          ],
+          { onConflict: "auth_id" } // fusion si auth_id existe déjà
+        );
 
-      if (updateError) throw updateError;
+      if (upsertError) throw upsertError;
 
+      // 🔹 3️⃣ Rafraîchir le contexte utilisateur
       await refreshUser();
+
+      // 🔹 4️⃣ Message de succès et redirection
       setMessage(
         "✅ Inscription réussie ! Vérifiez votre email pour confirmer le compte."
       );
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {
+      console.error(err);
       setError(err.message || "Erreur lors de l'inscription.");
     } finally {
       setLoading(false);
