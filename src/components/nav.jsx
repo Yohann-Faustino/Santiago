@@ -14,24 +14,33 @@ const Nav = () => {
   const handleClick = (index) => setActiveIndex(index);
 
   return (
-    <nav className="mr-4" aria-label="Navigation principale">
-      <ul className="flex flex-col lg:flex-col gap-2">
+    // Navigation principale
+    <nav aria-label="Navigation principale" className="w-full lg:w-auto">
+      <ul
+        className="
+          flex flex-row flex-wrap justify-center gap-2
+          lg:flex-col lg:justify-start
+        "
+      >
         {/* Onglets visibles par tous */}
         <li className={activeIndex === 0 ? "whiteLink" : "linkNav"}>
           <Link to="/" onClick={() => handleClick(0)}>
             Accueil
           </Link>
         </li>
+
         <li className={activeIndex === 1 ? "whiteLink" : "linkNav"}>
           <Link to="/contact" onClick={() => handleClick(1)}>
             Contact
           </Link>
         </li>
+
         <li className={activeIndex === 2 ? "whiteLink" : "linkNav"}>
           <Link to="/comments" onClick={() => handleClick(2)}>
             Commentaires
           </Link>
         </li>
+
         <li className={activeIndex === 3 ? "whiteLink" : "linkNav"}>
           <Link to="/prestations" onClick={() => handleClick(3)}>
             Prestations

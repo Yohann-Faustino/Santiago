@@ -5,7 +5,7 @@ const Services = () => {
     <>
       <section
         aria-labelledby="services-heading"
-        className="flex flex-col m-auto mb-3"
+        className="flex flex-col m-auto mb-3 m-4"
       >
         <h1 id="services-heading" className="colorTitle">
           Prestations

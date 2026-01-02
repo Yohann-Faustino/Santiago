@@ -121,10 +121,10 @@ const AuthenticationPage = () => {
 
       if (upsertError) throw upsertError;
 
-      // 🔹 3️⃣ Rafraîchir le contexte utilisateur
+      // Rafraîchir le contexte utilisateur
       await refreshUser();
 
-      // 🔹 4️⃣ Message de succès et redirection
+      // Message de succès et redirection
       setMessage(
         "✅ Inscription réussie ! Vérifiez votre email pour confirmer le compte."
       );

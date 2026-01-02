@@ -149,7 +149,7 @@ const ProfilePage = () => {
   // ======================= JSX =======================
   return (
     <div
-      className={`profile-container mx-auto w-1/4 relative ${
+      className={`profile-container mx-auto lg:w-1/4 relative ${
         loading ? "opacity-50 pointer-events-none" : ""
       }`}
     >

@@ -7,15 +7,27 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className=" flex sm:flex-col md:flex-col lg:flex-row w-full overflow-x-hidden">
-        {" "}
-        {/* Met l'appli en full screen et cache ce qui depasse */}
+
+      {/* 
+        Conteneur principal :
+        - Mobile + tablette : nav AU-DESSUS du contenu (flex-col)
+        - Desktop : nav À GAUCHE du contenu (flex-row)
+      */}
+      <div className="flex flex-col lg:flex-row w-full overflow-x-hidden">
+        {/* Navigation */}
         <Nav />
-        {/* Composant spécial de React Router qui sert de point d’insertion pour afficher les composants enfants des routes imbriquées définies dans App.js */}
-        <Outlet />
+
+        {/* 
+          Composant spécial de React Router qui sert de point d’insertion
+          pour afficher les composants enfants des routes imbriquées définies dans App.js 
+        */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
       </div>
+
       <Footer />
     </div>
   );

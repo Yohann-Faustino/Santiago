@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className="homeBlock flex flex-col lg:flex-row justify-around">
       {/* Section gauche : présentation et contact */}
-      <section className="homeLeftBlock flex-1 p-4 w-1/2">
+      <section className="homeLeftBlock flex-1 p-4 lg:w-1/2">
         {/* Titre avec logo */}
         <h1 className="colorTitle flex items-center">
           La société
@@ -81,7 +81,7 @@ const Home = () => {
       </section>
 
       {/* Section droite : présentation détaillée et images */}
-      <section className="homeRightBlock flex-1 p-4 w-1/2">
+      <section className="homeRightBlock flex-1 p-4 lg:w-1/2">
         <h2 className="mt-2 mb-1 colorTitle">
           Recommandé par le célèbre site d'artisans : aude-location.
         </h2>
