@@ -82,115 +82,176 @@ const User = () => {
       {loading ? (
         <p>Chargement des utilisateurs...</p>
       ) : (
-        <div className="usersSideMenu w-full">
+        <div className="usersSideMenu w-full flex flex-col gap-4">
+          {/* Menu au-dessus du tableau / cards */}
           <div>
             <SideMenu />
           </div>
 
-          <div className="usersBoard">
-            <table className="min-w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-red-500">
-                  <th className="p-2 text-center border border-gray-300">🚮</th>
-                  <th className="p-2 text-center border border-gray-300">#</th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Prénom
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Nom
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Email
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Téléphone
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Adresse
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Ville
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Code Postal
-                  </th>
-                  <th className="p-2 text-center border border-gray-300">
-                    Type
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-100">
-                    {/* Bouton delete */}
-                    <td className="p-2 text-center border border-gray-300">
-                      <button
-                        className="cursor-pointer hover:bg-red-100"
-                        onClick={() =>
-                          delUser(
-                            user.id,
-                            user.role,
-                            `${user.firstname} ${user.lastname}`
-                          )
-                        }
-                        aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
-                        title="Supprimer l'utilisateur"
-                      >
-                        🗑️
-                      </button>
-                    </td>
-
-                    {/* Chaque cellule pointe vers l’édition */}
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.id}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.firstname}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.lastname}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.email}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.phone}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.address}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.city}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.postalcode}
-                      </Link>
-                    </td>
-                    <td className="p-2 text-center border border-gray-300">
-                      <Link to={`/admin/users/useredit/${user.id}`}>
-                        {user.role}
-                      </Link>
-                    </td>
+          {/* Desktop: tableau, Mobile/Tablette: cards */}
+          <div className="usersBoard w-full">
+            {/* Version Desktop */}
+            <div className="hidden lg:block">
+              <table className="min-w-full border-collapse border border-gray-300">
+                <thead>
+                  <tr className="bg-red-500">
+                    <th className="p-2 text-center border border-gray-300">
+                      🚮
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      #
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Prénom
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Nom
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Email
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Téléphone
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Adresse
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Ville
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Code Postal
+                    </th>
+                    <th className="p-2 text-center border border-gray-300">
+                      Type
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-100">
+                      <td className="p-2 text-center border border-gray-300">
+                        <button
+                          className="cursor-pointer hover:bg-red-100"
+                          onClick={() =>
+                            delUser(
+                              user.id,
+                              user.role,
+                              `${user.firstname} ${user.lastname}`
+                            )
+                          }
+                          aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
+                          title="Supprimer l'utilisateur"
+                        >
+                          🗑️
+                        </button>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.id}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.firstname}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.lastname}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.email}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.phone}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.address}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.city}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.postalcode}
+                        </Link>
+                      </td>
+                      <td className="p-2 text-center border border-gray-300">
+                        <Link to={`/admin/users/useredit/${user.id}`}>
+                          {user.role}
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Version Mobile/Tablette: cards */}
+            <div className="flex flex-col gap-4 lg:hidden">
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  className="border rounded-2xl p-4 bg-white shadow hover:shadow-lg transition"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="font-semibold text-lg">
+                      {/* Nom + Prénom cliquables */}
+                      <Link to={`/admin/users/useredit/${user.id}`}>
+                        {user.firstname} {user.lastname}
+                      </Link>
+                    </h2>
+                    <button
+                      className="cursor-pointer hover:bg-red-100 p-1 rounded"
+                      onClick={() =>
+                        delUser(
+                          user.id,
+                          user.role,
+                          `${user.firstname} ${user.lastname}`
+                        )
+                      }
+                      aria-label={`Supprimer l'utilisateur ${user.firstname} ${user.lastname}`}
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                  <p>
+                    <span className="font-semibold">Email:</span>{" "}
+                    <Link to={`/admin/users/useredit/${user.id}`}>
+                      {user.email}
+                    </Link>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Téléphone:</span>{" "}
+                    <Link to={`/admin/users/useredit/${user.id}`}>
+                      {user.phone}
+                    </Link>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Adresse:</span>{" "}
+                    <Link to={`/admin/users/useredit/${user.id}`}>
+                      {user.address}, {user.city}, {user.postalcode}
+                    </Link>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Type:</span>{" "}
+                    <Link to={`/admin/users/useredit/${user.id}`}>
+                      {user.role}
+                    </Link>
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

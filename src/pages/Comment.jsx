@@ -87,7 +87,7 @@ const Comments = () => {
     // 🔹 Wrapper pour centrer horizontalement
     <div className="w-full flex justify-center">
       {/* 🔹 Conteneur limité en largeur pour éviter l’étirement */}
-      <div className="commentBlock flex flex-row-reverse w-full max-w-5xl m-4">
+      <div className="commentBlock flex flex-col md:flex-row-reverse w-full max-w-5xl m-4">
         {/* Formulaire */}
         <div className="commentInputBlock flex flex-col m-3 justify-center text-center">
           <h1 className="colorTitle mb-3">Laissez un commentaire :</h1>

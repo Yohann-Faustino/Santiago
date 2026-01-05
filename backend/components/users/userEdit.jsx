@@ -91,14 +91,19 @@ const UserEdit = () => {
   }, [uid]);
 
   return (
-    <div className="userEdit flex flex-col items-center p-4">
-      <h1 className="mb-3">Modifier l'utilisateur :</h1>
+    <div className="userEdit max-w-3xl mx-auto p-6 bg-gray-50 rounded-xl shadow-md mt-6">
+      <h1 className="text-center text-red-700 text-2xl font-bold mb-6">
+        Modifier l'utilisateur :
+      </h1>
 
-      <div className="mb-5 w-full max-w-xl">
+      <div className="mb-6 flex justify-center">
         <SideMenu />
       </div>
 
-      <form onSubmit={onSubmit} className="text-center w-full max-w-xl">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col items-center gap-4 text-center"
+      >
         {[
           "firstname",
           "lastname",
@@ -108,8 +113,11 @@ const UserEdit = () => {
           "city",
           "postalcode",
         ].map((field) => (
-          <div className="flex flex-col mb-3" key={field}>
-            <label htmlFor={`${field}Edit`}>
+          <div className="flex flex-col w-full max-w-md" key={field}>
+            <label
+              htmlFor={`${field}Edit`}
+              className="font-semibold mb-1 text-gray-700 text-left"
+            >
               Modifier {field.charAt(0).toUpperCase() + field.slice(1)} :
             </label>
             <input
@@ -123,14 +131,19 @@ const UserEdit = () => {
           </div>
         ))}
 
-        <div className="flex flex-col mb-3">
-          <label htmlFor="roleEdit">Modifier le rôle :</label>
+        <div className="flex flex-col w-full max-w-md">
+          <label
+            htmlFor="roleEdit"
+            className="font-semibold mb-1 text-gray-700 text-left"
+          >
+            Modifier le rôle :
+          </label>
           <select
             name="role"
             id="roleEdit"
             value={user.role || "utilisateur"}
             onChange={onChange}
-            className="modifiable text-center p-2 border border-gray-400 m-auto"
+            className="modifiable text-center p-2 border border-gray-400"
           >
             <option value="utilisateur">Utilisateur</option>
             <option value="admin">Administrateur</option>
@@ -140,7 +153,7 @@ const UserEdit = () => {
         {message && (
           <p
             aria-live="polite"
-            className={`font-semibold mb-4 ${
+            className={`font-semibold mt-2 ${
               message.startsWith("❌") ? "text-red-600" : "text-green-600"
             }`}
           >
@@ -148,11 +161,9 @@ const UserEdit = () => {
           </p>
         )}
 
-        <div className="flex justify-center">
-          <button type="submit" className="allButton mt-4" disabled={loading}>
-            {loading ? "Enregistrement en cours..." : "Enregistrer"}
-          </button>
-        </div>
+        <button type="submit" className="allButton mt-4" disabled={loading}>
+          {loading ? "Enregistrement en cours..." : "Enregistrer"}
+        </button>
       </form>
     </div>
   );

@@ -107,7 +107,7 @@ const CommentsEdit = () => {
       {/* Formulaire */}
       <form
         onSubmit={onSubmit}
-        className="flex flex-col items-center gap-6 text-center"
+        className="flex flex-col items-center gap-4 text-center"
       >
         {/* Champ titre */}
         <div className="flex flex-col w-full max-w-md">
@@ -124,7 +124,7 @@ const CommentsEdit = () => {
             name="title"
             value={comment.title || ""}
             onChange={onChange}
-            className="modifiable text-center w-full px-3 py-2 border-2 border-blue-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="modifiable text-center"
           />
         </div>
 
@@ -142,7 +142,7 @@ const CommentsEdit = () => {
             name="content"
             value={comment.content || ""}
             onChange={onChange}
-            className="modifiable text-center w-full px-3 py-2 border-2 border-blue-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="modifiable text-center min-h-[120px]"
           />
         </div>
 
@@ -151,7 +151,7 @@ const CommentsEdit = () => {
           <p
             role="alert"
             aria-live="assertive"
-            className={`font-semibold mb-4 ${
+            className={`font-semibold mt-2 ${
               message.startsWith("❌") ? "text-red-600" : "text-green-600"
             }`}
           >
@@ -160,10 +160,7 @@ const CommentsEdit = () => {
         )}
 
         {/* Bouton bleu standard du site */}
-        <button
-          className="allButton px-6 py-3 bg-blue-700 text-white font-semibold rounded-md w-full max-w-sm hover:bg-blue-600 disabled:bg-blue-400"
-          disabled={loading}
-        >
+        <button className="allButton mt-4" disabled={loading}>
           {loading ? "Enregistrement en cours..." : "Enregistrer"}
         </button>
       </form>

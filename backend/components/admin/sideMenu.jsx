@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const SideMenu = () => {
   return (
     <div className="sideMenu border border-red-700 rounded-lg p-2">
-      <ul className="flex flex-row justify-center gap-6">
+      <ul className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
         <li className="linkClick">
           <Link to="/admin/users/indexuser" className="hover:text-red-700">
             Liste des utilisateurs
